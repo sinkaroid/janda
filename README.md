@@ -86,7 +86,7 @@ The documentation can be found [https://sinkaroid.github.io/janda](https://sinka
 - [`Nhentai.search(options)`](https://sinkaroid.github.io/janda/nhentai.html)
   - Search doujin by tags / artist / character / parody or group
 - [`Nhentai.search_related(options)`](https://sinkaroid.github.io/janda/nhentai.html)
-  - Get realated book or almost alike from Id given
+  - Get related book or almost alike from Id given
 - [`Nhentai.get_random()`](https://sinkaroid.github.io/janda/nhentai.html)
   - Get random doujin from nhentai
 

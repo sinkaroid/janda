@@ -16,7 +16,7 @@ class Nhentai(object):
         Search doujin by tags / artist / character / parody or group
 
     search_related : function
-        Get realated book API from book Id
+        Get related book API from book Id
 
     get_random : function
         Get random doujin
@@ -133,7 +133,7 @@ class Nhentai(object):
 
 
     async def search_related(self, book: int):
-        """Get realated book API from book ID or book link
+        """Get related book API from book ID or book link
 
         Parameters
         ----------
