@@ -72,7 +72,7 @@ class Pururin(object):
         ----------
         get: 
         """
-        if api_key is '':
+        if api_key == '':
             self.api_key = None
         else:
             self.api_key = api_key
