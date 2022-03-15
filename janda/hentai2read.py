@@ -73,7 +73,7 @@ class Hentai2read(object):
 
         self.final = json.loads(better_object(data.json()), encoding="utf-8")
    
-        if self.final["title"] is '':
+        if self.final["title"] == '':
             raise ValueError('No results. Make sure you spelled everything right.')
 
         return better_object(self.final)
