@@ -34,7 +34,7 @@ from datetime import datetime
 class Api():
     &#34;&#34;&#34;Api class
 
-    This class is used to get data from nhentai api.
+    This class is used to parse the data from the api.
 
     Attributes:
         api (str): The base url of nhentai api.
@@ -42,6 +42,7 @@ class Api():
         pururin (str): The base url of pururin api.
         hentaifox (str): The base url of hentaifox api.
         hentai2read (str): The base url of hentai2read api.
+        simply_hentai (str): The base url of simply-hentai api.
     &#34;&#34;&#34;
 
     def __init__(self,
@@ -51,7 +52,8 @@ class Api():
                  BASE_PURURIN: str = &#34;https://scathach.redsplit.org/v4/pururin/&#34;,
                  BASE_NHENTAI_UNBLOCK: str = &#34;https://nhentai.sinxdr.workers.dev&#34;,
                  BASE_HENTAIFOX: str = &#34;https://scathach.redsplit.org/v4/hentaifox/&#34;,
-                 BASE_HENTAI2READ: str = &#34;https://scathach.redsplit.org/v4/hentai2read/&#34;):
+                 BASE_HENTAI2READ: str = &#34;https://scathach.redsplit.org/v4/hentai2read/&#34;,
+                 BASE_SIMPLY_HENTAI: str = &#34;https://scathach.redsplit.org/v4/simply-hentai/&#34;):
 
         self.api = BASE_URL
         self.img = BASE_IMG
@@ -60,6 +62,7 @@ class Api():
         self.hentaifox = BASE_HENTAIFOX
         self.hentai2read = BASE_HENTAI2READ
         self.nhentai_unblock = BASE_NHENTAI_UNBLOCK
+        self.simply_hentai = BASE_SIMPLY_HENTAI
 
 
 BASE_URL = Api()
@@ -77,7 +80,8 @@ def list_api():
         BASE_URL.api,
         BASE_URL.pururin,
         BASE_URL.hentaifox,
-        BASE_URL.hentai2read
+        BASE_URL.hentai2read,
+        BASE_URL.simply_hentai,
     ]
     return api_list
 
@@ -281,7 +285,22 @@ def neat_result(obj: dict):
             &#39;tags&#39;: preg_match_tags(result[&#39;tags&#39;])
         })
 
-    return better_object(results_object)</code></pre>
+    return better_object(results_object)
+
+def convert_non_ascii(obj: dict):
+    &#34;&#34;&#34;Converts non-ascii characters to ascii.
+
+    Parameters
+    ----------
+    parser : dict
+        The json object to be parsed.
+
+    Returns
+    -------
+    dict
+
+    &#34;&#34;&#34;
+    ##</code></pre>
 </details>
 </section>
 <section>
@@ -358,6 +377,41 @@ def neat_result(obj: dict):
 
     &#34;&#34;&#34;
     return json.dumps(parser, sort_keys=True, indent=4, ensure_ascii=False)</code></pre>
+</details>
+</dd>
+<dt id="janda.utils.parser.convert_non_ascii"><code class="name flex">
+<span>def <span class="ident">convert_non_ascii</span></span>(<span>obj: dict)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Converts non-ascii characters to ascii.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>parser</code></strong> :&ensp;<code>dict</code></dt>
+<dd>The json object to be parsed.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def convert_non_ascii(obj: dict):
+    &#34;&#34;&#34;Converts non-ascii characters to ascii.
+
+    Parameters
+    ----------
+    parser : dict
+        The json object to be parsed.
+
+    Returns
+    -------
+    dict
+
+    &#34;&#34;&#34;
+    ##</code></pre>
 </details>
 </dd>
 <dt id="janda.utils.parser.get_language_in_tags"><code class="name flex">
@@ -457,7 +511,8 @@ def neat_result(obj: dict):
         BASE_URL.api,
         BASE_URL.pururin,
         BASE_URL.hentaifox,
-        BASE_URL.hentai2read
+        BASE_URL.hentai2read,
+        BASE_URL.simply_hentai,
     ]
     return api_list</code></pre>
 </details>
@@ -683,11 +738,11 @@ def neat_result(obj: dict):
 <dl>
 <dt id="janda.utils.parser.Api"><code class="flex name class">
 <span>class <span class="ident">Api</span></span>
-<span>(</span><span>BASE_URL: str = 'https://nhentai.net', BASE_IMG: str = 'https://i.nhentai.net/galleries', BASE_THUMBNAIL: str = 'https://t.nhentai.net/galleries', BASE_PURURIN: str = 'https://scathach.redsplit.org/v4/pururin/', BASE_NHENTAI_UNBLOCK: str = 'https://nhentai.sinxdr.workers.dev', BASE_HENTAIFOX: str = 'https://scathach.redsplit.org/v4/hentaifox/', BASE_HENTAI2READ: str = 'https://scathach.redsplit.org/v4/hentai2read/')</span>
+<span>(</span><span>BASE_URL: str = 'https://nhentai.net', BASE_IMG: str = 'https://i.nhentai.net/galleries', BASE_THUMBNAIL: str = 'https://t.nhentai.net/galleries', BASE_PURURIN: str = 'https://scathach.redsplit.org/v4/pururin/', BASE_NHENTAI_UNBLOCK: str = 'https://nhentai.sinxdr.workers.dev', BASE_HENTAIFOX: str = 'https://scathach.redsplit.org/v4/hentaifox/', BASE_HENTAI2READ: str = 'https://scathach.redsplit.org/v4/hentai2read/', BASE_SIMPLY_HENTAI: str = 'https://scathach.redsplit.org/v4/simply-hentai/')</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Api class</p>
-<p>This class is used to get data from nhentai api.</p>
+<p>This class is used to parse the data from the api.</p>
 <h2 id="attributes">Attributes</h2>
 <dl>
 <dt><strong><code>api</code></strong> :&ensp;<code>str</code></dt>
@@ -700,6 +755,8 @@ def neat_result(obj: dict):
 <dd>The base url of hentaifox api.</dd>
 <dt><strong><code>hentai2read</code></strong> :&ensp;<code>str</code></dt>
 <dd>The base url of hentai2read api.</dd>
+<dt><strong><code>simply_hentai</code></strong> :&ensp;<code>str</code></dt>
+<dd>The base url of simply-hentai api.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -708,7 +765,7 @@ def neat_result(obj: dict):
 <pre><code class="python">class Api():
     &#34;&#34;&#34;Api class
 
-    This class is used to get data from nhentai api.
+    This class is used to parse the data from the api.
 
     Attributes:
         api (str): The base url of nhentai api.
@@ -716,6 +773,7 @@ def neat_result(obj: dict):
         pururin (str): The base url of pururin api.
         hentaifox (str): The base url of hentaifox api.
         hentai2read (str): The base url of hentai2read api.
+        simply_hentai (str): The base url of simply-hentai api.
     &#34;&#34;&#34;
 
     def __init__(self,
@@ -725,7 +783,8 @@ def neat_result(obj: dict):
                  BASE_PURURIN: str = &#34;https://scathach.redsplit.org/v4/pururin/&#34;,
                  BASE_NHENTAI_UNBLOCK: str = &#34;https://nhentai.sinxdr.workers.dev&#34;,
                  BASE_HENTAIFOX: str = &#34;https://scathach.redsplit.org/v4/hentaifox/&#34;,
-                 BASE_HENTAI2READ: str = &#34;https://scathach.redsplit.org/v4/hentai2read/&#34;):
+                 BASE_HENTAI2READ: str = &#34;https://scathach.redsplit.org/v4/hentai2read/&#34;,
+                 BASE_SIMPLY_HENTAI: str = &#34;https://scathach.redsplit.org/v4/simply-hentai/&#34;):
 
         self.api = BASE_URL
         self.img = BASE_IMG
@@ -733,7 +792,8 @@ def neat_result(obj: dict):
         self.pururin = BASE_PURURIN
         self.hentaifox = BASE_HENTAIFOX
         self.hentai2read = BASE_HENTAI2READ
-        self.nhentai_unblock = BASE_NHENTAI_UNBLOCK</code></pre>
+        self.nhentai_unblock = BASE_NHENTAI_UNBLOCK
+        self.simply_hentai = BASE_SIMPLY_HENTAI</code></pre>
 </details>
 </dd>
 </dl>
@@ -754,6 +814,7 @@ def neat_result(obj: dict):
 <ul class="">
 <li><code><a title="janda.utils.parser.auto_space" href="#janda.utils.parser.auto_space">auto_space</a></code></li>
 <li><code><a title="janda.utils.parser.better_object" href="#janda.utils.parser.better_object">better_object</a></code></li>
+<li><code><a title="janda.utils.parser.convert_non_ascii" href="#janda.utils.parser.convert_non_ascii">convert_non_ascii</a></code></li>
 <li><code><a title="janda.utils.parser.get_language_in_tags" href="#janda.utils.parser.get_language_in_tags">get_language_in_tags</a></code></li>
 <li><code><a title="janda.utils.parser.just_number" href="#janda.utils.parser.just_number">just_number</a></code></li>
 <li><code><a title="janda.utils.parser.list_api" href="#janda.utils.parser.list_api">list_api</a></code></li>
