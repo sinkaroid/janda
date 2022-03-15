@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>janda.nhentai API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>janda.nhentai</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import requests
+import json
+from .utils.parser import *
+
+BASE_URL = Api()
+
+class Nhentai(object):    
+    &#34;&#34;&#34; Nhentai API wrapper 
+    
+    Methods
+    -------
+    get : function
+        Get doujin API from Id
+
+    search : function
+        Search doujin by tags / artist / character / parody or group
+
+    search_related : function
+        Get realated book API from book Id
+
+    get_random : function
+        Get random doujin
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        self.specs = {}
+
+    async def get(self, book: int, safe: bool = None):
+        &#34;&#34;&#34;Get doujin API from Id
+
+        Parameters
+        ----------
+        book : int
+            Nmber id of the book
+
+        safe : bool
+            If True, janda will throw you error whenever contains minor content, such as loli or shota. Default is False
+
+        Raises
+        ------
+        ValueError
+            If the doujin is not found.
+
+        Returns
+        -------
+        dict
+        &#34;&#34;&#34;
+
+        try:
+
+            if isinstance(book, int):
+                book = str(book)
+
+            self.book = str(just_number(book))
+
+        except ValueError:
+            raise ValueError(&#39;Book must be contain int&#39;)
+
+        data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}&#39;)
+        if data.status_code == 404:
+            raise ValueError(&#39;Book not found&#39;)
+
+        if data.status_code != 200:
+            raise ValueError(&#39;Request failed&#39;)
+
+        self.tags = preg_match_tags(data.json()[&#39;tags&#39;])
+
+        if safe is True:
+            if &#39;lolicon&#39; in self.tags or &#39;shotacon&#39; in self.tags:
+                raise ValueError(&#39;Book contains minor content&#39;)
+        
+        return parser(data.json())
+
+
+    async def search(self, tags: str, page: int = 1, popular: str = &#39;today&#39;):
+        &#34;&#34;&#34;Search doujin by tags / artis / character / parody or group
+
+        Parameters
+        ----------
+        tags : str
+            Tags to search for.
+
+        page : int
+            Page number. Default is 1.
+
+        popular : str
+            today, all, and week. Default is today.
+
+        Raises
+        ------
+        ValueError
+            If the doujin is not found.
+
+        Returns
+        -------
+        dict
+        &#34;&#34;&#34;
+
+        if popular not in [&#39;today&#39;, &#39;all&#39;, &#39;week&#39;]:
+            raise ValueError(&#39;popular must be today, all, or week&#39;)
+
+        self.specs[&#39;query&#39;] = tags
+        self.specs[&#39;page&#39;] = page
+        self.specs[&#39;popular&#39;] = popular
+
+        data = requests.get(
+            f&#39;{BASE_URL.api}/api/galleries/search&#39;, params=self.specs)
+
+        if data.status_code == 404:
+            raise ValueError(&#39;No results&#39;)
+
+        if data.status_code != 200:
+            raise ValueError(&#39;Request failed&#39;)
+
+
+        self.raw_object = json.loads(better_object(data.json()), encoding=&#34;utf-8&#34;)
+        self.results = self.raw_object[&#39;result&#39;]
+
+        self.results_object = []
+        for result in self.results:
+            self.results_object.append({
+                &#39;id&#39;: result[&#39;id&#39;],
+                &#39;title&#39;: result[&#39;title&#39;],
+                &#39;link&#39;: f&#39;https://nhentai.net/g/{result[&#34;id&#34;]}&#39;,
+                &#39;upload_date&#39;: readable_timestamp(result[&#39;upload_date&#39;]),
+                &#39;num_pages&#39;: result[&#39;num_pages&#39;],
+                &#39;num_favorites&#39;: result[&#39;num_favorites&#39;],
+                &#39;language&#39;: get_language_in_tags(result[&#39;tags&#39;]),
+                &#39;tags&#39;: preg_match_tags(result[&#39;tags&#39;])
+            })
+
+        return better_object(self.results_object)
+
+
+    async def search_related(self, book: int):
+        &#34;&#34;&#34;Get realated book API from book ID or book link
+
+        Parameters
+        ----------
+        book : int
+            Nmber id of the book
+
+        Raises
+        ------
+        ValueError
+            If the doujin is not found.
+
+        Returns
+        -------
+        dict
+        &#34;&#34;&#34;
+
+        try:
+            if isinstance(book, int):
+                book = str(book)
+
+            self.book = str(just_number(book))
+
+        except ValueError:
+            raise ValueError(&#39;Book must be an int&#39;)
+
+        data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}/related&#39;)
+
+        if data.status_code != 200:
+            raise ValueError(&#39;Request failed&#39;)
+
+        return neat_result(data.json())
+
+    async def get_random(self):
+        &#34;&#34;&#34;Get random doujin
+        
+        Raises
+        ------
+        ValueError
+            If the doujin is not found.
+
+        Returns
+        -------
+        dict
+        &#34;&#34;&#34;
+        random = requests.get(F&#39;{BASE_URL.api}/random&#39;)
+
+        try:
+            self.book = str(just_number(random.url))
+
+        except ValueError:
+            raise ValueError(&#39;Uh oh something wrong here&#39;)
+
+        data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}&#39;)
+        
+        if data.status_code == 404:
+            raise ValueError(&#39;Error&#39;)
+
+        if data.status_code != 200:
+            raise ValueError(&#39;Request failed&#39;)
+
+        return parser(data.json())
+        </code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="janda.nhentai.Nhentai"><code class="flex name class">
+<span>class <span class="ident">Nhentai</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Nhentai API wrapper </p>
+<h2 id="methods">Methods</h2>
+<p>get : function
+Get doujin API from Id</p>
+<p>search : function
+Search doujin by tags / artist / character / parody or group</p>
+<p>search_related : function
+Get realated book API from book Id</p>
+<p>get_random : function
+Get random doujin</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Nhentai(object):    
+    &#34;&#34;&#34; Nhentai API wrapper 
+    
+    Methods
+    -------
+    get : function
+        Get doujin API from Id
+
+    search : function
+        Search doujin by tags / artist / character / parody or group
+
+    search_related : function
+        Get realated book API from book Id
+
+    get_random : function
+        Get random doujin
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        self.specs = {}
+
+    async def get(self, book: int, safe: bool = None):
+        &#34;&#34;&#34;Get doujin API from Id
+
+        Parameters
+        ----------
+        book : int
+            Nmber id of the book
+
+        safe : bool
+            If True, janda will throw you error whenever contains minor content, such as loli or shota. Default is False
+
+        Raises
+        ------
+        ValueError
+            If the doujin is not found.
+
+        Returns
+        -------
+        dict
+        &#34;&#34;&#34;
+
+        try:
+
+            if isinstance(book, int):
+                book = str(book)
+
+            self.book = str(just_number(book))
+
+        except ValueError:
+            raise ValueError(&#39;Book must be contain int&#39;)
+
+        data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}&#39;)
+        if data.status_code == 404:
+            raise ValueError(&#39;Book not found&#39;)
+
+        if data.status_code != 200:
+            raise ValueError(&#39;Request failed&#39;)
+
+        self.tags = preg_match_tags(data.json()[&#39;tags&#39;])
+
+        if safe is True:
+            if &#39;lolicon&#39; in self.tags or &#39;shotacon&#39; in self.tags:
+                raise ValueError(&#39;Book contains minor content&#39;)
+        
+        return parser(data.json())
+
+
+    async def search(self, tags: str, page: int = 1, popular: str = &#39;today&#39;):
+        &#34;&#34;&#34;Search doujin by tags / artis / character / parody or group
+
+        Parameters
+        ----------
+        tags : str
+            Tags to search for.
+
+        page : int
+            Page number. Default is 1.
+
+        popular : str
+            today, all, and week. Default is today.
+
+        Raises
+        ------
+        ValueError
+            If the doujin is not found.
+
+        Returns
+        -------
+        dict
+        &#34;&#34;&#34;
+
+        if popular not in [&#39;today&#39;, &#39;all&#39;, &#39;week&#39;]:
+            raise ValueError(&#39;popular must be today, all, or week&#39;)
+
+        self.specs[&#39;query&#39;] = tags
+        self.specs[&#39;page&#39;] = page
+        self.specs[&#39;popular&#39;] = popular
+
+        data = requests.get(
+            f&#39;{BASE_URL.api}/api/galleries/search&#39;, params=self.specs)
+
+        if data.status_code == 404:
+            raise ValueError(&#39;No results&#39;)
+
+        if data.status_code != 200:
+            raise ValueError(&#39;Request failed&#39;)
+
+
+        self.raw_object = json.loads(better_object(data.json()), encoding=&#34;utf-8&#34;)
+        self.results = self.raw_object[&#39;result&#39;]
+
+        self.results_object = []
+        for result in self.results:
+            self.results_object.append({
+                &#39;id&#39;: result[&#39;id&#39;],
+                &#39;title&#39;: result[&#39;title&#39;],
+                &#39;link&#39;: f&#39;https://nhentai.net/g/{result[&#34;id&#34;]}&#39;,
+                &#39;upload_date&#39;: readable_timestamp(result[&#39;upload_date&#39;]),
+                &#39;num_pages&#39;: result[&#39;num_pages&#39;],
+                &#39;num_favorites&#39;: result[&#39;num_favorites&#39;],
+                &#39;language&#39;: get_language_in_tags(result[&#39;tags&#39;]),
+                &#39;tags&#39;: preg_match_tags(result[&#39;tags&#39;])
+            })
+
+        return better_object(self.results_object)
+
+
+    async def search_related(self, book: int):
+        &#34;&#34;&#34;Get realated book API from book ID or book link
+
+        Parameters
+        ----------
+        book : int
+            Nmber id of the book
+
+        Raises
+        ------
+        ValueError
+            If the doujin is not found.
+
+        Returns
+        -------
+        dict
+        &#34;&#34;&#34;
+
+        try:
+            if isinstance(book, int):
+                book = str(book)
+
+            self.book = str(just_number(book))
+
+        except ValueError:
+            raise ValueError(&#39;Book must be an int&#39;)
+
+        data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}/related&#39;)
+
+        if data.status_code != 200:
+            raise ValueError(&#39;Request failed&#39;)
+
+        return neat_result(data.json())
+
+    async def get_random(self):
+        &#34;&#34;&#34;Get random doujin
+        
+        Raises
+        ------
+        ValueError
+            If the doujin is not found.
+
+        Returns
+        -------
+        dict
+        &#34;&#34;&#34;
+        random = requests.get(F&#39;{BASE_URL.api}/random&#39;)
+
+        try:
+            self.book = str(just_number(random.url))
+
+        except ValueError:
+            raise ValueError(&#39;Uh oh something wrong here&#39;)
+
+        data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}&#39;)
+        
+        if data.status_code == 404:
+            raise ValueError(&#39;Error&#39;)
+
+        if data.status_code != 200:
+            raise ValueError(&#39;Request failed&#39;)
+
+        return parser(data.json())</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="janda.nhentai.Nhentai.get"><code class="name flex">
+<span>async def <span class="ident">get</span></span>(<span>self, book: int, safe: bool = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get doujin API from Id</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>book</code></strong> :&ensp;<code>int</code></dt>
+<dd>Nmber id of the book</dd>
+<dt><strong><code>safe</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If True, janda will throw you error whenever contains minor content, such as loli or shota. Default is False</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the doujin is not found.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def get(self, book: int, safe: bool = None):
+    &#34;&#34;&#34;Get doujin API from Id
+
+    Parameters
+    ----------
+    book : int
+        Nmber id of the book
+
+    safe : bool
+        If True, janda will throw you error whenever contains minor content, such as loli or shota. Default is False
+
+    Raises
+    ------
+    ValueError
+        If the doujin is not found.
+
+    Returns
+    -------
+    dict
+    &#34;&#34;&#34;
+
+    try:
+
+        if isinstance(book, int):
+            book = str(book)
+
+        self.book = str(just_number(book))
+
+    except ValueError:
+        raise ValueError(&#39;Book must be contain int&#39;)
+
+    data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}&#39;)
+    if data.status_code == 404:
+        raise ValueError(&#39;Book not found&#39;)
+
+    if data.status_code != 200:
+        raise ValueError(&#39;Request failed&#39;)
+
+    self.tags = preg_match_tags(data.json()[&#39;tags&#39;])
+
+    if safe is True:
+        if &#39;lolicon&#39; in self.tags or &#39;shotacon&#39; in self.tags:
+            raise ValueError(&#39;Book contains minor content&#39;)
+    
+    return parser(data.json())</code></pre>
+</details>
+</dd>
+<dt id="janda.nhentai.Nhentai.get_random"><code class="name flex">
+<span>async def <span class="ident">get_random</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get random doujin</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the doujin is not found.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def get_random(self):
+    &#34;&#34;&#34;Get random doujin
+    
+    Raises
+    ------
+    ValueError
+        If the doujin is not found.
+
+    Returns
+    -------
+    dict
+    &#34;&#34;&#34;
+    random = requests.get(F&#39;{BASE_URL.api}/random&#39;)
+
+    try:
+        self.book = str(just_number(random.url))
+
+    except ValueError:
+        raise ValueError(&#39;Uh oh something wrong here&#39;)
+
+    data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}&#39;)
+    
+    if data.status_code == 404:
+        raise ValueError(&#39;Error&#39;)
+
+    if data.status_code != 200:
+        raise ValueError(&#39;Request failed&#39;)
+
+    return parser(data.json())</code></pre>
+</details>
+</dd>
+<dt id="janda.nhentai.Nhentai.search"><code class="name flex">
+<span>async def <span class="ident">search</span></span>(<span>self, tags: str, page: int = 1, popular: str = 'today')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Search doujin by tags / artis / character / parody or group</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>tags</code></strong> :&ensp;<code>str</code></dt>
+<dd>Tags to search for.</dd>
+<dt><strong><code>page</code></strong> :&ensp;<code>int</code></dt>
+<dd>Page number. Default is 1.</dd>
+<dt><strong><code>popular</code></strong> :&ensp;<code>str</code></dt>
+<dd>today, all, and week. Default is today.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the doujin is not found.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def search(self, tags: str, page: int = 1, popular: str = &#39;today&#39;):
+    &#34;&#34;&#34;Search doujin by tags / artis / character / parody or group
+
+    Parameters
+    ----------
+    tags : str
+        Tags to search for.
+
+    page : int
+        Page number. Default is 1.
+
+    popular : str
+        today, all, and week. Default is today.
+
+    Raises
+    ------
+    ValueError
+        If the doujin is not found.
+
+    Returns
+    -------
+    dict
+    &#34;&#34;&#34;
+
+    if popular not in [&#39;today&#39;, &#39;all&#39;, &#39;week&#39;]:
+        raise ValueError(&#39;popular must be today, all, or week&#39;)
+
+    self.specs[&#39;query&#39;] = tags
+    self.specs[&#39;page&#39;] = page
+    self.specs[&#39;popular&#39;] = popular
+
+    data = requests.get(
+        f&#39;{BASE_URL.api}/api/galleries/search&#39;, params=self.specs)
+
+    if data.status_code == 404:
+        raise ValueError(&#39;No results&#39;)
+
+    if data.status_code != 200:
+        raise ValueError(&#39;Request failed&#39;)
+
+
+    self.raw_object = json.loads(better_object(data.json()), encoding=&#34;utf-8&#34;)
+    self.results = self.raw_object[&#39;result&#39;]
+
+    self.results_object = []
+    for result in self.results:
+        self.results_object.append({
+            &#39;id&#39;: result[&#39;id&#39;],
+            &#39;title&#39;: result[&#39;title&#39;],
+            &#39;link&#39;: f&#39;https://nhentai.net/g/{result[&#34;id&#34;]}&#39;,
+            &#39;upload_date&#39;: readable_timestamp(result[&#39;upload_date&#39;]),
+            &#39;num_pages&#39;: result[&#39;num_pages&#39;],
+            &#39;num_favorites&#39;: result[&#39;num_favorites&#39;],
+            &#39;language&#39;: get_language_in_tags(result[&#39;tags&#39;]),
+            &#39;tags&#39;: preg_match_tags(result[&#39;tags&#39;])
+        })
+
+    return better_object(self.results_object)</code></pre>
+</details>
+</dd>
+<dt id="janda.nhentai.Nhentai.search_related"><code class="name flex">
+<span>async def <span class="ident">search_related</span></span>(<span>self, book: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get realated book API from book ID or book link</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>book</code></strong> :&ensp;<code>int</code></dt>
+<dd>Nmber id of the book</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the doujin is not found.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def search_related(self, book: int):
+    &#34;&#34;&#34;Get realated book API from book ID or book link
+
+    Parameters
+    ----------
+    book : int
+        Nmber id of the book
+
+    Raises
+    ------
+    ValueError
+        If the doujin is not found.
+
+    Returns
+    -------
+    dict
+    &#34;&#34;&#34;
+
+    try:
+        if isinstance(book, int):
+            book = str(book)
+
+        self.book = str(just_number(book))
+
+    except ValueError:
+        raise ValueError(&#39;Book must be an int&#39;)
+
+    data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}/related&#39;)
+
+    if data.status_code != 200:
+        raise ValueError(&#39;Request failed&#39;)
+
+    return neat_result(data.json())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="janda" href="index.html">janda</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="janda.nhentai.Nhentai" href="#janda.nhentai.Nhentai">Nhentai</a></code></h4>
+<ul class="">
+<li><code><a title="janda.nhentai.Nhentai.get" href="#janda.nhentai.Nhentai.get">get</a></code></li>
+<li><code><a title="janda.nhentai.Nhentai.get_random" href="#janda.nhentai.Nhentai.get_random">get_random</a></code></li>
+<li><code><a title="janda.nhentai.Nhentai.search" href="#janda.nhentai.Nhentai.search">search</a></code></li>
+<li><code><a title="janda.nhentai.Nhentai.search_related" href="#janda.nhentai.Nhentai.search_related">search_related</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
