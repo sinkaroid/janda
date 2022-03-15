@@ -36,7 +36,7 @@ class Pururin(object):
     search_by_random: function
         Searches doujin based on random with query
     """
-    
+
     @staticmethod
     def better_object(parser: dict):
         """Converts the json object to a more readable object.
@@ -367,3 +367,4 @@ class Pururin(object):
             raise ValueError('No results found')
 
         return Pururin.better_object(data.json())
+
