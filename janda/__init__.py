@@ -3,4 +3,5 @@ from janda.pururin import Pururin
 from janda.nhentai import Nhentai
 from janda.hentaifox import Hentaifox
 from janda.hentai2read import Hentai2read
+from janda.simply_hentai import SimplyHentai
 from janda.utils import *

@@ -6,7 +6,7 @@ from datetime import datetime
 class Api():
     """Api class
 
-    This class is used to get data from nhentai api.
+    This class is used to parse the data from the api.
 
     Attributes:
         api (str): The base url of nhentai api.
@@ -14,6 +14,7 @@ class Api():
         pururin (str): The base url of pururin api.
         hentaifox (str): The base url of hentaifox api.
         hentai2read (str): The base url of hentai2read api.
+        simply_hentai (str): The base url of simply-hentai api.
     """
 
     def __init__(self,
@@ -23,7 +24,8 @@ class Api():
                  BASE_PURURIN: str = "https://scathach.redsplit.org/v4/pururin/",
                  BASE_NHENTAI_UNBLOCK: str = "https://nhentai.sinxdr.workers.dev",
                  BASE_HENTAIFOX: str = "https://scathach.redsplit.org/v4/hentaifox/",
-                 BASE_HENTAI2READ: str = "https://scathach.redsplit.org/v4/hentai2read/"):
+                 BASE_HENTAI2READ: str = "https://scathach.redsplit.org/v4/hentai2read/",
+                 BASE_SIMPLY_HENTAI: str = "https://scathach.redsplit.org/v4/simply-hentai/"):
 
         self.api = BASE_URL
         self.img = BASE_IMG
@@ -32,6 +34,7 @@ class Api():
         self.hentaifox = BASE_HENTAIFOX
         self.hentai2read = BASE_HENTAI2READ
         self.nhentai_unblock = BASE_NHENTAI_UNBLOCK
+        self.simply_hentai = BASE_SIMPLY_HENTAI
 
 
 BASE_URL = Api()
@@ -49,7 +52,8 @@ def list_api():
         BASE_URL.api,
         BASE_URL.pururin,
         BASE_URL.hentaifox,
-        BASE_URL.hentai2read
+        BASE_URL.hentai2read,
+        BASE_URL.simply_hentai,
     ]
     return api_list
 
@@ -254,3 +258,18 @@ def neat_result(obj: dict):
         })
 
     return better_object(results_object)
+
+def convert_non_ascii(obj: dict):
+    """Converts non-ascii characters to ascii.
+
+    Parameters
+    ----------
+    parser : dict
+        The json object to be parsed.
+
+    Returns
+    -------
+    dict
+
+    """
+    ##
