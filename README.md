@@ -21,20 +21,21 @@ It takes a much more dictionaries rather than just raw data, and hope will be ex
 
 ## Site support
 
-- [x] nhentai API
+- [x] [nhentai](https://nhentai.net/)
   - Stable: using official API
-- [x] pururin API
+- [x] [pururin](https://pururin.to/)
   - Stable: using unofficial API
-- [x] hentaifox API
+- [x] [hentaifox](https://hentaifox.com/)
   - Triage: using unofficial API
-- [x] hentai2read API
+- [x] [hentai2read](https://hentai2read.com/)
+  - Functional: using unofficial API
+- [x] [simply-hentai](https://www.simply-hentai.com/)
   - Functional: using unofficial API
 
 > **Stable**: works well | **Triage**: has some issues | **Functional**: works normally
 
 ## Features
 
-- **Fancy**: apart from official API, Janda has own REST
 - **Easy to use**: check your intelisense
 - **Neat**: object taken is re-processed to make it actionable
 - **All-in-one**: plenty of site support
@@ -46,7 +47,7 @@ It takes a much more dictionaries rather than just raw data, and hope will be ex
 
 ## Installation
 `pip install janda / pipenv install janda`  
-- or fork this repo to build it from source code.
+- or fork this repo
 
 To use specific API, you could use `from janda import Nhentai`
 
@@ -117,6 +118,14 @@ The documentation can be found [https://sinkaroid.github.io/janda](https://sinka
   - Get random doujin from hentai2read
 - [`Hentai2read.search(options)`](https://sinkaroid.github.io/janda/hentai2read.html)
   - Search a doujin from hentai2read by latest only
+
+### Simplyhentai
+- [`Simplyhentai.get(options)`](https://sinkaroid.github.io/janda/simply_hentai.html)
+  - Get specific doujin from simplyhentai
+- [`Simplyhentai.get_related(options)`](https://sinkaroid.github.io/janda/simply_hentai.html)
+  - Get doujin related from specific path given
+- [`Simplyhentai.get_random()`](https://sinkaroid.github.io/janda/simply_hentai.html)
+  - Get random doujin from simply-hentai
 
 ### Hentaifox
 - [`Hentaifox.get(options)`](https://sinkaroid.github.io/janda/hentaifox.html)
