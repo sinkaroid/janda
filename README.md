@@ -6,7 +6,7 @@
 <p align="center">
 	<a href="https://github.com/sinkaroid/janda/actions/workflows/build.yml"><img src="https://github.com/sinkaroid/janda/actions/workflows/build.yml/badge.svg"></a>
 	<a href="https://github.com/sinkaroid/janda/actions/workflows/api.yml/badge.svg"><img src="https://github.com/sinkaroid/janda/actions/workflows/api.yml/badge.svg"></a>
-	<a href="https://codeclimate.com/github/sinkaroid/janda/maintainability"><img src="https://api.codeclimate.com/v1/badges/90b543fc3495b932488a/maintainability"></a>
+	<a href="https://codeclimate.com/github/sinkaroid/janda/maintainability"><img src="https://api.codeclimate.com/v1/badges/7c53330c7a3c0c2a2006/maintainability"></a>
 </p>
 
 Built on minimalist dependencies to resolves and interacts with ease.
