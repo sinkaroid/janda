@@ -43,6 +43,7 @@ class Api():
         hentaifox (str): The base url of hentaifox api.
         hentai2read (str): The base url of hentai2read api.
         simply_hentai (str): The base url of simply-hentai api.
+        qhentai (str): The base url of qhentai api.
     &#34;&#34;&#34;
 
     def __init__(self,
@@ -53,7 +54,8 @@ class Api():
                  BASE_NHENTAI_UNBLOCK: str = &#34;https://nhentai.sinxdr.workers.dev&#34;,
                  BASE_HENTAIFOX: str = &#34;https://scathach.redsplit.org/v4/hentaifox/&#34;,
                  BASE_HENTAI2READ: str = &#34;https://scathach.redsplit.org/v4/hentai2read/&#34;,
-                 BASE_SIMPLY_HENTAI: str = &#34;https://scathach.redsplit.org/v4/simply-hentai/&#34;):
+                 BASE_SIMPLY_HENTAI: str = &#34;https://scathach.redsplit.org/v4/simply-hentai/&#34;,
+                 BASE_QHENTAI: str = &#34;https://scathach.redsplit.org/v4/qhentai/&#34;,):
 
         self.api = BASE_URL
         self.img = BASE_IMG
@@ -63,6 +65,7 @@ class Api():
         self.hentai2read = BASE_HENTAI2READ
         self.nhentai_unblock = BASE_NHENTAI_UNBLOCK
         self.simply_hentai = BASE_SIMPLY_HENTAI
+        self.qhentai = BASE_QHENTAI
 
 
 BASE_URL = Api()
@@ -738,7 +741,7 @@ def convert_non_ascii(obj: dict):
 <dl>
 <dt id="janda.utils.parser.Api"><code class="flex name class">
 <span>class <span class="ident">Api</span></span>
-<span>(</span><span>BASE_URL: str = 'https://nhentai.net', BASE_IMG: str = 'https://i.nhentai.net/galleries', BASE_THUMBNAIL: str = 'https://t.nhentai.net/galleries', BASE_PURURIN: str = 'https://scathach.redsplit.org/v4/pururin/', BASE_NHENTAI_UNBLOCK: str = 'https://nhentai.sinxdr.workers.dev', BASE_HENTAIFOX: str = 'https://scathach.redsplit.org/v4/hentaifox/', BASE_HENTAI2READ: str = 'https://scathach.redsplit.org/v4/hentai2read/', BASE_SIMPLY_HENTAI: str = 'https://scathach.redsplit.org/v4/simply-hentai/')</span>
+<span>(</span><span>BASE_URL: str = 'https://nhentai.net', BASE_IMG: str = 'https://i.nhentai.net/galleries', BASE_THUMBNAIL: str = 'https://t.nhentai.net/galleries', BASE_PURURIN: str = 'https://scathach.redsplit.org/v4/pururin/', BASE_NHENTAI_UNBLOCK: str = 'https://nhentai.sinxdr.workers.dev', BASE_HENTAIFOX: str = 'https://scathach.redsplit.org/v4/hentaifox/', BASE_HENTAI2READ: str = 'https://scathach.redsplit.org/v4/hentai2read/', BASE_SIMPLY_HENTAI: str = 'https://scathach.redsplit.org/v4/simply-hentai/', BASE_QHENTAI: str = 'https://scathach.redsplit.org/v4/qhentai/')</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Api class</p>
@@ -757,6 +760,8 @@ def convert_non_ascii(obj: dict):
 <dd>The base url of hentai2read api.</dd>
 <dt><strong><code>simply_hentai</code></strong> :&ensp;<code>str</code></dt>
 <dd>The base url of simply-hentai api.</dd>
+<dt><strong><code>qhentai</code></strong> :&ensp;<code>str</code></dt>
+<dd>The base url of qhentai api.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -774,6 +779,7 @@ def convert_non_ascii(obj: dict):
         hentaifox (str): The base url of hentaifox api.
         hentai2read (str): The base url of hentai2read api.
         simply_hentai (str): The base url of simply-hentai api.
+        qhentai (str): The base url of qhentai api.
     &#34;&#34;&#34;
 
     def __init__(self,
@@ -784,7 +790,8 @@ def convert_non_ascii(obj: dict):
                  BASE_NHENTAI_UNBLOCK: str = &#34;https://nhentai.sinxdr.workers.dev&#34;,
                  BASE_HENTAIFOX: str = &#34;https://scathach.redsplit.org/v4/hentaifox/&#34;,
                  BASE_HENTAI2READ: str = &#34;https://scathach.redsplit.org/v4/hentai2read/&#34;,
-                 BASE_SIMPLY_HENTAI: str = &#34;https://scathach.redsplit.org/v4/simply-hentai/&#34;):
+                 BASE_SIMPLY_HENTAI: str = &#34;https://scathach.redsplit.org/v4/simply-hentai/&#34;,
+                 BASE_QHENTAI: str = &#34;https://scathach.redsplit.org/v4/qhentai/&#34;,):
 
         self.api = BASE_URL
         self.img = BASE_IMG
@@ -793,7 +800,8 @@ def convert_non_ascii(obj: dict):
         self.hentaifox = BASE_HENTAIFOX
         self.hentai2read = BASE_HENTAI2READ
         self.nhentai_unblock = BASE_NHENTAI_UNBLOCK
-        self.simply_hentai = BASE_SIMPLY_HENTAI</code></pre>
+        self.simply_hentai = BASE_SIMPLY_HENTAI
+        self.qhentai = BASE_QHENTAI</code></pre>
 </details>
 </dd>
 </dl>
