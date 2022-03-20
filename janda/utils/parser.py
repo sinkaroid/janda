@@ -57,6 +57,7 @@ def list_api():
         BASE_URL.hentaifox,
         BASE_URL.hentai2read,
         BASE_URL.simply_hentai,
+        BASE_URL.qhentai,
     ]
     return api_list
 
