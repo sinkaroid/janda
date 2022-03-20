@@ -31,6 +31,8 @@ It takes a much more dictionaries rather than just raw data, and hope will be ex
   - Functional: using unofficial API
 - [x] [simply-hentai](https://www.simply-hentai.com/)
   - Functional: using unofficial API
+- [x] [qhentai](https://qhentai.net/)
+  - Functional: using unofficial API
 
 > **Stable**: works well | **Triage**: has some issues | **Functional**: works normally
 
@@ -38,12 +40,18 @@ It takes a much more dictionaries rather than just raw data, and hope will be ex
 
 - **Easy to use**: check your intelisense
 - **Neat**: object taken is re-processed to make it actionable
+- **Documented**: fully documented and tested
 - **All-in-one**: plenty of site support
 
 ## Prerequisites
 
 - Python 3.7 or above
 - Can parse JSON
+  
+<table>
+	<td><b>NOTE:</b> Please always use the latest version of the module.
+Since this library covers a lot of sites, hence there is always a staged changes
+</table>
 
 ## Installation
 `pip install janda / pipenv install janda`  
@@ -136,6 +144,14 @@ The documentation can be found [https://sinkaroid.github.io/janda](https://sinka
   - Search latest doujin from hentaifox
 - [`Hentaifox.search_by_popular(options)`](https://sinkaroid.github.io/janda/hentaifox.html)
   - Search popular doujin from hentaifox
+
+### Qhentai
+- [`Qhentai.get(options)`](https://sinkaroid.github.io/janda/qhentai.html)
+  - Get specific doujin from qhentai
+- [`Qhentai.search(options)`](https://sinkaroid.github.io/janda/qhentai.html)
+  - Search a doujin from qhentai, can providing with page number
+- [`Qhentai.get_random()`](https://sinkaroid.github.io/janda/qhentai.html)
+  - Get random doujin from qhentai
 
 ## Returns example
 `get` method will represent as **Book Object** and packed with actionable image urls
@@ -331,3 +347,6 @@ mean, seriously. Why are you still reading?
 
 ## Pronunciation
 [`id_ID`](https://www.localeplanet.com/java/id-ID/index.html) • **/jan·da/** — wanita yang menjanda karena ditinggal suaminya; _(?)_ the mascot is tomoe gozen FGO
+
+## EoF
+All books from those doujinboards are definitely ilegal from original authors.
