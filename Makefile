@@ -19,6 +19,9 @@ hentai2read-get: # testing hentai2read
 simplyh-get: # testing simplyh
 	python -m unittest test.test_simplyh
 
+qhentai-search: # testing qhentai search
+	python -m unittest test.test_qhentai
+
 api-mock: # check api if something down
 	python -m unittest test.test_api
 
