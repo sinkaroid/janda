@@ -15,6 +15,7 @@ class Api():
         hentaifox (str): The base url of hentaifox api.
         hentai2read (str): The base url of hentai2read api.
         simply_hentai (str): The base url of simply-hentai api.
+        qhentai (str): The base url of qhentai api.
     """
 
     def __init__(self,
@@ -25,7 +26,8 @@ class Api():
                  BASE_NHENTAI_UNBLOCK: str = "https://nhentai.sinxdr.workers.dev",
                  BASE_HENTAIFOX: str = "https://scathach.redsplit.org/v4/hentaifox/",
                  BASE_HENTAI2READ: str = "https://scathach.redsplit.org/v4/hentai2read/",
-                 BASE_SIMPLY_HENTAI: str = "https://scathach.redsplit.org/v4/simply-hentai/"):
+                 BASE_SIMPLY_HENTAI: str = "https://scathach.redsplit.org/v4/simply-hentai/",
+                 BASE_QHENTAI: str = "https://scathach.redsplit.org/v4/qhentai/",):
 
         self.api = BASE_URL
         self.img = BASE_IMG
@@ -35,6 +37,7 @@ class Api():
         self.hentai2read = BASE_HENTAI2READ
         self.nhentai_unblock = BASE_NHENTAI_UNBLOCK
         self.simply_hentai = BASE_SIMPLY_HENTAI
+        self.qhentai = BASE_QHENTAI
 
 
 BASE_URL = Api()
