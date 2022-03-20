@@ -5,7 +5,7 @@
 
 <p align="center">
 	<a href="https://github.com/sinkaroid/janda/actions/workflows/build.yml"><img src="https://github.com/sinkaroid/janda/actions/workflows/build.yml/badge.svg"></a>
-	<a href="https://github.com/sinkaroid/janda/actions/workflows/api.yml/badge.svg"><img src="https://github.com/sinkaroid/janda/actions/workflows/api.yml/badge.svg"></a>
+	<a href="https://github.com/sinkaroid/janda/actions/workflows/api.yml"><img src="https://github.com/sinkaroid/janda/actions/workflows/api.yml/badge.svg"></a>
 	<a href="https://codeclimate.com/github/sinkaroid/janda/maintainability"><img src="https://api.codeclimate.com/v1/badges/7c53330c7a3c0c2a2006/maintainability"></a>
 </p>
 
@@ -335,7 +335,7 @@ Otherwise `search` will return 25 **List Object** of search results.
 
 ## Known Issues
 #### `UnicodeEncodeError: 'charmap' codec can't encode characters`  
-- It's raised when the title contains non-ascii characters, and your console can't parse them, use real console don't Git-bash.
+- It's raised when the title contains non-ascii characters, then your console can't parse them, use real console don't Git-bash.
 
 ## Legal
 This tool can be freely copied, modified, altered, distributed without any attribution whatsoever. However, if you feel
