@@ -55,7 +55,7 @@ class Api():
                  BASE_HENTAIFOX: str = &#34;https://scathach.redsplit.org/v4/hentaifox/&#34;,
                  BASE_HENTAI2READ: str = &#34;https://scathach.redsplit.org/v4/hentai2read/&#34;,
                  BASE_SIMPLY_HENTAI: str = &#34;https://scathach.redsplit.org/v4/simply-hentai/&#34;,
-                 BASE_QHENTAI: str = &#34;https://scathach.redsplit.org/v4/qhentai/&#34;,):
+                 BASE_QHENTAI: str = &#34;https://scathach.redsplit.org/v4/qhentai/&#34;):
 
         self.api = BASE_URL
         self.img = BASE_IMG
@@ -85,6 +85,7 @@ def list_api():
         BASE_URL.hentaifox,
         BASE_URL.hentai2read,
         BASE_URL.simply_hentai,
+        BASE_URL.qhentai,
     ]
     return api_list
 
@@ -516,6 +517,7 @@ def convert_non_ascii(obj: dict):
         BASE_URL.hentaifox,
         BASE_URL.hentai2read,
         BASE_URL.simply_hentai,
+        BASE_URL.qhentai,
     ]
     return api_list</code></pre>
 </details>
@@ -791,7 +793,7 @@ def convert_non_ascii(obj: dict):
                  BASE_HENTAIFOX: str = &#34;https://scathach.redsplit.org/v4/hentaifox/&#34;,
                  BASE_HENTAI2READ: str = &#34;https://scathach.redsplit.org/v4/hentai2read/&#34;,
                  BASE_SIMPLY_HENTAI: str = &#34;https://scathach.redsplit.org/v4/simply-hentai/&#34;,
-                 BASE_QHENTAI: str = &#34;https://scathach.redsplit.org/v4/qhentai/&#34;,):
+                 BASE_QHENTAI: str = &#34;https://scathach.redsplit.org/v4/qhentai/&#34;):
 
         self.api = BASE_URL
         self.img = BASE_IMG
