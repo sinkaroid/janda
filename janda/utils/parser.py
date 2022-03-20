@@ -27,7 +27,7 @@ class Api():
                  BASE_HENTAIFOX: str = "https://scathach.redsplit.org/v4/hentaifox/",
                  BASE_HENTAI2READ: str = "https://scathach.redsplit.org/v4/hentai2read/",
                  BASE_SIMPLY_HENTAI: str = "https://scathach.redsplit.org/v4/simply-hentai/",
-                 BASE_QHENTAI: str = "https://scathach.redsplit.org/v4/qhentai/",):
+                 BASE_QHENTAI: str = "https://scathach.redsplit.org/v4/qhentai/"):
 
         self.api = BASE_URL
         self.img = BASE_IMG
