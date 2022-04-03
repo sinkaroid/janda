@@ -45,14 +45,15 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Topic :: Artistic Software",
+        "Topic :: Games/Entertainment",
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Software Development :: Libraries",
-        "Topic :: Software Development :: Libraries :: Application Frameworks",
+        "Topic :: Software Development :: Build Tools",
 
     ],
     description='A featureful Python library covers most popular doujin API',
     include_package_data=True,
-    keywords=['doujin', 'library', 'wrapper', 'nhentai',
-              'pururin', 'hentaifox', 'hentai2read'],
+    keywords=['doujinshi', 'library', 'hentai', 'api', 'nhentai',
+              'pururin', 'hentaifox', 'hentai2read', 'simply-hentai', 'qhentai', 'asmhentai'],
     install_requires=requirements
 )
