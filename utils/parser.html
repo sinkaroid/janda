@@ -44,6 +44,7 @@ class Api():
         hentai2read (str): The base url of hentai2read api.
         simply_hentai (str): The base url of simply-hentai api.
         qhentai (str): The base url of qhentai api.
+        asmhentai (str): The base url of asmhentai api.
     &#34;&#34;&#34;
 
     def __init__(self,
@@ -55,7 +56,8 @@ class Api():
                  BASE_HENTAIFOX: str = &#34;https://scathach.redsplit.org/v4/hentaifox/&#34;,
                  BASE_HENTAI2READ: str = &#34;https://scathach.redsplit.org/v4/hentai2read/&#34;,
                  BASE_SIMPLY_HENTAI: str = &#34;https://scathach.redsplit.org/v4/simply-hentai/&#34;,
-                 BASE_QHENTAI: str = &#34;https://scathach.redsplit.org/v4/qhentai/&#34;):
+                 BASE_QHENTAI: str = &#34;https://scathach.redsplit.org/v4/qhentai/&#34;,
+                 BASE_ASMHENTAI: str = &#34;https://scathach.redsplit.org/v4/asmhentai/&#34;):
 
         self.api = BASE_URL
         self.img = BASE_IMG
@@ -66,6 +68,7 @@ class Api():
         self.nhentai_unblock = BASE_NHENTAI_UNBLOCK
         self.simply_hentai = BASE_SIMPLY_HENTAI
         self.qhentai = BASE_QHENTAI
+        self.asmhentai = BASE_ASMHENTAI
 
 
 BASE_URL = Api()
@@ -86,6 +89,7 @@ def list_api():
         BASE_URL.hentai2read,
         BASE_URL.simply_hentai,
         BASE_URL.qhentai,
+        BASE_URL.asmhentai
     ]
     return api_list
 
@@ -289,22 +293,7 @@ def neat_result(obj: dict):
             &#39;tags&#39;: preg_match_tags(result[&#39;tags&#39;])
         })
 
-    return better_object(results_object)
-
-def convert_non_ascii(obj: dict):
-    &#34;&#34;&#34;Converts non-ascii characters to ascii.
-
-    Parameters
-    ----------
-    parser : dict
-        The json object to be parsed.
-
-    Returns
-    -------
-    dict
-
-    &#34;&#34;&#34;
-    ##</code></pre>
+    return better_object(results_object)</code></pre>
 </details>
 </section>
 <section>
@@ -381,41 +370,6 @@ def convert_non_ascii(obj: dict):
 
     &#34;&#34;&#34;
     return json.dumps(parser, sort_keys=True, indent=4, ensure_ascii=False)</code></pre>
-</details>
-</dd>
-<dt id="janda.utils.parser.convert_non_ascii"><code class="name flex">
-<span>def <span class="ident">convert_non_ascii</span></span>(<span>obj: dict)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Converts non-ascii characters to ascii.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>parser</code></strong> :&ensp;<code>dict</code></dt>
-<dd>The json object to be parsed.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>dict</code></dt>
-<dd>&nbsp;</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def convert_non_ascii(obj: dict):
-    &#34;&#34;&#34;Converts non-ascii characters to ascii.
-
-    Parameters
-    ----------
-    parser : dict
-        The json object to be parsed.
-
-    Returns
-    -------
-    dict
-
-    &#34;&#34;&#34;
-    ##</code></pre>
 </details>
 </dd>
 <dt id="janda.utils.parser.get_language_in_tags"><code class="name flex">
@@ -518,6 +472,7 @@ def convert_non_ascii(obj: dict):
         BASE_URL.hentai2read,
         BASE_URL.simply_hentai,
         BASE_URL.qhentai,
+        BASE_URL.asmhentai
     ]
     return api_list</code></pre>
 </details>
@@ -743,7 +698,7 @@ def convert_non_ascii(obj: dict):
 <dl>
 <dt id="janda.utils.parser.Api"><code class="flex name class">
 <span>class <span class="ident">Api</span></span>
-<span>(</span><span>BASE_URL: str = 'https://nhentai.net', BASE_IMG: str = 'https://i.nhentai.net/galleries', BASE_THUMBNAIL: str = 'https://t.nhentai.net/galleries', BASE_PURURIN: str = 'https://scathach.redsplit.org/v4/pururin/', BASE_NHENTAI_UNBLOCK: str = 'https://nhentai.sinxdr.workers.dev', BASE_HENTAIFOX: str = 'https://scathach.redsplit.org/v4/hentaifox/', BASE_HENTAI2READ: str = 'https://scathach.redsplit.org/v4/hentai2read/', BASE_SIMPLY_HENTAI: str = 'https://scathach.redsplit.org/v4/simply-hentai/', BASE_QHENTAI: str = 'https://scathach.redsplit.org/v4/qhentai/')</span>
+<span>(</span><span>BASE_URL: str = 'https://nhentai.net', BASE_IMG: str = 'https://i.nhentai.net/galleries', BASE_THUMBNAIL: str = 'https://t.nhentai.net/galleries', BASE_PURURIN: str = 'https://scathach.redsplit.org/v4/pururin/', BASE_NHENTAI_UNBLOCK: str = 'https://nhentai.sinxdr.workers.dev', BASE_HENTAIFOX: str = 'https://scathach.redsplit.org/v4/hentaifox/', BASE_HENTAI2READ: str = 'https://scathach.redsplit.org/v4/hentai2read/', BASE_SIMPLY_HENTAI: str = 'https://scathach.redsplit.org/v4/simply-hentai/', BASE_QHENTAI: str = 'https://scathach.redsplit.org/v4/qhentai/', BASE_ASMHENTAI: str = 'https://scathach.redsplit.org/v4/asmhentai/')</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Api class</p>
@@ -764,6 +719,8 @@ def convert_non_ascii(obj: dict):
 <dd>The base url of simply-hentai api.</dd>
 <dt><strong><code>qhentai</code></strong> :&ensp;<code>str</code></dt>
 <dd>The base url of qhentai api.</dd>
+<dt><strong><code>asmhentai</code></strong> :&ensp;<code>str</code></dt>
+<dd>The base url of asmhentai api.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -782,6 +739,7 @@ def convert_non_ascii(obj: dict):
         hentai2read (str): The base url of hentai2read api.
         simply_hentai (str): The base url of simply-hentai api.
         qhentai (str): The base url of qhentai api.
+        asmhentai (str): The base url of asmhentai api.
     &#34;&#34;&#34;
 
     def __init__(self,
@@ -793,7 +751,8 @@ def convert_non_ascii(obj: dict):
                  BASE_HENTAIFOX: str = &#34;https://scathach.redsplit.org/v4/hentaifox/&#34;,
                  BASE_HENTAI2READ: str = &#34;https://scathach.redsplit.org/v4/hentai2read/&#34;,
                  BASE_SIMPLY_HENTAI: str = &#34;https://scathach.redsplit.org/v4/simply-hentai/&#34;,
-                 BASE_QHENTAI: str = &#34;https://scathach.redsplit.org/v4/qhentai/&#34;):
+                 BASE_QHENTAI: str = &#34;https://scathach.redsplit.org/v4/qhentai/&#34;,
+                 BASE_ASMHENTAI: str = &#34;https://scathach.redsplit.org/v4/asmhentai/&#34;):
 
         self.api = BASE_URL
         self.img = BASE_IMG
@@ -803,7 +762,8 @@ def convert_non_ascii(obj: dict):
         self.hentai2read = BASE_HENTAI2READ
         self.nhentai_unblock = BASE_NHENTAI_UNBLOCK
         self.simply_hentai = BASE_SIMPLY_HENTAI
-        self.qhentai = BASE_QHENTAI</code></pre>
+        self.qhentai = BASE_QHENTAI
+        self.asmhentai = BASE_ASMHENTAI</code></pre>
 </details>
 </dd>
 </dl>
@@ -824,7 +784,6 @@ def convert_non_ascii(obj: dict):
 <ul class="">
 <li><code><a title="janda.utils.parser.auto_space" href="#janda.utils.parser.auto_space">auto_space</a></code></li>
 <li><code><a title="janda.utils.parser.better_object" href="#janda.utils.parser.better_object">better_object</a></code></li>
-<li><code><a title="janda.utils.parser.convert_non_ascii" href="#janda.utils.parser.convert_non_ascii">convert_non_ascii</a></code></li>
 <li><code><a title="janda.utils.parser.get_language_in_tags" href="#janda.utils.parser.get_language_in_tags">get_language_in_tags</a></code></li>
 <li><code><a title="janda.utils.parser.just_number" href="#janda.utils.parser.just_number">just_number</a></code></li>
 <li><code><a title="janda.utils.parser.list_api" href="#janda.utils.parser.list_api">list_api</a></code></li>
