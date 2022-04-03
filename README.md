@@ -19,22 +19,22 @@ It takes a much more dictionaries rather than just raw data, and hope will be ex
 
 ---
 
-## Site support
+## Janda vs. the Competition
 
-- [x] [nhentai](https://nhentai.net/)
-  - Stable: using official API
-- [x] [pururin](https://pururin.to/)
-  - Stable: using unofficial API
-- [x] [hentaifox](https://hentaifox.com/)
-  - Triage: using unofficial API
-- [x] [hentai2read](https://hentai2read.com/)
-  - Functional: using unofficial API
-- [x] [simply-hentai](https://www.simply-hentai.com/)
-  - Functional: using unofficial API
-- [x] [qhentai](https://qhentai.net/)
-  - Functional: using unofficial API
+Built on minimalist dependencies, yet it covers most of the popular doujin API.  
+**Stable**: works well | **Triage**: has some issues | **Partial**: works normally with limited endpoints
 
-> **Stable**: works well | **Triage**: has some issues | **Functional**: works normally
+| Package       | Size                                                                                     |
+|---------------|------------------------------------------------------------------------------------------|
+| nhentai       | [![status](https://img.shields.io/badge/officialapi-stable-green)](janda/nhentai.py)     |
+| pururin       | [![status](https://img.shields.io/badge/proxified-stable-green)](janda/pururin.py)       |
+| hentaifox     | [![status](https://img.shields.io/badge/proxified-triage-red)](janda/hentaifox.py)       |
+| hentai2read   | [![status](https://img.shields.io/badge/proxified-partial-blue)](janda/hentai2read.py)   |
+| simply-hentai | [![status](https://img.shields.io/badge/proxified-partial-blue)](janda/simply_hentai.py) |
+| qhentai       | [![status](https://img.shields.io/badge/proxified-partial-blue)](janda/qhentai.py)       |
+| asmhentai     | [![status](https://img.shields.io/badge/proxified-stable-green)](janda/asmhentai.py)     |
+
+> **Stable**: works well | **Triage**: has some issues | **Partial**: works normally with limited endpoints
 
 ## Features
 
@@ -152,6 +152,14 @@ The documentation can be found [https://sinkaroid.github.io/janda](https://sinka
   - Search a doujin from qhentai, can providing with page number
 - [`Qhentai.get_random()`](https://sinkaroid.github.io/janda/qhentai.html)
   - Get random doujin from qhentai
+
+### Asmhentai
+- [`Asmhentai.get(options)`](https://sinkaroid.github.io/janda/asmhentai.html)
+  - Get specific doujin from asmhentai
+- [`Asmhentai.search(options)`](https://sinkaroid.github.io/janda/asmhentai.html)
+  - Search a doujin from asmhentai, can providing with page number
+- [`Asmhentai.get_random()`](https://sinkaroid.github.io/janda/asmhentai.html)
+  - Get random doujin from asmhentai
 
 ## Returns example
 `get` method will represent as **Book Object** and packed with actionable image urls
