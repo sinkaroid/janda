@@ -22,17 +22,17 @@ It takes a much more dictionaries rather than just raw data, and hope will be ex
 ## Janda vs. the Competition
 
 Built on minimalist dependencies, yet it covers most of the popular doujin API.  
-**Stable**: works well | **Triage**: has some issues | **Partial**: works normally with limited endpoints
+Every single site has different dictionaries returns. Keep in mind on this
 
-| Package       | Size                                                                                     |
-|---------------|------------------------------------------------------------------------------------------|
-| nhentai       | [![status](https://img.shields.io/badge/officialapi-stable-green)](janda/nhentai.py)     |
-| pururin       | [![status](https://img.shields.io/badge/proxified-stable-green)](janda/pururin.py)       |
-| hentaifox     | [![status](https://img.shields.io/badge/proxified-triage-red)](janda/hentaifox.py)       |
-| hentai2read   | [![status](https://img.shields.io/badge/proxified-partial-blue)](janda/hentai2read.py)   |
-| simply-hentai | [![status](https://img.shields.io/badge/proxified-partial-blue)](janda/simply_hentai.py) |
-| qhentai       | [![status](https://img.shields.io/badge/proxified-partial-blue)](janda/qhentai.py)       |
-| asmhentai     | [![status](https://img.shields.io/badge/proxified-stable-green)](janda/asmhentai.py)     |
+| Site                                              | Status                                                                                | Process      |
+|---------------------------------------------------|---------------------------------------------------------------------------------------|--------------|
+| ✅ [nhentai](https://nhentai.net/)                 | [![status](https://img.shields.io/badge/status-stable-green)](janda/nhentai.py)       | official api |
+| ✅ [pururin](https://pururin.to/)                  | [![status](https://img.shields.io/badge/status-stable-green)](janda/pururin.py)       | proxified    |
+| ✅ [hentaifox](https://hentaifox.com/)             | [![status](https://img.shields.io/badge/status-triage-red)](janda/hentaifox.py)       | proxified    |
+| ✅ [hentai2read](https://hentai2read.com/)         | [![status](https://img.shields.io/badge/status-partial-blue)](janda/hentai2read.py)   | official api |
+| ✅ [simply-hentai](https://www.simply-hentai.com/) | [![status](https://img.shields.io/badge/status-partial-blue)](janda/simply_hentai.py) | proxified    |
+| ✅ [qhentai](https://qhentai.net/)                 | [![status](https://img.shields.io/badge/status-partial-blue)](janda/qhentai.py)       | proxified    |
+| ✅ [asmhentai](https://asmhentai.com/)             | [![status](https://img.shields.io/badge/status-stable-green)](janda/asmhentai.py)     | proxified    |
 
 > **Stable**: works well | **Triage**: has some issues | **Partial**: works normally with limited endpoints
 
@@ -348,10 +348,6 @@ Otherwise `search` will return 25 **List Object** of search results.
 ## Legal
 This tool can be freely copied, modified, altered, distributed without any attribution whatsoever. However, if you feel
 like this tool deserves an attribution, mention it. It won't hurt anybody
-
-Please, read the [license terms](LICENSE). Don't worry, it can be read in less than 30 seconds, unless you have some
-sort of reading disability - in that case, I'm wondering why you're still reading this text. Really. Stop. Please. I
-mean, seriously. Why are you still reading?
 
 ## Pronunciation
 [`id_ID`](https://www.localeplanet.com/java/id-ID/index.html) • **/jan·da/** — wanita yang menjanda karena ditinggal suaminya; _(?)_ the mascot is tomoe gozen FGO
