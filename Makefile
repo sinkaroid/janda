@@ -19,6 +19,9 @@ hentai2read-get: # testing hentai2read
 simplyh-get: # testing simplyh
 	python -m unittest test.test_simplyh
 
+asmhentai-get: # testing asm
+	python -m unittest test.test_asmhentai
+
 qhentai-search: # testing qhentai search
 	python -m unittest test.test_qhentai
 
