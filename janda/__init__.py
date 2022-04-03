@@ -1,4 +1,4 @@
-__version__ = "3.0.11"
+__version__ = "3.0.12"
 from janda.pururin import Pururin
 from janda.nhentai import Nhentai
 from janda.hentaifox import Hentaifox
