@@ -25,14 +25,14 @@ Built on minimalist dependencies, yet it covers most of the popular doujinboards
 Every single site has different dictionaries returns, keep in mind on this
 
 | Site                                            | 🔍   | Status                                                                                | Process      | Response time | Data returns |
-| ----------------------------------------------- | --- | ------------------------------------------------------------------------------------- | ------------ | ------------- | ------------ |
-| [nhentai](https://nhentai.net/)                 | ✅   | [![status](https://img.shields.io/badge/status-stable-green)](janda/nhentai.py)       | official api | ~0.749225 sec | ~127.266 KB  |
-| [pururin](https://pururin.to/)                  | ✅   | [![status](https://img.shields.io/badge/status-stable-green)](janda/pururin.py)       | proxified    | ~2.032029 s   | ~2.412 KB    |
-| [hentaifox](https://hentaifox.com/)             | ✅   | [![status](https://img.shields.io/badge/status-triage-red)](janda/hentaifox.py)       | proxified    | ~1.330169 s   | ~2.122 KB    |
-| [hentai2read](https://hentai2read.com/)         | ✅   | [![status](https://img.shields.io/badge/status-partial-blue)](janda/hentai2read.py)   | official api | ~1.319396 s   | ~3.715 KB    |
-| [simply-hentai](https://www.simply-hentai.com/) | ❌   | [![status](https://img.shields.io/badge/status-partial-blue)](janda/simply_hentai.py) | proxified    | ~1.993175 s   | ~1.529 KB    |
-| [qhentai](https://qhentai.net/)                 | ✅   | [![status](https://img.shields.io/badge/status-partial-blue)](janda/qhentai.py)       | proxified    | ~2.492498 s   | ~3.721 KB    |
-| [asmhentai](https://asmhentai.com/)             | ✅   | [![status](https://img.shields.io/badge/status-stable-green)](janda/asmhentai.py)     | proxified    | ~4.473287 s   | ~2.619 KB    |
+| ----------------------------------------------- | --- | ------------------------------------------------------------------------------------- | ------------ |---------------| ------------ |
+| [nhentai](https://nhentai.net/)                 | ✅   | [![status](https://img.shields.io/badge/status-stable-green)](janda/nhentai.py)       | `officialapi` | ~0.749225 sec | ~127.266 KB  |
+| [pururin](https://pururin.to/)                  | ✅   | [![status](https://img.shields.io/badge/status-stable-green)](janda/pururin.py)       | `proxified`   | ~2.032029 sec | ~2.412 KB    |
+| [hentaifox](https://hentaifox.com/)             | ✅   | [![status](https://img.shields.io/badge/status-triage-red)](janda/hentaifox.py)       | `proxified`   | ~1.330169 sec | ~2.122 KB    |
+| [hentai2read](https://hentai2read.com/)         | ✅   | [![status](https://img.shields.io/badge/status-partial-blue)](janda/hentai2read.py)   | `officialapi` | ~1.319396 sec | ~3.715 KB    |
+| [simply-hentai](https://www.simply-hentai.com/) | ❌   | [![status](https://img.shields.io/badge/status-partial-blue)](janda/simply_hentai.py) | `proxified`   | ~1.993175 sec | ~1.529 KB    |
+| [qhentai](https://qhentai.net/)                 | ✅   | [![status](https://img.shields.io/badge/status-partial-blue)](janda/qhentai.py)       | `proxified`   | ~2.492498 sec | ~3.721 KB    |
+| [asmhentai](https://asmhentai.com/)             | ✅   | [![status](https://img.shields.io/badge/status-stable-green)](janda/asmhentai.py)     | `proxified`   | ~4.473287 sec | ~2.619 KB    |
 
 This benchmark search 25 (or defaults) latest doujin on each sites.  
 Speed or perfomace may not accurate because internet connection or server response
