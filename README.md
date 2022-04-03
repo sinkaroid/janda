@@ -22,26 +22,26 @@ It takes a much more dictionaries rather than just raw data, and hope will be ex
 ## Janda vs. the Competition
 
 Built on minimalist dependencies, yet it covers most of the popular doujinboards.  
-Every single site has different dictionaries returns, keep in mind on this
+Every single site has different dictionaries return, keep in mind on this
 
-| Site                                            | 🔍  | Status                                                                                | Process       | Response time | Data returns | Randomizer |
-|-------------------------------------------------|-----|---------------------------------------------------------------------------------------|---------------|---------------|--------------|------------|
-| [nhentai](https://nhentai.net/)                 | ✅   | [![status](https://img.shields.io/badge/status-stable-green)](janda/nhentai.py)       | `officialapi` | ~0.749225 sec | ~127.266 KB  | `Yes`      |
-| [pururin](https://pururin.to/)                  | ✅   | [![status](https://img.shields.io/badge/status-stable-green)](janda/pururin.py)       | `proxified`   | ~2.032029 sec | ~2.412 KB    | `Triage`   |
-| [hentaifox](https://hentaifox.com/)             | ✅   | [![status](https://img.shields.io/badge/status-triage-red)](janda/hentaifox.py)       | `proxified`   | ~1.330169 sec | ~2.122 KB    | `Triage`   |
-| [hentai2read](https://hentai2read.com/)         | ✅   | [![status](https://img.shields.io/badge/status-partial-blue)](janda/hentai2read.py)   | `officialapi` | ~1.319396 sec | ~3.715 KB    | `Yes`      |
-| [simply-hentai](https://www.simply-hentai.com/) | ❌   | [![status](https://img.shields.io/badge/status-partial-blue)](janda/simply_hentai.py) | `proxified`   | ~1.993175 sec | ~1.529 KB    | `Yes`      |
-| [qhentai](https://qhentai.net/)                 | ✅   | [![status](https://img.shields.io/badge/status-partial-blue)](janda/qhentai.py)       | `proxified`   | ~2.492498 sec | ~3.721 KB    | `Yes`      |
-| [asmhentai](https://asmhentai.com/)             | ✅   | [![status](https://img.shields.io/badge/status-stable-green)](janda/asmhentai.py)     | `proxified`   | ~4.473287 sec | ~2.619 KB    | `Yes`      |
+| Site                                            | 🔍  | Status                                                                                                                              | Process        | Response time | Data returns | Randomizer |
+|-------------------------------------------------|-----|-------------------------------------------------------------------------------------------------------------------------------------|----------------|---------------|--------------|------------|
+| [nhentai](https://nhentai.net/)                 | ✅   | [![status](https://img.shields.io/badge/status-stable-green)](https://github.com/sinkaroid/janda/actions/workflows/nhentai.yml)     | `official api` | ~0.749225 sec | ~127.266 KB  | `Yes`      |
+| [pururin](https://pururin.to/)                  | ✅   | [![status](https://img.shields.io/badge/status-stable-green)](https://github.com/sinkaroid/janda/actions/workflows/pururin.yml)     | `proxified`    | ~2.032029 sec | ~2.412 KB    | `Triage`   |
+| [hentaifox](https://hentaifox.com/)             | ✅   | [![status](https://img.shields.io/badge/status-triage-red)](https://github.com/sinkaroid/janda/actions/workflows/hentaifox.yml)     | `proxified`    | ~1.330169 sec | ~2.122 KB    | `Triage`   |
+| [hentai2read](https://hentai2read.com/)         | ✅   | [![status](https://img.shields.io/badge/status-partial-blue)](https://github.com/sinkaroid/janda/actions/workflows/hentai2read.yml) | `official api` | ~1.319396 sec | ~3.715 KB    | `Yes`      |
+| [simply-hentai](https://www.simply-hentai.com/) | ❌   | [![status](https://img.shields.io/badge/status-partial-blue)](https://github.com/sinkaroid/janda/actions/workflows/simplyh.yml)     | `proxified`    | ~1.993175 sec | ~1.529 KB    | `Yes`      |
+| [qhentai](https://qhentai.net/)                 | ✅   | [![status](https://img.shields.io/badge/status-partial-blue)](https://github.com/sinkaroid/janda/actions/workflows/qhentai.yml)     | `proxified`    | ~2.492498 sec | ~3.721 KB    | `Yes`      |
+| [asmhentai](https://asmhentai.com/)             | ✅   | [![status](https://img.shields.io/badge/status-stable-green)](https://github.com/sinkaroid/janda/actions/workflows/asmhentai.yml)   | `proxified`    | ~4.473287 sec | ~2.619 KB    | `Yes`      |
 
-This benchmark search 25 (or defaults) latest doujin on each sites.  
-Speed or perfomace may not accurate because internet connection or server response
+This benchmark search 25 (or defaults) latest doujin on each sites  
+Speed or perfomace may not accurate because internet connection or server response.
 > **Stable**: works well | **Triage**: has some issues | **Partial**: limited endpoints | 🔍: search method
 
 ## Features
 
 - **Easy to use**: check your intelisense
-- **Neat**: object taken is re-processed to make it actionable
+- **Neat**: object taken is re-appended to make it actionable
 - **Documented**: fully documented and tested
 - **All-in-one**: plenty of site support
 
@@ -55,11 +55,14 @@ Speed or perfomace may not accurate because internet connection or server respon
 Since this library covers a lot of sites, hence there is always a staged changes
 </table>
 
-## Installation
+## 🚀Installation
 `pip install janda / pipenv install janda`  
 - or fork this repo
 
-To use specific API, you could use `from janda import Nhentai`
+To use specific site apis, You could specify import too, for example:
+- `from janda import Nhentai`
+
+then initializes the client, an [api key](https://scathach.dev/dashboard) is optional
 
 ## Quick example
 Some methods require additional parameters, check your intelisense.
@@ -352,7 +355,7 @@ This tool can be freely copied, modified, altered, distributed without any attri
 like this tool deserves an attribution, mention it. It won't hurt anybody
 
 ## Pronunciation
-[`id_ID`](https://www.localeplanet.com/java/id-ID/index.html) • **/jan·da/** — wanita yang menjanda karena ditinggal suaminya; _(?)_ the mascot is tomoe gozen FGO
+[`id_ID`](https://www.localeplanet.com/java/id-ID/index.html) • **/jan·da/** — gatel, nakal, dan menggoda; _(?)_ seperti siapa? adalah benar si janda gamer tomoe
 
 ## EoF
 All books from those doujinboards are definitely ilegal from original authors.
