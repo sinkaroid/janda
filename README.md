@@ -1,5 +1,5 @@
 <div align="center">
-<a href="https://sinkaroid.github.io/janda"><img width="450" src="https://cdn.discordapp.com/attachments/952117487166705747/952942740545634344/janda.png" alt="janda"></a>
+<a href="https://sinkaroid.github.io/janda"><img width="470" src="https://cdn.discordapp.com/attachments/952117487166705747/952942740545634344/janda.png" alt="janda"></a>
 
 <h4 align="center">A featureful Python library covers most popular doujin API</h4>
 
