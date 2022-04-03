@@ -87,7 +87,6 @@ class Hentaifox(object):
 
         self.specs[&#39;g&#39;] = book
 
-        # handle if book not int, then throw error
         try:
             book = int(book)
         except ValueError:
@@ -101,6 +100,7 @@ class Hentaifox(object):
 
         return better_object(self.final)
 
+
     async def search_by_latest(self, query: str, page: int = 1):
         &#34;&#34;&#34;Search for doujin based on the latest 
 
@@ -109,7 +109,7 @@ class Hentaifox(object):
         Parameters
         ----------
         query : str
-            The query to search for.
+            The query to search for
         
         page : int
             The page number to search
@@ -135,11 +135,11 @@ class Hentaifox(object):
             raise ValueError(&#39;Query must be given&#39;)
         data = requests.get(BASE_URL.hentaifox + &#39;args.php&#39;, params=self.specs)
 
-        # if data.json() length is 0, then throw error
         if len(data.json()) == 0:
             raise ValueError(&#39;No results found&#39;)
 
         return better_object(data.json())
+
 
     async def search_by_popular(self, query: str, page: int = 1):
         &#34;&#34;&#34;Search for doujin based on the latest 
@@ -149,10 +149,10 @@ class Hentaifox(object):
         Parameters
         ----------
         query : str
-            The query to search for.
+            The query to search for
         
         page : int
-            The page number to search
+            The page number to search, Default is 1
 
         Raises
         ------
@@ -175,11 +175,11 @@ class Hentaifox(object):
             raise ValueError(&#39;Query must be given&#39;)
         data = requests.get(BASE_URL.hentaifox + &#39;args.php&#39;, params=self.specs)
 
-        # if data.json() length is 0, then throw error
         if len(data.json()) == 0:
             raise ValueError(&#39;No results found&#39;)
 
         return better_object(data.json())
+
 
     async def get_random(self):
         &#34;&#34;&#34;Gets random doujin on hentaifox
@@ -187,7 +187,7 @@ class Hentaifox(object):
         Returns
         -------
         dict
-            The book object that represents the doujin response.
+            The book object that represents the random doujin response.
         &#34;&#34;&#34;
         data = requests.get(BASE_URL.hentaifox + &#39;random&#39; + &#39;/&#39;, params=self.specs)
 
@@ -283,7 +283,6 @@ Gets random doujin on hentaifox</p>
 
         self.specs[&#39;g&#39;] = book
 
-        # handle if book not int, then throw error
         try:
             book = int(book)
         except ValueError:
@@ -297,6 +296,7 @@ Gets random doujin on hentaifox</p>
 
         return better_object(self.final)
 
+
     async def search_by_latest(self, query: str, page: int = 1):
         &#34;&#34;&#34;Search for doujin based on the latest 
 
@@ -305,7 +305,7 @@ Gets random doujin on hentaifox</p>
         Parameters
         ----------
         query : str
-            The query to search for.
+            The query to search for
         
         page : int
             The page number to search
@@ -331,11 +331,11 @@ Gets random doujin on hentaifox</p>
             raise ValueError(&#39;Query must be given&#39;)
         data = requests.get(BASE_URL.hentaifox + &#39;args.php&#39;, params=self.specs)
 
-        # if data.json() length is 0, then throw error
         if len(data.json()) == 0:
             raise ValueError(&#39;No results found&#39;)
 
         return better_object(data.json())
+
 
     async def search_by_popular(self, query: str, page: int = 1):
         &#34;&#34;&#34;Search for doujin based on the latest 
@@ -345,10 +345,10 @@ Gets random doujin on hentaifox</p>
         Parameters
         ----------
         query : str
-            The query to search for.
+            The query to search for
         
         page : int
-            The page number to search
+            The page number to search, Default is 1
 
         Raises
         ------
@@ -371,11 +371,11 @@ Gets random doujin on hentaifox</p>
             raise ValueError(&#39;Query must be given&#39;)
         data = requests.get(BASE_URL.hentaifox + &#39;args.php&#39;, params=self.specs)
 
-        # if data.json() length is 0, then throw error
         if len(data.json()) == 0:
             raise ValueError(&#39;No results found&#39;)
 
         return better_object(data.json())
+
 
     async def get_random(self):
         &#34;&#34;&#34;Gets random doujin on hentaifox
@@ -383,7 +383,7 @@ Gets random doujin on hentaifox</p>
         Returns
         -------
         dict
-            The book object that represents the doujin response.
+            The book object that represents the random doujin response.
         &#34;&#34;&#34;
         data = requests.get(BASE_URL.hentaifox + &#39;random&#39; + &#39;/&#39;, params=self.specs)
 
@@ -439,7 +439,6 @@ Gets random doujin on hentaifox</p>
 
     self.specs[&#39;g&#39;] = book
 
-    # handle if book not int, then throw error
     try:
         book = int(book)
     except ValueError:
@@ -462,7 +461,7 @@ Gets random doujin on hentaifox</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>dict</code></dt>
-<dd>The book object that represents the doujin response.</dd>
+<dd>The book object that represents the random doujin response.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -474,7 +473,7 @@ Gets random doujin on hentaifox</p>
     Returns
     -------
     dict
-        The book object that represents the doujin response.
+        The book object that represents the random doujin response.
     &#34;&#34;&#34;
     data = requests.get(BASE_URL.hentaifox + &#39;random&#39; + &#39;/&#39;, params=self.specs)
 
@@ -490,7 +489,7 @@ Gets random doujin on hentaifox</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>query</code></strong> :&ensp;<code>str</code></dt>
-<dd>The query to search for.</dd>
+<dd>The query to search for</dd>
 <dt><strong><code>page</code></strong> :&ensp;<code>int</code></dt>
 <dd>The page number to search</dd>
 </dl>
@@ -516,7 +515,7 @@ Gets random doujin on hentaifox</p>
     Parameters
     ----------
     query : str
-        The query to search for.
+        The query to search for
     
     page : int
         The page number to search
@@ -542,7 +541,6 @@ Gets random doujin on hentaifox</p>
         raise ValueError(&#39;Query must be given&#39;)
     data = requests.get(BASE_URL.hentaifox + &#39;args.php&#39;, params=self.specs)
 
-    # if data.json() length is 0, then throw error
     if len(data.json()) == 0:
         raise ValueError(&#39;No results found&#39;)
 
@@ -558,9 +556,9 @@ Gets random doujin on hentaifox</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>query</code></strong> :&ensp;<code>str</code></dt>
-<dd>The query to search for.</dd>
+<dd>The query to search for</dd>
 <dt><strong><code>page</code></strong> :&ensp;<code>int</code></dt>
-<dd>The page number to search</dd>
+<dd>The page number to search, Default is 1</dd>
 </dl>
 <h2 id="raises">Raises</h2>
 <dl>
@@ -584,10 +582,10 @@ Gets random doujin on hentaifox</p>
     Parameters
     ----------
     query : str
-        The query to search for.
+        The query to search for
     
     page : int
-        The page number to search
+        The page number to search, Default is 1
 
     Raises
     ------
@@ -610,7 +608,6 @@ Gets random doujin on hentaifox</p>
         raise ValueError(&#39;Query must be given&#39;)
     data = requests.get(BASE_URL.hentaifox + &#39;args.php&#39;, params=self.specs)
 
-    # if data.json() length is 0, then throw error
     if len(data.json()) == 0:
         raise ValueError(&#39;No results found&#39;)
 

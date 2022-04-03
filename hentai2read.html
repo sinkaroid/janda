@@ -48,7 +48,7 @@ class Hentai2read(object):
     &#34;&#34;&#34;
 
     def __init__(self, api_key: str = &#39;&#39;):
-        &#34;&#34;&#34;Initializes the Pururin.
+        &#34;&#34;&#34;Initializes the Hentai2read.
 
         Parameters
         ----------
@@ -82,10 +82,9 @@ class Hentai2read(object):
         Returns
         -------
         dict
-            The book object that represents the specific id response.
+            The book object that represents the specific path response.
         &#34;&#34;&#34;
 
-        ## if path contains &#39;/&#39; then remove it
         if &#39;/&#39; in path:
             path = path.replace(&#39;/&#39;, &#39;&#39;)
         
@@ -135,11 +134,11 @@ class Hentai2read(object):
             raise ValueError(&#39;Query must be given&#39;)
         data = requests.get(BASE_URL.hentai2read + &#39;args.php&#39;, params=self.specs)
 
-        # if data.json() length is 0, then throw error
         if len(data.json()) == 0:
             raise ValueError(&#39;No results found&#39;)
 
         return better_object(data.json())
+
 
     async def get_random(self):
         &#34;&#34;&#34;Gets random doujin on Hentai2read
@@ -147,7 +146,7 @@ class Hentai2read(object):
         Returns
         -------
         dict
-            The book object that represents the doujin response.
+            The book object that represents the random doujin response.
         &#34;&#34;&#34;
         data = requests.get(BASE_URL.hentai2read + &#39;random&#39; + &#39;/&#39;, params=self.specs)
 
@@ -176,7 +175,7 @@ Gets doujin from path given</p>
 Search for doujin based on the latest</p>
 <p>get_random : function
 Gets random doujin on Hentai2read</p>
-<p>Initializes the Pururin.</p>
+<p>Initializes the Hentai2read.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>api_key</code></strong> :&ensp;<code>str</code></dt>
@@ -202,7 +201,7 @@ Gets random doujin on Hentai2read</p>
     &#34;&#34;&#34;
 
     def __init__(self, api_key: str = &#39;&#39;):
-        &#34;&#34;&#34;Initializes the Pururin.
+        &#34;&#34;&#34;Initializes the Hentai2read.
 
         Parameters
         ----------
@@ -236,10 +235,9 @@ Gets random doujin on Hentai2read</p>
         Returns
         -------
         dict
-            The book object that represents the specific id response.
+            The book object that represents the specific path response.
         &#34;&#34;&#34;
 
-        ## if path contains &#39;/&#39; then remove it
         if &#39;/&#39; in path:
             path = path.replace(&#39;/&#39;, &#39;&#39;)
         
@@ -289,11 +287,11 @@ Gets random doujin on Hentai2read</p>
             raise ValueError(&#39;Query must be given&#39;)
         data = requests.get(BASE_URL.hentai2read + &#39;args.php&#39;, params=self.specs)
 
-        # if data.json() length is 0, then throw error
         if len(data.json()) == 0:
             raise ValueError(&#39;No results found&#39;)
 
         return better_object(data.json())
+
 
     async def get_random(self):
         &#34;&#34;&#34;Gets random doujin on Hentai2read
@@ -301,7 +299,7 @@ Gets random doujin on Hentai2read</p>
         Returns
         -------
         dict
-            The book object that represents the doujin response.
+            The book object that represents the random doujin response.
         &#34;&#34;&#34;
         data = requests.get(BASE_URL.hentai2read + &#39;random&#39; + &#39;/&#39;, params=self.specs)
 
@@ -330,7 +328,7 @@ Gets random doujin on Hentai2read</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>dict</code></dt>
-<dd>The book object that represents the specific id response.</dd>
+<dd>The book object that represents the specific path response.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -357,10 +355,9 @@ Gets random doujin on Hentai2read</p>
     Returns
     -------
     dict
-        The book object that represents the specific id response.
+        The book object that represents the specific path response.
     &#34;&#34;&#34;
 
-    ## if path contains &#39;/&#39; then remove it
     if &#39;/&#39; in path:
         path = path.replace(&#39;/&#39;, &#39;&#39;)
     
@@ -390,7 +387,7 @@ Gets random doujin on Hentai2read</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>dict</code></dt>
-<dd>The book object that represents the doujin response.</dd>
+<dd>The book object that represents the random doujin response.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -402,7 +399,7 @@ Gets random doujin on Hentai2read</p>
     Returns
     -------
     dict
-        The book object that represents the doujin response.
+        The book object that represents the random doujin response.
     &#34;&#34;&#34;
     data = requests.get(BASE_URL.hentai2read + &#39;random&#39; + &#39;/&#39;, params=self.specs)
 
@@ -463,7 +460,6 @@ Gets random doujin on Hentai2read</p>
         raise ValueError(&#39;Query must be given&#39;)
     data = requests.get(BASE_URL.hentai2read + &#39;args.php&#39;, params=self.specs)
 
-    # if data.json() length is 0, then throw error
     if len(data.json()) == 0:
         raise ValueError(&#39;No results found&#39;)
 

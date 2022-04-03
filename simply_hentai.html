@@ -100,6 +100,7 @@ class SimplyHentai(object):
    
         return better_object(self.final)
 
+
     async def get_related(self, path: str):
         &#34;&#34;&#34;Gets related or similar doujin from path given
 
@@ -139,13 +140,14 @@ class SimplyHentai(object):
    
         return better_object(self.final)
 
+
     async def get_random(self):
         &#34;&#34;&#34;Gets random doujin on Hentai2read
 
         Returns
         -------
         dict
-            The book object that represents the doujin response.
+            The book object that represents the random doujin response.
         &#34;&#34;&#34;
         data = requests.get(BASE_URL.simply_hentai + &#39;random&#39;)
 
@@ -252,6 +254,7 @@ Gets random doujin on Hentai2read</p>
    
         return better_object(self.final)
 
+
     async def get_related(self, path: str):
         &#34;&#34;&#34;Gets related or similar doujin from path given
 
@@ -291,13 +294,14 @@ Gets random doujin on Hentai2read</p>
    
         return better_object(self.final)
 
+
     async def get_random(self):
         &#34;&#34;&#34;Gets random doujin on Hentai2read
 
         Returns
         -------
         dict
-            The book object that represents the doujin response.
+            The book object that represents the random doujin response.
         &#34;&#34;&#34;
         data = requests.get(BASE_URL.simply_hentai + &#39;random&#39;)
 
@@ -378,7 +382,7 @@ Gets random doujin on Hentai2read</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>dict</code></dt>
-<dd>The book object that represents the doujin response.</dd>
+<dd>The book object that represents the random doujin response.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -390,7 +394,7 @@ Gets random doujin on Hentai2read</p>
     Returns
     -------
     dict
-        The book object that represents the doujin response.
+        The book object that represents the random doujin response.
     &#34;&#34;&#34;
     data = requests.get(BASE_URL.simply_hentai + &#39;random&#39;)
 
