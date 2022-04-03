@@ -30,6 +30,7 @@ setup(
         "Documentation": "https://sinkaroid.github.io/janda",
         "Issue tracker": "https://github.com/sinkaroid/janda/issues/new/choose",
         "Funding": "https://paypal.me/sinkaroid",
+        "Discord": "https://discord.gg/8wj4vM5hHM",
     },
     packages=['janda', 'janda.utils'],
     license='MIT',
