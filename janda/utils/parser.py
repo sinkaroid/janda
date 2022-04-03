@@ -16,6 +16,7 @@ class Api():
         hentai2read (str): The base url of hentai2read api.
         simply_hentai (str): The base url of simply-hentai api.
         qhentai (str): The base url of qhentai api.
+        asmhentai (str): The base url of asmhentai api.
     """
 
     def __init__(self,
@@ -27,7 +28,8 @@ class Api():
                  BASE_HENTAIFOX: str = "https://scathach.redsplit.org/v4/hentaifox/",
                  BASE_HENTAI2READ: str = "https://scathach.redsplit.org/v4/hentai2read/",
                  BASE_SIMPLY_HENTAI: str = "https://scathach.redsplit.org/v4/simply-hentai/",
-                 BASE_QHENTAI: str = "https://scathach.redsplit.org/v4/qhentai/"):
+                 BASE_QHENTAI: str = "https://scathach.redsplit.org/v4/qhentai/",
+                 BASE_ASMHENTAI: str = "https://scathach.redsplit.org/v4/asmhentai/"):
 
         self.api = BASE_URL
         self.img = BASE_IMG
@@ -38,6 +40,7 @@ class Api():
         self.nhentai_unblock = BASE_NHENTAI_UNBLOCK
         self.simply_hentai = BASE_SIMPLY_HENTAI
         self.qhentai = BASE_QHENTAI
+        self.asmhentai = BASE_ASMHENTAI
 
 
 BASE_URL = Api()
@@ -58,6 +61,7 @@ def list_api():
         BASE_URL.hentai2read,
         BASE_URL.simply_hentai,
         BASE_URL.qhentai,
+        BASE_URL.asmhentai
     ]
     return api_list
 
@@ -262,18 +266,3 @@ def neat_result(obj: dict):
         })
 
     return better_object(results_object)
-
-def convert_non_ascii(obj: dict):
-    """Converts non-ascii characters to ascii.
-
-    Parameters
-    ----------
-    parser : dict
-        The json object to be parsed.
-
-    Returns
-    -------
-    dict
-
-    """
-    ##
