@@ -68,6 +68,7 @@ class Qhentai(object):
         self.final = json.loads(better_object(data.json()), encoding="utf-8")
    
         return better_object(self.final)
+        
 
     async def search(self, query: str, page: int = 1):
         """Search for doujin wirh query and page number given
@@ -77,7 +78,7 @@ class Qhentai(object):
         Parameters
         ----------
         query : str
-            The query to search for.
+            The query to search for
 
         page : int
             The page number to search for
@@ -102,11 +103,11 @@ class Qhentai(object):
             raise ValueError('Query must be given')
         data = requests.get(BASE_URL.hentai2read + 'args.php', params=self.specs)
 
-        # if data.json() length is 0, then throw error
         if len(data.json()) == 0:
             raise ValueError('No results found')
 
         return better_object(data.json())
+
 
     async def get_random(self):
         """Gets random doujin on Hentai2read

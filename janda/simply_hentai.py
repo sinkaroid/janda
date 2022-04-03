@@ -72,6 +72,7 @@ class SimplyHentai(object):
    
         return better_object(self.final)
 
+
     async def get_related(self, path: str):
         """Gets related or similar doujin from path given
 
@@ -111,15 +112,15 @@ class SimplyHentai(object):
    
         return better_object(self.final)
 
+
     async def get_random(self):
         """Gets random doujin on Hentai2read
 
         Returns
         -------
         dict
-            The book object that represents the doujin response.
+            The book object that represents the random doujin response.
         """
         data = requests.get(BASE_URL.simply_hentai + 'random')
 
         return better_object(data.json())
-

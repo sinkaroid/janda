@@ -67,10 +67,6 @@ class Pururin(object):
         ----------
         api_key : str
             scathach.dev API key (optional)
-
-        Attributes
-        ----------
-        get: 
         """
         if api_key == '':
             self.api_key = None
@@ -79,14 +75,14 @@ class Pururin(object):
         self.specs = {'api_key': self.api_key}
 
     async def get(self, book: int):
-        """Get doujin API from Id
+        """Get doujin from id
 
         path: https://pururin.to/gallery/61119
 
         Parameters
         ----------
         book : int
-            The id number of the doujin.
+            The id number of the doujin
 
         Raises
         ------
@@ -101,7 +97,6 @@ class Pururin(object):
 
         self.specs['g'] = book
 
-        # handle if book not int, then throw error
         try:
             book = int(book)
         except ValueError:
@@ -115,6 +110,7 @@ class Pururin(object):
 
         return Pururin.better_object(self.final)
 
+
     async def search_by_newest(self, query: str):
         """Search for doujin based on newest 
 
@@ -123,7 +119,7 @@ class Pururin(object):
         Parameters
         ----------
         query : str
-            The query to search for.
+            The query to search for
 
         Raises
         ------
@@ -133,7 +129,7 @@ class Pururin(object):
         Returns
         -------
         dict
-            The list object that represents the doujin response.
+            The list object that represents the newest doujin response.
         """
 
         self.specs['query'] = query
@@ -144,11 +140,11 @@ class Pururin(object):
             raise ValueError('Query must be given')
         data = requests.get(BASE_URL.pururin + 'args.php', params=self.specs)
 
-        # if data.json() length is 0, then throw error
         if len(data.json()) == 0:
             raise ValueError('No results found')
 
         return Pururin.better_object(data.json())
+
 
     async def search_by_most_popular(self, query: str):
         """Search doujins by most popular
@@ -158,7 +154,7 @@ class Pururin(object):
         Parameters
         ----------
         query : str
-            The query to search for.
+            The query to search for
 
         Raises
         ------
@@ -168,7 +164,7 @@ class Pururin(object):
         Returns
         -------
         dict
-            The list object that represents the doujin response.
+            The list object that represents the popular doujin response.
         """
 
         self.specs['query'] = query
@@ -179,11 +175,11 @@ class Pururin(object):
             raise ValueError('Query must be given')
         data = requests.get(BASE_URL.pururin + 'args.php', params=self.specs)
 
-        # if data.json() length is 0, then throw error
         if len(data.json()) == 0:
             raise ValueError('No results found')
 
         return Pururin.better_object(data.json())
+
 
     async def search_by_highest_rated(self, query: str):
         """Search for doujin based on the highest rated
@@ -193,7 +189,7 @@ class Pururin(object):
         Parameters
         ----------
         query : str
-            The query to search for.
+            The query to search for
 
         Raises
         ------
@@ -203,7 +199,7 @@ class Pururin(object):
         Returns
         -------
         dict
-            The list object that represents the doujin response.
+            The list object that represents the highest rated doujin response.
         """
 
         self.specs['query'] = query
@@ -214,11 +210,11 @@ class Pururin(object):
             raise ValueError('Query must be given')
         data = requests.get(BASE_URL.pururin + 'args.php', params=self.specs)
 
-        # if data.json() length is 0, then throw error
         if len(data.json()) == 0:
             raise ValueError('No results found')
 
         return Pururin.better_object(data.json())
+
 
     async def search_by_most_viewed(self, query: str):
         """Search for doujin based on the most viewed
@@ -228,7 +224,7 @@ class Pururin(object):
         Parameters
         ----------
         query : str
-            The query to search for.
+            The query to search for
 
         Raises
         ------
@@ -238,7 +234,7 @@ class Pururin(object):
         Returns
         -------
         dict
-            The list object that represents the doujin response.
+            The list object that represents the most viewed doujin response.
         """
 
         self.specs['query'] = query
@@ -249,11 +245,11 @@ class Pururin(object):
             raise ValueError('Query must be given')
         data = requests.get(BASE_URL.pururin + 'args.php', params=self.specs)
 
-        # if data.json() length is 0, then throw error
         if len(data.json()) == 0:
             raise ValueError('No results found')
 
         return Pururin.better_object(data.json())
+
 
     async def search_by_title(self, query: str):
         """Search for doujin based on title
@@ -263,7 +259,7 @@ class Pururin(object):
         Parameters
         ----------
         query : str
-            The query to search for.
+            The query to search for
 
         Raises
         ------
@@ -273,7 +269,7 @@ class Pururin(object):
         Returns
         -------
         dict
-            The list object that represents the doujin response.
+            The list object that represents the doujin response according to the title.
         """
 
         self.specs['query'] = query
@@ -284,11 +280,11 @@ class Pururin(object):
             raise ValueError('Query must be given')
         data = requests.get(BASE_URL.pururin + 'args.php', params=self.specs)
 
-        # if data.json() length is 0, then throw error
         if len(data.json()) == 0:
             raise ValueError('No results found')
 
         return Pururin.better_object(data.json())
+
 
     async def search_by_random(self, query: str):
         """Search for doujin based on random
@@ -298,7 +294,7 @@ class Pururin(object):
         Parameters
         ----------
         query : str
-            The query to search for.
+            The query to search for
 
         Raises
         ------
@@ -308,7 +304,7 @@ class Pururin(object):
         Returns
         -------
         dict
-            The list object that represents the doujin response.
+            The list object that represents the doujin response according query and mixed to random.
         """
 
         self.specs['query'] = query
@@ -319,11 +315,11 @@ class Pururin(object):
             raise ValueError('Query must be given')
         data = requests.get(BASE_URL.pururin + 'args.php', params=self.specs)
 
-        # if data.json() length is 0, then throw error
         if len(data.json()) == 0:
             raise ValueError('No results found')
 
         return Pururin.better_object(data.json())
+
 
     async def get_random(self):
         """Gets random doujin on pururin
@@ -331,7 +327,7 @@ class Pururin(object):
         Returns
         -------
         dict
-            The book object that represents the doujin response.
+            The book object that represents the random doujin response.
         """
         data = requests.get(BASE_URL.pururin + 'random' + '/', params=self.specs)
 
@@ -345,7 +341,7 @@ class Pururin(object):
         Parameters
         ----------
         query : str
-            The query to search for.
+            The query to search for
 
         Raises
         ------
@@ -355,16 +351,14 @@ class Pururin(object):
         Returns
         -------
         dict
-            The book object that represents the doujin response.
+            The book object that represents the doujin response according to the query
         """
 
         self.specs['p'] = query
         query = Pururin.auto_space(query)
         data = requests.get(BASE_URL.pururin + 'search.php', params=self.specs)
 
-        # if result null, then throw error
         if data.json()['type'] is None:
             raise ValueError('No results found')
 
         return Pururin.better_object(data.json())
-

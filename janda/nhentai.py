@@ -31,7 +31,7 @@ class Nhentai(object):
         Parameters
         ----------
         book : int
-            Nmber id of the book
+            Number id of the book
 
         safe : bool
             If True, janda will throw you error whenever contains minor content, such as loli or shota. Default is False
@@ -44,6 +44,7 @@ class Nhentai(object):
         Returns
         -------
         dict
+            The book object that represents the specific id response.
         """
 
         try:
@@ -73,18 +74,18 @@ class Nhentai(object):
 
 
     async def search(self, tags: str, page: int = 1, popular: str = 'today'):
-        """Search doujin by tags / artis / character / parody or group
+        """Search doujin by tags / artist / character / parody or group
 
         Parameters
         ----------
         tags : str
-            Tags to search for.
+            Tags to search for
 
         page : int
-            Page number. Default is 1.
+            Page number. Default is 1
 
         popular : str
-            today, all, and week. Default is today.
+            today, all, and week. Default is today
 
         Raises
         ------
@@ -94,6 +95,7 @@ class Nhentai(object):
         Returns
         -------
         dict
+            The list object that represents the doujin response
         """
 
         if popular not in ['today', 'all', 'week']:
@@ -111,7 +113,6 @@ class Nhentai(object):
 
         if data.status_code != 200:
             raise ValueError('Request failed')
-
 
         self.raw_object = json.loads(better_object(data.json()), encoding="utf-8")
         self.results = self.raw_object['result']
@@ -138,7 +139,7 @@ class Nhentai(object):
         Parameters
         ----------
         book : int
-            Nmber id of the book
+            Number id of the book
 
         Raises
         ------
@@ -148,6 +149,7 @@ class Nhentai(object):
         Returns
         -------
         dict
+            The list object that represents the doujin response
         """
 
         try:
@@ -166,6 +168,7 @@ class Nhentai(object):
 
         return neat_result(data.json())
 
+
     async def get_random(self):
         """Get random doujin
         
@@ -177,6 +180,7 @@ class Nhentai(object):
         Returns
         -------
         dict
+            The book object that represents the random doujin response.
         """
         random = requests.get(F'{BASE_URL.api}/random')
 

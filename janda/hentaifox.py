@@ -59,7 +59,6 @@ class Hentaifox(object):
 
         self.specs['g'] = book
 
-        # handle if book not int, then throw error
         try:
             book = int(book)
         except ValueError:
@@ -73,6 +72,7 @@ class Hentaifox(object):
 
         return better_object(self.final)
 
+
     async def search_by_latest(self, query: str, page: int = 1):
         """Search for doujin based on the latest 
 
@@ -81,7 +81,7 @@ class Hentaifox(object):
         Parameters
         ----------
         query : str
-            The query to search for.
+            The query to search for
         
         page : int
             The page number to search
@@ -107,11 +107,11 @@ class Hentaifox(object):
             raise ValueError('Query must be given')
         data = requests.get(BASE_URL.hentaifox + 'args.php', params=self.specs)
 
-        # if data.json() length is 0, then throw error
         if len(data.json()) == 0:
             raise ValueError('No results found')
 
         return better_object(data.json())
+
 
     async def search_by_popular(self, query: str, page: int = 1):
         """Search for doujin based on the latest 
@@ -121,10 +121,10 @@ class Hentaifox(object):
         Parameters
         ----------
         query : str
-            The query to search for.
+            The query to search for
         
         page : int
-            The page number to search
+            The page number to search, Default is 1
 
         Raises
         ------
@@ -147,11 +147,11 @@ class Hentaifox(object):
             raise ValueError('Query must be given')
         data = requests.get(BASE_URL.hentaifox + 'args.php', params=self.specs)
 
-        # if data.json() length is 0, then throw error
         if len(data.json()) == 0:
             raise ValueError('No results found')
 
         return better_object(data.json())
+
 
     async def get_random(self):
         """Gets random doujin on hentaifox
@@ -159,9 +159,8 @@ class Hentaifox(object):
         Returns
         -------
         dict
-            The book object that represents the doujin response.
+            The book object that represents the random doujin response.
         """
         data = requests.get(BASE_URL.hentaifox + 'random' + '/', params=self.specs)
 
         return better_object(data.json())
-

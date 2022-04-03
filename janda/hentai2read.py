@@ -20,7 +20,7 @@ class Hentai2read(object):
     """
 
     def __init__(self, api_key: str = ''):
-        """Initializes the Pururin.
+        """Initializes the Hentai2read.
 
         Parameters
         ----------
@@ -54,10 +54,9 @@ class Hentai2read(object):
         Returns
         -------
         dict
-            The book object that represents the specific id response.
+            The book object that represents the specific path response.
         """
 
-        ## if path contains '/' then remove it
         if '/' in path:
             path = path.replace('/', '')
         
@@ -107,11 +106,11 @@ class Hentai2read(object):
             raise ValueError('Query must be given')
         data = requests.get(BASE_URL.hentai2read + 'args.php', params=self.specs)
 
-        # if data.json() length is 0, then throw error
         if len(data.json()) == 0:
             raise ValueError('No results found')
 
         return better_object(data.json())
+
 
     async def get_random(self):
         """Gets random doujin on Hentai2read
@@ -119,9 +118,8 @@ class Hentai2read(object):
         Returns
         -------
         dict
-            The book object that represents the doujin response.
+            The book object that represents the random doujin response.
         """
         data = requests.get(BASE_URL.hentai2read + 'random' + '/', params=self.specs)
 
         return better_object(data.json())
-
