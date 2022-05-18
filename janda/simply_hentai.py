@@ -68,7 +68,7 @@ class SimplyHentai(object):
 
         data = requests.get(BASE_URL.simply_hentai, params=self.specs)
 
-        self.final = json.loads(better_object(data.json()), encoding="utf-8")
+        self.final = json.loads(better_object(data.json()))
    
         return better_object(self.final)
 
@@ -108,7 +108,7 @@ class SimplyHentai(object):
 
         data = requests.get(BASE_URL.simply_hentai + "args.php", params=self.specs)
 
-        self.final = json.loads(better_object(data.json()), encoding="utf-8")
+        self.final = json.loads(better_object(data.json()))
    
         return better_object(self.final)
 

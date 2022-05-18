@@ -62,7 +62,7 @@ class Nhentai(object):
             raise ValueError('Book not found')
 
         if data.status_code != 200:
-            raise ValueError('Request failed')
+            raise ValueError('Request failed with status code {}'.format(data.status_code))
 
         self.tags = preg_match_tags(data.json()['tags'])
 
@@ -112,9 +112,9 @@ class Nhentai(object):
             raise ValueError('No results')
 
         if data.status_code != 200:
-            raise ValueError('Request failed')
+            raise ValueError('Request failed with status code {}'.format(data.status_code))
 
-        self.raw_object = json.loads(better_object(data.json()), encoding="utf-8")
+        self.raw_object = json.loads(better_object(data.json()))
         self.results = self.raw_object['result']
 
         self.results_object = []
@@ -164,7 +164,7 @@ class Nhentai(object):
         data = requests.get(F'{BASE_URL.api}/api/gallery/{self.book}/related')
 
         if data.status_code != 200:
-            raise ValueError('Request failed')
+            raise ValueError('Request failed with status code {}'.format(data.status_code))
 
         return neat_result(data.json())
 
@@ -196,7 +196,7 @@ class Nhentai(object):
             raise ValueError('Error')
 
         if data.status_code != 200:
-            raise ValueError('Request failed')
+            raise ValueError('Request failed with status code {}'.format(data.status_code))
 
         return parser(data.json())
         

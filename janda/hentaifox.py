@@ -68,7 +68,7 @@ class Hentaifox(object):
         if data.json()['type'] is None:
             raise ValueError('No results found')
 
-        self.final = json.loads(better_object(data.json()), encoding="utf-8")
+        self.final = json.loads(better_object(data.json()))
 
         return better_object(self.final)
 

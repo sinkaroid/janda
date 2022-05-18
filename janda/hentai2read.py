@@ -70,7 +70,7 @@ class Hentai2read(object):
 
         data = requests.get(BASE_URL.hentai2read, params=self.specs)
 
-        self.final = json.loads(better_object(data.json()), encoding="utf-8")
+        self.final = json.loads(better_object(data.json()))
    
         if self.final["title"] == '':
             raise ValueError('No results. Make sure you spelled everything right.')
