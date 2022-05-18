@@ -90,7 +90,7 @@ class Nhentai(object):
             raise ValueError(&#39;Book not found&#39;)
 
         if data.status_code != 200:
-            raise ValueError(&#39;Request failed&#39;)
+            raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
 
         self.tags = preg_match_tags(data.json()[&#39;tags&#39;])
 
@@ -140,9 +140,9 @@ class Nhentai(object):
             raise ValueError(&#39;No results&#39;)
 
         if data.status_code != 200:
-            raise ValueError(&#39;Request failed&#39;)
+            raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
 
-        self.raw_object = json.loads(better_object(data.json()), encoding=&#34;utf-8&#34;)
+        self.raw_object = json.loads(better_object(data.json()))
         self.results = self.raw_object[&#39;result&#39;]
 
         self.results_object = []
@@ -192,7 +192,7 @@ class Nhentai(object):
         data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}/related&#39;)
 
         if data.status_code != 200:
-            raise ValueError(&#39;Request failed&#39;)
+            raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
 
         return neat_result(data.json())
 
@@ -224,7 +224,7 @@ class Nhentai(object):
             raise ValueError(&#39;Error&#39;)
 
         if data.status_code != 200:
-            raise ValueError(&#39;Request failed&#39;)
+            raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
 
         return parser(data.json())
         </code></pre>
@@ -315,7 +315,7 @@ Get random doujin</p></div>
             raise ValueError(&#39;Book not found&#39;)
 
         if data.status_code != 200:
-            raise ValueError(&#39;Request failed&#39;)
+            raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
 
         self.tags = preg_match_tags(data.json()[&#39;tags&#39;])
 
@@ -365,9 +365,9 @@ Get random doujin</p></div>
             raise ValueError(&#39;No results&#39;)
 
         if data.status_code != 200:
-            raise ValueError(&#39;Request failed&#39;)
+            raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
 
-        self.raw_object = json.loads(better_object(data.json()), encoding=&#34;utf-8&#34;)
+        self.raw_object = json.loads(better_object(data.json()))
         self.results = self.raw_object[&#39;result&#39;]
 
         self.results_object = []
@@ -417,7 +417,7 @@ Get random doujin</p></div>
         data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}/related&#39;)
 
         if data.status_code != 200:
-            raise ValueError(&#39;Request failed&#39;)
+            raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
 
         return neat_result(data.json())
 
@@ -449,7 +449,7 @@ Get random doujin</p></div>
             raise ValueError(&#39;Error&#39;)
 
         if data.status_code != 200:
-            raise ValueError(&#39;Request failed&#39;)
+            raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
 
         return parser(data.json())</code></pre>
 </details>
@@ -518,7 +518,7 @@ Get random doujin</p></div>
         raise ValueError(&#39;Book not found&#39;)
 
     if data.status_code != 200:
-        raise ValueError(&#39;Request failed&#39;)
+        raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
 
     self.tags = preg_match_tags(data.json()[&#39;tags&#39;])
 
@@ -575,7 +575,7 @@ Get random doujin</p></div>
         raise ValueError(&#39;Error&#39;)
 
     if data.status_code != 200:
-        raise ValueError(&#39;Request failed&#39;)
+        raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
 
     return parser(data.json())</code></pre>
 </details>
@@ -647,9 +647,9 @@ Get random doujin</p></div>
         raise ValueError(&#39;No results&#39;)
 
     if data.status_code != 200:
-        raise ValueError(&#39;Request failed&#39;)
+        raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
 
-    self.raw_object = json.loads(better_object(data.json()), encoding=&#34;utf-8&#34;)
+    self.raw_object = json.loads(better_object(data.json()))
     self.results = self.raw_object[&#39;result&#39;]
 
     self.results_object = []
@@ -723,7 +723,7 @@ Get random doujin</p></div>
     data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}/related&#39;)
 
     if data.status_code != 200:
-        raise ValueError(&#39;Request failed&#39;)
+        raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
 
     return neat_result(data.json())</code></pre>
 </details>

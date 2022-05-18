@@ -98,7 +98,7 @@ class Hentai2read(object):
 
         data = requests.get(BASE_URL.hentai2read, params=self.specs)
 
-        self.final = json.loads(better_object(data.json()), encoding=&#34;utf-8&#34;)
+        self.final = json.loads(better_object(data.json()))
    
         if self.final[&#34;title&#34;] == &#39;&#39;:
             raise ValueError(&#39;No results. Make sure you spelled everything right.&#39;)
@@ -251,7 +251,7 @@ Gets random doujin on Hentai2read</p>
 
         data = requests.get(BASE_URL.hentai2read, params=self.specs)
 
-        self.final = json.loads(better_object(data.json()), encoding=&#34;utf-8&#34;)
+        self.final = json.loads(better_object(data.json()))
    
         if self.final[&#34;title&#34;] == &#39;&#39;:
             raise ValueError(&#39;No results. Make sure you spelled everything right.&#39;)
@@ -371,7 +371,7 @@ Gets random doujin on Hentai2read</p>
 
     data = requests.get(BASE_URL.hentai2read, params=self.specs)
 
-    self.final = json.loads(better_object(data.json()), encoding=&#34;utf-8&#34;)
+    self.final = json.loads(better_object(data.json()))
 
     if self.final[&#34;title&#34;] == &#39;&#39;:
         raise ValueError(&#39;No results. Make sure you spelled everything right.&#39;)

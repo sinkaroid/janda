@@ -134,7 +134,8 @@ def better_object(parser: dict):
 
     Returns
     -------
-    dict
+    str
+       deserialized json as string
 
     &#34;&#34;&#34;
     return json.dumps(parser, sort_keys=True, indent=4, ensure_ascii=False)
@@ -205,7 +206,7 @@ def parser(obj: dict):
     list
     &#34;&#34;&#34;
 
-    raw_object = json.loads(better_object(obj), encoding=&#34;utf-8&#34;)
+    raw_object = json.loads(better_object(obj))
     media = raw_object[&#39;media_id&#39;]
 
     book_object = {
@@ -274,10 +275,11 @@ def neat_result(obj: dict):
 
     Returns
     -------
-    dict
+    str
+       deserialized json as string
 
     &#34;&#34;&#34;
-    raw_object = json.loads(better_object(obj), encoding=&#34;utf-8&#34;)
+    raw_object = json.loads(better_object(obj))
     results = raw_object[&#39;result&#39;]
 
     results_object = []
@@ -293,7 +295,19 @@ def neat_result(obj: dict):
             &#39;tags&#39;: preg_match_tags(result[&#39;tags&#39;])
         })
 
-    return better_object(results_object)</code></pre>
+    return better_object(results_object)
+
+def resolve(b_object: dict) -&gt; dict:
+    &#34;&#34;&#34;Resolves the json object meant data with bad formatting, arbitary indent, arbitary sort keys but it is resolved and ready to extends
+    Parameters
+    ----------
+    b_object : dict
+    Returns
+    -------
+    dict
+        raw json object
+    &#34;&#34;&#34;
+    return json.loads(b_object)</code></pre>
 </details>
 </section>
 <section>
@@ -350,9 +364,10 @@ def neat_result(obj: dict):
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>dict</code></dt>
+<dt><code>str</code></dt>
 <dd>&nbsp;</dd>
-</dl></div>
+</dl>
+<p>deserialized json as string</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -366,7 +381,8 @@ def neat_result(obj: dict):
 
     Returns
     -------
-    dict
+    str
+       deserialized json as string
 
     &#34;&#34;&#34;
     return json.dumps(parser, sort_keys=True, indent=4, ensure_ascii=False)</code></pre>
@@ -489,9 +505,10 @@ def neat_result(obj: dict):
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>dict</code></dt>
+<dt><code>str</code></dt>
 <dd>&nbsp;</dd>
-</dl></div>
+</dl>
+<p>deserialized json as string</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -506,10 +523,11 @@ def neat_result(obj: dict):
 
     Returns
     -------
-    dict
+    str
+       deserialized json as string
 
     &#34;&#34;&#34;
-    raw_object = json.loads(better_object(obj), encoding=&#34;utf-8&#34;)
+    raw_object = json.loads(better_object(obj))
     results = raw_object[&#39;result&#39;]
 
     results_object = []
@@ -560,7 +578,7 @@ def neat_result(obj: dict):
     list
     &#34;&#34;&#34;
 
-    raw_object = json.loads(better_object(obj), encoding=&#34;utf-8&#34;)
+    raw_object = json.loads(better_object(obj))
     media = raw_object[&#39;media_id&#39;]
 
     book_object = {
@@ -691,6 +709,39 @@ def neat_result(obj: dict):
     return datetime.utcfromtimestamp(int(timestamp)).strftime(&#39;%Y-%m-%d %H:%M:%S&#39;)</code></pre>
 </details>
 </dd>
+<dt id="janda.utils.parser.resolve"><code class="name flex">
+<span>def <span class="ident">resolve</span></span>(<span>b_object: dict) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Resolves the json object meant data with bad formatting, arbitary indent, arbitary sort keys but it is resolved and ready to extends
+Parameters</p>
+<hr>
+<dl>
+<dt><strong><code>b_object</code></strong> :&ensp;<code>dict</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>raw json object</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def resolve(b_object: dict) -&gt; dict:
+    &#34;&#34;&#34;Resolves the json object meant data with bad formatting, arbitary indent, arbitary sort keys but it is resolved and ready to extends
+    Parameters
+    ----------
+    b_object : dict
+    Returns
+    -------
+    dict
+        raw json object
+    &#34;&#34;&#34;
+    return json.loads(b_object)</code></pre>
+</details>
+</dd>
 </dl>
 </section>
 <section>
@@ -791,6 +842,7 @@ def neat_result(obj: dict):
 <li><code><a title="janda.utils.parser.parser" href="#janda.utils.parser.parser">parser</a></code></li>
 <li><code><a title="janda.utils.parser.preg_match_tags" href="#janda.utils.parser.preg_match_tags">preg_match_tags</a></code></li>
 <li><code><a title="janda.utils.parser.readable_timestamp" href="#janda.utils.parser.readable_timestamp">readable_timestamp</a></code></li>
+<li><code><a title="janda.utils.parser.resolve" href="#janda.utils.parser.resolve">resolve</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>

@@ -96,7 +96,7 @@ class SimplyHentai(object):
 
         data = requests.get(BASE_URL.simply_hentai, params=self.specs)
 
-        self.final = json.loads(better_object(data.json()), encoding=&#34;utf-8&#34;)
+        self.final = json.loads(better_object(data.json()))
    
         return better_object(self.final)
 
@@ -136,7 +136,7 @@ class SimplyHentai(object):
 
         data = requests.get(BASE_URL.simply_hentai + &#34;args.php&#34;, params=self.specs)
 
-        self.final = json.loads(better_object(data.json()), encoding=&#34;utf-8&#34;)
+        self.final = json.loads(better_object(data.json()))
    
         return better_object(self.final)
 
@@ -250,7 +250,7 @@ Gets random doujin on Hentai2read</p>
 
         data = requests.get(BASE_URL.simply_hentai, params=self.specs)
 
-        self.final = json.loads(better_object(data.json()), encoding=&#34;utf-8&#34;)
+        self.final = json.loads(better_object(data.json()))
    
         return better_object(self.final)
 
@@ -290,7 +290,7 @@ Gets random doujin on Hentai2read</p>
 
         data = requests.get(BASE_URL.simply_hentai + &#34;args.php&#34;, params=self.specs)
 
-        self.final = json.loads(better_object(data.json()), encoding=&#34;utf-8&#34;)
+        self.final = json.loads(better_object(data.json()))
    
         return better_object(self.final)
 
@@ -369,7 +369,7 @@ Gets random doujin on Hentai2read</p>
 
     data = requests.get(BASE_URL.simply_hentai, params=self.specs)
 
-    self.final = json.loads(better_object(data.json()), encoding=&#34;utf-8&#34;)
+    self.final = json.loads(better_object(data.json()))
 
     return better_object(self.final)</code></pre>
 </details>
@@ -461,7 +461,7 @@ Gets random doujin on Hentai2read</p>
 
     data = requests.get(BASE_URL.simply_hentai + &#34;args.php&#34;, params=self.specs)
 
-    self.final = json.loads(better_object(data.json()), encoding=&#34;utf-8&#34;)
+    self.final = json.loads(better_object(data.json()))
 
     return better_object(self.final)</code></pre>
 </details>
