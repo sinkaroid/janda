@@ -106,7 +106,8 @@ def better_object(parser: dict):
 
     Returns
     -------
-    dict
+    str
+       deserialized json as string
 
     """
     return json.dumps(parser, sort_keys=True, indent=4, ensure_ascii=False)
@@ -177,7 +178,7 @@ def parser(obj: dict):
     list
     """
 
-    raw_object = json.loads(better_object(obj), encoding="utf-8")
+    raw_object = json.loads(better_object(obj))
     media = raw_object['media_id']
 
     book_object = {
@@ -246,10 +247,11 @@ def neat_result(obj: dict):
 
     Returns
     -------
-    dict
+    str
+       deserialized json as string
 
     """
-    raw_object = json.loads(better_object(obj), encoding="utf-8")
+    raw_object = json.loads(better_object(obj))
     results = raw_object['result']
 
     results_object = []
@@ -266,3 +268,15 @@ def neat_result(obj: dict):
         })
 
     return better_object(results_object)
+
+def resolve(b_object: dict) -> dict:
+    """Resolves the json object meant data with bad formatting, arbitary indent, arbitary sort keys but it is resolved and ready to extends
+    Parameters
+    ----------
+    b_object : dict
+    Returns
+    -------
+    dict
+        raw json object
+    """
+    return json.loads(b_object)
