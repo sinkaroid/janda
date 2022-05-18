@@ -83,6 +83,8 @@ async def main():
 
 asyncio.run(main())
 ```
+The final step you must resolve them to works with data. See [#Unresolved JSON](#unresolved-json)  
+Authorization is always optional! but if you fill it you should define through specific import
 
 ### search
 `(tags: str, page: int = 1, popular: str = 'today') -> Coroutine`
@@ -346,6 +348,26 @@ Otherwise `search` will return 25 **List Object** of search results.
 ]
 ```
 
+## Unresolved JSON
+Instead arbitrary object, This library designed to be neat and clean returns, although it must be reparsed to the string first, that's why [`janda.resolve()`](https://sinkaroid.github.io/janda/utils/parser.html#janda.utils.parser.resolve) exist.  
+
+Let's see an example:
+
+```py
+import asyncio
+from janda import Nhentai, resolve
+
+async def main():
+    nh = Nhentai()
+    data = await nh.get(274003)
+    print(data) ## unresolve
+    print(resolve(data)) ## resolved
+
+asyncio.run(main())
+```
+- Unresolve: meant is better and neat dictionaries returns instead arbitrary JSON structure
+- Resolved: bad structure, arbitary indent, unsorting but it is resolved and ready to extends works with JSON
+
 ## Known Issues
 #### `UnicodeEncodeError: 'charmap' codec can't encode characters`  
 - It's raised when the title contains non-ascii characters, then your console can't parse them, use real console don't Git-bash.
@@ -355,7 +377,7 @@ This tool can be freely copied, modified, altered, distributed without any attri
 like this tool deserves an attribution, mention it. It won't hurt anybody
 
 ## Pronunciation
-[`id_ID`](https://www.localeplanet.com/java/id-ID/index.html) • **/jan·da/** — gatel, nakal, dan menggoda; _(?)_ seperti siapa? adalah benar si janda gamer tomoe
+[`id_ID`](https://www.localeplanet.com/java/id-ID/index.html) • **/jan·da/** — gatel, nakal, dan menggoda; _(?)_ seperti siapa? adalah benar si janda gemer tomoe
 
 ## EoF
 All books from those doujinboards are definitely ilegal from original authors.
