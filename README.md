@@ -19,6 +19,9 @@ It takes a much more dictionaries rather than just raw data, and hope will be ex
 
 ---
 
+## Subprojects
+- [jandapress](https://github.com/sinkaroid/jandapress) — RESTful API for janda client
+
 ## Janda vs. the Competition
 
 Built on minimalist dependencies, yet it covers most of the popular doujinboards.  
@@ -89,6 +92,26 @@ Authorization is always optional! but if you fill it you should define through s
 ```py
 await nh.search("jeanne alter", 1, "all")
 ```
+
+## Unresolved JSON
+Instead arbitrary object, This library designed to be neat and clean returns, although it must be reparsed to the string first, that's why [`janda.resolve()`](https://sinkaroid.github.io/janda/utils/parser.html#janda.utils.parser.resolve) exist.  
+
+Let's see an example:
+
+```py
+import asyncio
+from janda import Nhentai, resolve
+
+async def main():
+    nh = Nhentai()
+    data = await nh.get(274003)
+    print(data) ## unresolve
+    print(resolve(data)) ## resolved
+
+asyncio.run(main())
+```
+- Unresolve: meant is better and neat dictionaries returns instead arbitrary JSON structure
+- Resolved: bad structure, arbitary indent, unsorting but it is resolved and ready to extends works with JSON
 
 ## Documentation
 The documentation can be found [https://sinkaroid.github.io/janda](https://sinkaroid.github.io/janda)
@@ -504,26 +527,6 @@ Otherwise `search` will return 25 **List Object** of search results.
     "source": "https://nhentai.net/api/galleries/search?query=futa&sort=popular-today&page=1"
 }
 ```
-
-## Unresolved JSON
-Instead arbitrary object, This library designed to be neat and clean returns, although it must be reparsed to the string first, that's why [`janda.resolve()`](https://sinkaroid.github.io/janda/utils/parser.html#janda.utils.parser.resolve) exist.  
-
-Let's see an example:
-
-```py
-import asyncio
-from janda import Nhentai, resolve
-
-async def main():
-    nh = Nhentai()
-    data = await nh.get(274003)
-    print(data) ## unresolve
-    print(resolve(data)) ## resolved
-
-asyncio.run(main())
-```
-- Unresolve: meant is better and neat dictionaries returns instead arbitrary JSON structure
-- Resolved: bad structure, arbitary indent, unsorting but it is resolved and ready to extends works with JSON
 
 ## Known Issues
 #### `UnicodeEncodeError: 'charmap' codec can't encode characters`  
