@@ -1,4 +1,3 @@
-import json
 import requests
 from janda.utils.parser import list_api
 
