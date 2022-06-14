@@ -4,9 +4,10 @@ from .utils.parser import *
 
 BASE_URL = Api()
 
+
 class Hentai2read(object):
-    """ Hentai2read API wrapper 
-    
+    """Hentai2read API wrapper
+
     Methods
     -------
     get : function
@@ -15,11 +16,9 @@ class Hentai2read(object):
     search : function
         Search for doujin based on the latest
 
-    get_random : function
-        Gets random doujin on Hentai2read
     """
 
-    def __init__(self, api_key: str = ''):
+    def __init__(self, api_key: str = ""):
         """Initializes the Hentai2read.
 
         Parameters
@@ -27,11 +26,11 @@ class Hentai2read(object):
         api_key : str
             scathach.dev API key (optional)
         """
-        if api_key == '':
+        if api_key == "":
             self.api_key = None
         else:
             self.api_key = api_key
-        self.specs = {'api_key': self.api_key}
+        self.specs = {"api_key": self.api_key}
 
     async def get(self, path: str, chapter: int = 1):
         """Gets doujin from path given
@@ -57,28 +56,22 @@ class Hentai2read(object):
             The book object that represents the specific path response.
         """
 
-        if '/' in path:
-            path = path.replace('/', '')
-        
-        self.specs['u'] = path + '/' + str(chapter)
+        if "/" in path:
+            path = path.replace("/", "")
 
+        self.specs["book"] = path + "/" + str(chapter)
 
         try:
             path = str(path)
         except ValueError:
-            raise ValueError('Path must be a str')
+            raise ValueError("Path must be a str")
 
-        data = requests.get(BASE_URL.hentai2read, params=self.specs)
+        data = requests.get(BASE_URL.hentai2read + "/get", params=self.specs)
 
-        self.final = json.loads(better_object(data.json()))
-   
-        if self.final["title"] == '':
-            raise ValueError('No results. Make sure you spelled everything right.')
-
-        return better_object(self.final)
+        return better_object(data.json())
 
     async def search(self, query: str):
-        """Search for doujin based on the latest 
+        """Search for doujin based on the latest
 
         path: https://hentai2read.com/hentai-list/search/alter
 
@@ -98,28 +91,15 @@ class Hentai2read(object):
             The list object that represents the doujin response.
         """
 
-        self.specs['query'] = query
+        self.specs["key"] = query
 
         query = auto_space(query)
 
-        if query == '':
-            raise ValueError('Query must be given')
-        data = requests.get(BASE_URL.hentai2read + 'args.php', params=self.specs)
+        if query == "":
+            raise ValueError("Query must be given")
+        data = requests.get(BASE_URL.hentai2read + "/search", params=self.specs)
 
-        if len(data.json()) == 0:
-            raise ValueError('No results found')
-
-        return better_object(data.json())
-
-
-    async def get_random(self):
-        """Gets random doujin on Hentai2read
-
-        Returns
-        -------
-        dict
-            The book object that represents the random doujin response.
-        """
-        data = requests.get(BASE_URL.hentai2read + 'random' + '/', params=self.specs)
+        if len(data.json()["data"]) == 0:
+            raise ValueError("No results found")
 
         return better_object(data.json())

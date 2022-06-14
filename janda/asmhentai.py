@@ -4,9 +4,10 @@ from .utils.parser import *
 
 BASE_URL = Api()
 
+
 class Asmhentai(object):
-    """ Asmhentai API wrapper 
-    
+    """Asmhentai API wrapper
+
     Methods
     -------
     get : function
@@ -19,7 +20,7 @@ class Asmhentai(object):
         Gets random doujin
     """
 
-    def __init__(self, api_key: str = ''):
+    def __init__(self, api_key: str = ""):
         """Initializes Asmhentai.
 
         Parameters
@@ -27,11 +28,11 @@ class Asmhentai(object):
         api_key : str
             scathach.dev API key (optional)
         """
-        if api_key == '':
+        if api_key == "":
             self.api_key = None
         else:
             self.api_key = api_key
-        self.specs = {'api_key': self.api_key}
+        self.specs = {"api_key": self.api_key}
 
     async def get(self, id: int):
         """Gets doujin from id given
@@ -55,23 +56,23 @@ class Asmhentai(object):
         """
 
         if isinstance(id, int):
-                id = str(id)
+            id = str(id)
 
-        path = id.strip('/')
-        self.specs['g'] = path
+        path = id.strip("/")
+        self.specs["book"] = path
 
         try:
             path = str(path)
 
         except ValueError or path.isdigit():
-            raise ValueError('Path must be a str')
+            raise ValueError("Path must be a str")
 
-        data = requests.get(BASE_URL.asmhentai, params=self.specs)
+        data = requests.get(BASE_URL.asmhentai + "/get", params=self.specs)
 
-        self.final = json.loads(better_object(data.json()))
-   
-        return better_object(self.final)
+        if data.status_code != 200:
+            raise ValueError("No results found for " + id)
 
+        return better_object(data.json())
 
     async def search(self, query: str, page: int = 1):
         """Search for doujin with query and page number given
@@ -97,40 +98,29 @@ class Asmhentai(object):
             The list object that represents the doujin response.
         """
 
-        self.specs['query'] = query
-        self.specs['page'] = page
+        self.specs["key"] = query
+        self.specs["page"] = page
 
         query = auto_space(query)
 
-        if query == '':
-            raise ValueError('Query must be given')
-        data = requests.get(BASE_URL.asmhentai + 'args.php', params=self.specs)
+        if query == "":
+            raise ValueError("Query must be given")
+        data = requests.get(BASE_URL.asmhentai + "/search", params=self.specs)
 
-        if len(data.json()) == 0:
-            raise ValueError('No results found')
+        if len(data.json()["data"]) == 0:
+            raise ValueError("No results found")
 
         return better_object(data.json())
 
-   
     async def get_random(self):
-        """Gets random doujin on Hentai2read
+        """Gets random doujin on asmhentai
 
         Returns
         -------
         dict
             The book object that represents the random doujin response.
         """
-        random = requests.get('https://asmhentai.com/random/')
 
-        try:
-            self.book = str(just_number(random.url))
-            self.specs['g'] = self.book
+        data = requests.get(BASE_URL.asmhentai + "/random", params=self.specs)
 
-        except ValueError:
-            raise ValueError('Uh oh something wrong here')
-
-        data = requests.get(BASE_URL.asmhentai, params=self.specs)
-
-        self.final = json.loads(better_object(data.json()))
-   
-        return better_object(self.final)
+        return better_object(data.json())
