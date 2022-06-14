@@ -22,9 +22,6 @@ simplyh-get: # testing simplyh
 asmhentai-get: # testing asm
 	python -m unittest test.test_asmhentai
 
-qhentai-search: # testing qhentai search
-	python -m unittest test.test_qhentai
-
 api-mock: # check api if something down
 	python -m unittest test.test_api
 
