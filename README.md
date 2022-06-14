@@ -25,7 +25,6 @@ It takes a much more dictionaries rather than just raw data, and hope will be ex
 ## Janda vs. the Competition
 
 Built on minimalist dependencies, yet it covers most of the popular doujinboards.  
-Every single site has different dictionaries return, keep in mind on this
 
 | Client        | Status                                                                                                                              | Get   | Search | Randomizer |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ----- | ------ | ---------- |
