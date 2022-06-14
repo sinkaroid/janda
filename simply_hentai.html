@@ -32,22 +32,17 @@ from .utils.parser import *
 
 BASE_URL = Api()
 
+
 class SimplyHentai(object):
-    &#34;&#34;&#34; Simply-hentai API wrapper 
-    
+    &#34;&#34;&#34;Simply-hentai API wrapper
+
     Methods
     -------
     get : function
         Gets doujin from path given
-
-    get_related: function
-        Gets related or similar doujin from path given
-
-    get_random : function
-        Gets random doujin on Hentai2read
     &#34;&#34;&#34;
 
-    def __init__(self, api_key: str = &#39;&#39;):
+    def __init__(self, api_key: str = &#34;&#34;):
         &#34;&#34;&#34;Initializes SimplyHentai.
 
         Parameters
@@ -55,11 +50,11 @@ class SimplyHentai(object):
         api_key : str
             scathach.dev API key (optional)
         &#34;&#34;&#34;
-        if api_key == &#39;&#39;:
+        if api_key == &#34;&#34;:
             self.api_key = None
         else:
             self.api_key = api_key
-        self.specs = {&#39;api_key&#39;: self.api_key}
+        self.specs = {&#34;api_key&#34;: self.api_key}
 
     async def get(self, path: str):
         &#34;&#34;&#34;Gets doujin from path given
@@ -83,73 +78,18 @@ class SimplyHentai(object):
         &#34;&#34;&#34;
 
         if str(path).isdigit():
-            raise ValueError(&#39;Invalid path, must be a str&#39;)
+            raise ValueError(&#34;Invalid path, must be a str&#34;)
 
-        path = path.strip(&#39;/&#39;)
-        self.specs[&#39;g&#39;] = path
-
-        try:
-            path = str(path)
-
-        except ValueError or path.isdigit():
-            raise ValueError(&#39;Path must be a str&#39;)
-
-        data = requests.get(BASE_URL.simply_hentai, params=self.specs)
-
-        self.final = json.loads(better_object(data.json()))
-   
-        return better_object(self.final)
-
-
-    async def get_related(self, path: str):
-        &#34;&#34;&#34;Gets related or similar doujin from path given
-
-        path: https://www.simply-hentai.com/fate-grand-order/perros =&gt; &#39;fate-grand-order/perros&#39;
-
-        Parameters
-        ----------
-        path : str
-            The path url
-
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
-        Returns
-        -------
-        dict
-            The list object that represents the specific path response.
-        &#34;&#34;&#34;
-
-        if str(path).isdigit():
-            raise ValueError(&#39;Invalid path, must be a str&#39;)
-
-        path = path.strip(&#39;/&#39;)
-        self.specs[&#39;query&#39;] = path
+        path = path.strip(&#34;/&#34;)
+        self.specs[&#34;book&#34;] = path
 
         try:
             path = str(path)
 
         except ValueError or path.isdigit():
-            raise ValueError(&#39;Path must be a str&#39;)
+            raise ValueError(&#34;Path must be a str&#34;)
 
-        data = requests.get(BASE_URL.simply_hentai + &#34;args.php&#34;, params=self.specs)
-
-        self.final = json.loads(better_object(data.json()))
-   
-        return better_object(self.final)
-
-
-    async def get_random(self):
-        &#34;&#34;&#34;Gets random doujin on Hentai2read
-
-        Returns
-        -------
-        dict
-            The book object that represents the random doujin response.
-        &#34;&#34;&#34;
-        data = requests.get(BASE_URL.simply_hentai + &#39;random&#39;)
+        data = requests.get(BASE_URL.simply_hentai + &#34;/get&#34;, params=self.specs)
 
         return better_object(data.json())</code></pre>
 </details>
@@ -168,14 +108,10 @@ class SimplyHentai(object):
 <span>(</span><span>api_key: str = '')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Simply-hentai API wrapper </p>
+<div class="desc"><p>Simply-hentai API wrapper</p>
 <h2 id="methods">Methods</h2>
 <p>get : function
 Gets doujin from path given</p>
-<p>get_related: function
-Gets related or similar doujin from path given</p>
-<p>get_random : function
-Gets random doujin on Hentai2read</p>
 <p>Initializes SimplyHentai.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -187,21 +123,15 @@ Gets random doujin on Hentai2read</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SimplyHentai(object):
-    &#34;&#34;&#34; Simply-hentai API wrapper 
-    
+    &#34;&#34;&#34;Simply-hentai API wrapper
+
     Methods
     -------
     get : function
         Gets doujin from path given
-
-    get_related: function
-        Gets related or similar doujin from path given
-
-    get_random : function
-        Gets random doujin on Hentai2read
     &#34;&#34;&#34;
 
-    def __init__(self, api_key: str = &#39;&#39;):
+    def __init__(self, api_key: str = &#34;&#34;):
         &#34;&#34;&#34;Initializes SimplyHentai.
 
         Parameters
@@ -209,11 +139,11 @@ Gets random doujin on Hentai2read</p>
         api_key : str
             scathach.dev API key (optional)
         &#34;&#34;&#34;
-        if api_key == &#39;&#39;:
+        if api_key == &#34;&#34;:
             self.api_key = None
         else:
             self.api_key = api_key
-        self.specs = {&#39;api_key&#39;: self.api_key}
+        self.specs = {&#34;api_key&#34;: self.api_key}
 
     async def get(self, path: str):
         &#34;&#34;&#34;Gets doujin from path given
@@ -237,73 +167,18 @@ Gets random doujin on Hentai2read</p>
         &#34;&#34;&#34;
 
         if str(path).isdigit():
-            raise ValueError(&#39;Invalid path, must be a str&#39;)
+            raise ValueError(&#34;Invalid path, must be a str&#34;)
 
-        path = path.strip(&#39;/&#39;)
-        self.specs[&#39;g&#39;] = path
-
-        try:
-            path = str(path)
-
-        except ValueError or path.isdigit():
-            raise ValueError(&#39;Path must be a str&#39;)
-
-        data = requests.get(BASE_URL.simply_hentai, params=self.specs)
-
-        self.final = json.loads(better_object(data.json()))
-   
-        return better_object(self.final)
-
-
-    async def get_related(self, path: str):
-        &#34;&#34;&#34;Gets related or similar doujin from path given
-
-        path: https://www.simply-hentai.com/fate-grand-order/perros =&gt; &#39;fate-grand-order/perros&#39;
-
-        Parameters
-        ----------
-        path : str
-            The path url
-
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
-        Returns
-        -------
-        dict
-            The list object that represents the specific path response.
-        &#34;&#34;&#34;
-
-        if str(path).isdigit():
-            raise ValueError(&#39;Invalid path, must be a str&#39;)
-
-        path = path.strip(&#39;/&#39;)
-        self.specs[&#39;query&#39;] = path
+        path = path.strip(&#34;/&#34;)
+        self.specs[&#34;book&#34;] = path
 
         try:
             path = str(path)
 
         except ValueError or path.isdigit():
-            raise ValueError(&#39;Path must be a str&#39;)
+            raise ValueError(&#34;Path must be a str&#34;)
 
-        data = requests.get(BASE_URL.simply_hentai + &#34;args.php&#34;, params=self.specs)
-
-        self.final = json.loads(better_object(data.json()))
-   
-        return better_object(self.final)
-
-
-    async def get_random(self):
-        &#34;&#34;&#34;Gets random doujin on Hentai2read
-
-        Returns
-        -------
-        dict
-            The book object that represents the random doujin response.
-        &#34;&#34;&#34;
-        data = requests.get(BASE_URL.simply_hentai + &#39;random&#39;)
+        data = requests.get(BASE_URL.simply_hentai + &#34;/get&#34;, params=self.specs)
 
         return better_object(data.json())</code></pre>
 </details>
@@ -356,114 +231,20 @@ Gets random doujin on Hentai2read</p>
     &#34;&#34;&#34;
 
     if str(path).isdigit():
-        raise ValueError(&#39;Invalid path, must be a str&#39;)
+        raise ValueError(&#34;Invalid path, must be a str&#34;)
 
-    path = path.strip(&#39;/&#39;)
-    self.specs[&#39;g&#39;] = path
+    path = path.strip(&#34;/&#34;)
+    self.specs[&#34;book&#34;] = path
 
     try:
         path = str(path)
 
     except ValueError or path.isdigit():
-        raise ValueError(&#39;Path must be a str&#39;)
+        raise ValueError(&#34;Path must be a str&#34;)
 
-    data = requests.get(BASE_URL.simply_hentai, params=self.specs)
-
-    self.final = json.loads(better_object(data.json()))
-
-    return better_object(self.final)</code></pre>
-</details>
-</dd>
-<dt id="janda.simply_hentai.SimplyHentai.get_random"><code class="name flex">
-<span>async def <span class="ident">get_random</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Gets random doujin on Hentai2read</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>dict</code></dt>
-<dd>The book object that represents the random doujin response.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def get_random(self):
-    &#34;&#34;&#34;Gets random doujin on Hentai2read
-
-    Returns
-    -------
-    dict
-        The book object that represents the random doujin response.
-    &#34;&#34;&#34;
-    data = requests.get(BASE_URL.simply_hentai + &#39;random&#39;)
+    data = requests.get(BASE_URL.simply_hentai + &#34;/get&#34;, params=self.specs)
 
     return better_object(data.json())</code></pre>
-</details>
-</dd>
-<dt id="janda.simply_hentai.SimplyHentai.get_related"><code class="name flex">
-<span>async def <span class="ident">get_related</span></span>(<span>self, path: str)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Gets related or similar doujin from path given</p>
-<p>path: <a href="https://www.simply-hentai.com/fate-grand-order/perros">https://www.simply-hentai.com/fate-grand-order/perros</a> =&gt; 'fate-grand-order/perros'</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
-<dd>The path url</dd>
-</dl>
-<h2 id="raises">Raises</h2>
-<dl>
-<dt><code>ValueError</code></dt>
-<dd>If the doujin is not found.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>dict</code></dt>
-<dd>The list object that represents the specific path response.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def get_related(self, path: str):
-    &#34;&#34;&#34;Gets related or similar doujin from path given
-
-    path: https://www.simply-hentai.com/fate-grand-order/perros =&gt; &#39;fate-grand-order/perros&#39;
-
-    Parameters
-    ----------
-    path : str
-        The path url
-
-    Raises
-    ------
-    ValueError
-        If the doujin is not found.
-
-    Returns
-    -------
-    dict
-        The list object that represents the specific path response.
-    &#34;&#34;&#34;
-
-    if str(path).isdigit():
-        raise ValueError(&#39;Invalid path, must be a str&#39;)
-
-    path = path.strip(&#39;/&#39;)
-    self.specs[&#39;query&#39;] = path
-
-    try:
-        path = str(path)
-
-    except ValueError or path.isdigit():
-        raise ValueError(&#39;Path must be a str&#39;)
-
-    data = requests.get(BASE_URL.simply_hentai + &#34;args.php&#34;, params=self.specs)
-
-    self.final = json.loads(better_object(data.json()))
-
-    return better_object(self.final)</code></pre>
 </details>
 </dd>
 </dl>
@@ -488,8 +269,6 @@ Gets random doujin on Hentai2read</p>
 <h4><code><a title="janda.simply_hentai.SimplyHentai" href="#janda.simply_hentai.SimplyHentai">SimplyHentai</a></code></h4>
 <ul class="">
 <li><code><a title="janda.simply_hentai.SimplyHentai.get" href="#janda.simply_hentai.SimplyHentai.get">get</a></code></li>
-<li><code><a title="janda.simply_hentai.SimplyHentai.get_random" href="#janda.simply_hentai.SimplyHentai.get_random">get_random</a></code></li>
-<li><code><a title="janda.simply_hentai.SimplyHentai.get_related" href="#janda.simply_hentai.SimplyHentai.get_related">get_related</a></code></li>
 </ul>
 </li>
 </ul>

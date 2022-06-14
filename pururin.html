@@ -32,9 +32,10 @@ from janda.utils.parser import *
 
 BASE_URL = Api()
 
+
 class Pururin(object):
-    &#34;&#34;&#34; Pururin API wrapper
-    
+    &#34;&#34;&#34;Pururin API wrapper
+
     Methods
     -------
     get: function
@@ -43,26 +44,8 @@ class Pururin(object):
     get_random: function
         Gets random doujin
 
-    get_random_with_query: function
-        Gets random doujin with query
-
-    search_by_newest: function
-        Searches for doujin based on newest
-
-    search_by_most_popular: function
-        Searches doujin based on most popular
-
-    search_by_highest_rated: function
-        Searches doujin based on highest rated
-
-    search_by_most_viewed: function
-        Searches doujin based on most viewed
-
-    search_by_title: function
-        Searches doujin based on title
-
-    search_by_random: function
-        Searches doujin based on random with query
+    search: function
+        Searches doujin by tags / artist / character / parody or group
     &#34;&#34;&#34;
 
     @staticmethod
@@ -86,9 +69,9 @@ class Pururin(object):
             The string to be formatted.
         &#34;&#34;&#34;
 
-        return string.replace(&#39; &#39;, &#39;+&#39;)
+        return string.replace(&#34; &#34;, &#34;+&#34;)
 
-    def __init__(self, api_key: str = &#39;&#39;):
+    def __init__(self, api_key: str = &#34;&#34;):
         &#34;&#34;&#34;Initializes the Pururin.
 
         Parameters
@@ -96,11 +79,11 @@ class Pururin(object):
         api_key : str
             scathach.dev API key (optional)
         &#34;&#34;&#34;
-        if api_key == &#39;&#39;:
+        if api_key == &#34;&#34;:
             self.api_key = None
         else:
             self.api_key = api_key
-        self.specs = {&#39;api_key&#39;: self.api_key}
+        self.specs = {&#34;api_key&#34;: self.api_key}
 
     async def get(self, book: int):
         &#34;&#34;&#34;Get doujin from id
@@ -123,31 +106,32 @@ class Pururin(object):
             The book object that represents the specific id response.
         &#34;&#34;&#34;
 
-        self.specs[&#39;g&#39;] = book
+        self.specs[&#34;book&#34;] = book
 
         try:
             book = int(book)
         except ValueError:
-            raise ValueError(&#39;Book must be an int&#39;)
+            raise ValueError(&#34;Book must be an int&#34;)
 
-        data = requests.get(BASE_URL.pururin, params=self.specs)
-        if data.json()[&#39;type&#39;] is None:
-            raise ValueError(&#39;No results found&#39;)
+        data = requests.get(BASE_URL.pururin + &#34;/get&#34;, params=self.specs)
+        if data.json()[&#34;data&#34;][&#34;title&#34;] == &#34;&#34;:
+            raise ValueError(&#34;No results found&#34;)
 
-        self.final = json.loads(Pururin.better_object(data.json()))
+        return better_object(data.json())
 
-        return Pururin.better_object(self.final)
-
-
-    async def search_by_newest(self, query: str):
-        &#34;&#34;&#34;Search for doujin based on newest 
-
-        path: https://pururin.to/search/most-popular?q=alter
+    async def search(self, query: str, page: int = 1, sort: str = &#34;newest&#34;):
+        &#34;&#34;&#34;Search doujin by tags / artist / character / parody or group
 
         Parameters
         ----------
         query : str
-            The query to search for
+            query to search for
+
+        page : int
+            Page number. Default is 1
+
+        sort : str
+            newest, most-popular, highest-rated, most-viewed, title, random
 
         Raises
         ------
@@ -157,197 +141,36 @@ class Pururin(object):
         Returns
         -------
         dict
-            The list object that represents the newest doujin response.
+            The list object that represents the doujin response
         &#34;&#34;&#34;
 
-        self.specs[&#39;query&#39;] = query
-        self.specs[&#39;sort&#39;] = &#34;newest&#34;
-        query = Pururin.auto_space(query)
+        if sort not in [
+            &#34;newest&#34;,
+            &#34;most-popular&#34;,
+            &#34;highest-rated&#34;,
+            &#34;most-viewed&#34;,
+            &#34;title&#34;,
+            &#34;random&#34;,
+        ]:
+            raise ValueError(
+                &#34;Sort must be one of newest, most-popular, highest-rated, most-viewed, title, random&#34;
+            )
 
-        if query == &#39;&#39;:
-            raise ValueError(&#39;Query must be given&#39;)
-        data = requests.get(BASE_URL.pururin + &#39;args.php&#39;, params=self.specs)
+        self.specs[&#34;key&#34;] = query
+        self.specs[&#34;page&#34;] = page
+        self.specs[&#34;sort&#34;] = sort
 
-        if len(data.json()) == 0:
-            raise ValueError(&#39;No results found&#39;)
+        data = requests.get(BASE_URL.pururin + &#34;/search&#34;, params=self.specs)
 
-        return Pururin.better_object(data.json())
+        if len(data.json()[&#34;data&#34;]) == 0:
+            raise ValueError(&#34;No results found&#34;)
 
+        if data.status_code != 200:
+            raise ValueError(
+                &#34;Request failed with status code {}&#34;.format(data.status_code)
+            )
 
-    async def search_by_most_popular(self, query: str):
-        &#34;&#34;&#34;Search doujins by most popular
-
-        path: https://pururin.to/search/most-popular?q=alter
-
-        Parameters
-        ----------
-        query : str
-            The query to search for
-
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
-        Returns
-        -------
-        dict
-            The list object that represents the popular doujin response.
-        &#34;&#34;&#34;
-
-        self.specs[&#39;query&#39;] = query
-        self.specs[&#39;sort&#39;] = &#34;most-popular&#34;
-        query = Pururin.auto_space(query)
-
-        if query == &#39;&#39;:
-            raise ValueError(&#39;Query must be given&#39;)
-        data = requests.get(BASE_URL.pururin + &#39;args.php&#39;, params=self.specs)
-
-        if len(data.json()) == 0:
-            raise ValueError(&#39;No results found&#39;)
-
-        return Pururin.better_object(data.json())
-
-
-    async def search_by_highest_rated(self, query: str):
-        &#34;&#34;&#34;Search for doujin based on the highest rated
-
-        path: https://pururin.to/search/highest-rated?q=alter
-
-        Parameters
-        ----------
-        query : str
-            The query to search for
-
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
-        Returns
-        -------
-        dict
-            The list object that represents the highest rated doujin response.
-        &#34;&#34;&#34;
-
-        self.specs[&#39;query&#39;] = query
-        self.specs[&#39;sort&#39;] = &#34;highest-rated&#34;
-        query = Pururin.auto_space(query)
-
-        if query == &#39;&#39;:
-            raise ValueError(&#39;Query must be given&#39;)
-        data = requests.get(BASE_URL.pururin + &#39;args.php&#39;, params=self.specs)
-
-        if len(data.json()) == 0:
-            raise ValueError(&#39;No results found&#39;)
-
-        return Pururin.better_object(data.json())
-
-
-    async def search_by_most_viewed(self, query: str):
-        &#34;&#34;&#34;Search for doujin based on the most viewed
-
-        path: https://pururin.to/search/most-viewed?q=alter
-
-        Parameters
-        ----------
-        query : str
-            The query to search for
-
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
-        Returns
-        -------
-        dict
-            The list object that represents the most viewed doujin response.
-        &#34;&#34;&#34;
-
-        self.specs[&#39;query&#39;] = query
-        self.specs[&#39;sort&#39;] = &#34;most-viewed&#34;
-        query = Pururin.auto_space(query)
-
-        if query == &#39;&#39;:
-            raise ValueError(&#39;Query must be given&#39;)
-        data = requests.get(BASE_URL.pururin + &#39;args.php&#39;, params=self.specs)
-
-        if len(data.json()) == 0:
-            raise ValueError(&#39;No results found&#39;)
-
-        return Pururin.better_object(data.json())
-
-
-    async def search_by_title(self, query: str):
-        &#34;&#34;&#34;Search for doujin based on title
-
-        path: https://pururin.to/search/title?q=alter
-
-        Parameters
-        ----------
-        query : str
-            The query to search for
-
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
-        Returns
-        -------
-        dict
-            The list object that represents the doujin response according to the title.
-        &#34;&#34;&#34;
-
-        self.specs[&#39;query&#39;] = query
-        self.specs[&#39;sort&#39;] = &#34;title&#34;
-        query = Pururin.auto_space(query)
-
-        if query == &#39;&#39;:
-            raise ValueError(&#39;Query must be given&#39;)
-        data = requests.get(BASE_URL.pururin + &#39;args.php&#39;, params=self.specs)
-
-        if len(data.json()) == 0:
-            raise ValueError(&#39;No results found&#39;)
-
-        return Pururin.better_object(data.json())
-
-
-    async def search_by_random(self, query: str):
-        &#34;&#34;&#34;Search for doujin based on random
-
-        path: https://pururin.to/search/random?q=alter
-
-        Parameters
-        ----------
-        query : str
-            The query to search for
-
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
-        Returns
-        -------
-        dict
-            The list object that represents the doujin response according query and mixed to random.
-        &#34;&#34;&#34;
-
-        self.specs[&#39;query&#39;] = query
-        self.specs[&#39;sort&#39;] = &#34;random&#34;
-        query = Pururin.auto_space(query)
-
-        if query == &#39;&#39;:
-            raise ValueError(&#39;Query must be given&#39;)
-        data = requests.get(BASE_URL.pururin + &#39;args.php&#39;, params=self.specs)
-
-        if len(data.json()) == 0:
-            raise ValueError(&#39;No results found&#39;)
-
-        return Pururin.better_object(data.json())
-
+        return better_object(data.json())
 
     async def get_random(self):
         &#34;&#34;&#34;Gets random doujin on pururin
@@ -357,39 +180,9 @@ class Pururin(object):
         dict
             The book object that represents the random doujin response.
         &#34;&#34;&#34;
-        data = requests.get(BASE_URL.pururin + &#39;random&#39; + &#39;/&#39;, params=self.specs)
+        data = requests.get(BASE_URL.pururin + &#34;/random&#34;, params=self.specs)
 
-        return Pururin.better_object(data.json())
-
-    async def get_random_with_query(self, query: str):
-        &#34;&#34;&#34;Gets doujin on pururin by query
-
-        path: https://pururin.to/search?q=alter
-
-        Parameters
-        ----------
-        query : str
-            The query to search for
-
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
-        Returns
-        -------
-        dict
-            The book object that represents the doujin response according to the query
-        &#34;&#34;&#34;
-
-        self.specs[&#39;p&#39;] = query
-        query = Pururin.auto_space(query)
-        data = requests.get(BASE_URL.pururin + &#39;search.php&#39;, params=self.specs)
-
-        if data.json()[&#39;type&#39;] is None:
-            raise ValueError(&#39;No results found&#39;)
-
-        return Pururin.better_object(data.json())</code></pre>
+        return better_object(data.json())</code></pre>
 </details>
 </section>
 <section>
@@ -412,20 +205,8 @@ class Pururin(object):
 Gets doujin from id</p>
 <p>get_random: function
 Gets random doujin</p>
-<p>get_random_with_query: function
-Gets random doujin with query</p>
-<p>search_by_newest: function
-Searches for doujin based on newest</p>
-<p>search_by_most_popular: function
-Searches doujin based on most popular</p>
-<p>search_by_highest_rated: function
-Searches doujin based on highest rated</p>
-<p>search_by_most_viewed: function
-Searches doujin based on most viewed</p>
-<p>search_by_title: function
-Searches doujin based on title</p>
-<p>search_by_random: function
-Searches doujin based on random with query</p>
+<p>search: function
+Searches doujin by tags / artist / character / parody or group</p>
 <p>Initializes the Pururin.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -437,8 +218,8 @@ Searches doujin based on random with query</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Pururin(object):
-    &#34;&#34;&#34; Pururin API wrapper
-    
+    &#34;&#34;&#34;Pururin API wrapper
+
     Methods
     -------
     get: function
@@ -447,26 +228,8 @@ Searches doujin based on random with query</p>
     get_random: function
         Gets random doujin
 
-    get_random_with_query: function
-        Gets random doujin with query
-
-    search_by_newest: function
-        Searches for doujin based on newest
-
-    search_by_most_popular: function
-        Searches doujin based on most popular
-
-    search_by_highest_rated: function
-        Searches doujin based on highest rated
-
-    search_by_most_viewed: function
-        Searches doujin based on most viewed
-
-    search_by_title: function
-        Searches doujin based on title
-
-    search_by_random: function
-        Searches doujin based on random with query
+    search: function
+        Searches doujin by tags / artist / character / parody or group
     &#34;&#34;&#34;
 
     @staticmethod
@@ -490,9 +253,9 @@ Searches doujin based on random with query</p>
             The string to be formatted.
         &#34;&#34;&#34;
 
-        return string.replace(&#39; &#39;, &#39;+&#39;)
+        return string.replace(&#34; &#34;, &#34;+&#34;)
 
-    def __init__(self, api_key: str = &#39;&#39;):
+    def __init__(self, api_key: str = &#34;&#34;):
         &#34;&#34;&#34;Initializes the Pururin.
 
         Parameters
@@ -500,11 +263,11 @@ Searches doujin based on random with query</p>
         api_key : str
             scathach.dev API key (optional)
         &#34;&#34;&#34;
-        if api_key == &#39;&#39;:
+        if api_key == &#34;&#34;:
             self.api_key = None
         else:
             self.api_key = api_key
-        self.specs = {&#39;api_key&#39;: self.api_key}
+        self.specs = {&#34;api_key&#34;: self.api_key}
 
     async def get(self, book: int):
         &#34;&#34;&#34;Get doujin from id
@@ -527,31 +290,32 @@ Searches doujin based on random with query</p>
             The book object that represents the specific id response.
         &#34;&#34;&#34;
 
-        self.specs[&#39;g&#39;] = book
+        self.specs[&#34;book&#34;] = book
 
         try:
             book = int(book)
         except ValueError:
-            raise ValueError(&#39;Book must be an int&#39;)
+            raise ValueError(&#34;Book must be an int&#34;)
 
-        data = requests.get(BASE_URL.pururin, params=self.specs)
-        if data.json()[&#39;type&#39;] is None:
-            raise ValueError(&#39;No results found&#39;)
+        data = requests.get(BASE_URL.pururin + &#34;/get&#34;, params=self.specs)
+        if data.json()[&#34;data&#34;][&#34;title&#34;] == &#34;&#34;:
+            raise ValueError(&#34;No results found&#34;)
 
-        self.final = json.loads(Pururin.better_object(data.json()))
+        return better_object(data.json())
 
-        return Pururin.better_object(self.final)
-
-
-    async def search_by_newest(self, query: str):
-        &#34;&#34;&#34;Search for doujin based on newest 
-
-        path: https://pururin.to/search/most-popular?q=alter
+    async def search(self, query: str, page: int = 1, sort: str = &#34;newest&#34;):
+        &#34;&#34;&#34;Search doujin by tags / artist / character / parody or group
 
         Parameters
         ----------
         query : str
-            The query to search for
+            query to search for
+
+        page : int
+            Page number. Default is 1
+
+        sort : str
+            newest, most-popular, highest-rated, most-viewed, title, random
 
         Raises
         ------
@@ -561,197 +325,36 @@ Searches doujin based on random with query</p>
         Returns
         -------
         dict
-            The list object that represents the newest doujin response.
+            The list object that represents the doujin response
         &#34;&#34;&#34;
 
-        self.specs[&#39;query&#39;] = query
-        self.specs[&#39;sort&#39;] = &#34;newest&#34;
-        query = Pururin.auto_space(query)
+        if sort not in [
+            &#34;newest&#34;,
+            &#34;most-popular&#34;,
+            &#34;highest-rated&#34;,
+            &#34;most-viewed&#34;,
+            &#34;title&#34;,
+            &#34;random&#34;,
+        ]:
+            raise ValueError(
+                &#34;Sort must be one of newest, most-popular, highest-rated, most-viewed, title, random&#34;
+            )
 
-        if query == &#39;&#39;:
-            raise ValueError(&#39;Query must be given&#39;)
-        data = requests.get(BASE_URL.pururin + &#39;args.php&#39;, params=self.specs)
+        self.specs[&#34;key&#34;] = query
+        self.specs[&#34;page&#34;] = page
+        self.specs[&#34;sort&#34;] = sort
 
-        if len(data.json()) == 0:
-            raise ValueError(&#39;No results found&#39;)
+        data = requests.get(BASE_URL.pururin + &#34;/search&#34;, params=self.specs)
 
-        return Pururin.better_object(data.json())
+        if len(data.json()[&#34;data&#34;]) == 0:
+            raise ValueError(&#34;No results found&#34;)
 
+        if data.status_code != 200:
+            raise ValueError(
+                &#34;Request failed with status code {}&#34;.format(data.status_code)
+            )
 
-    async def search_by_most_popular(self, query: str):
-        &#34;&#34;&#34;Search doujins by most popular
-
-        path: https://pururin.to/search/most-popular?q=alter
-
-        Parameters
-        ----------
-        query : str
-            The query to search for
-
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
-        Returns
-        -------
-        dict
-            The list object that represents the popular doujin response.
-        &#34;&#34;&#34;
-
-        self.specs[&#39;query&#39;] = query
-        self.specs[&#39;sort&#39;] = &#34;most-popular&#34;
-        query = Pururin.auto_space(query)
-
-        if query == &#39;&#39;:
-            raise ValueError(&#39;Query must be given&#39;)
-        data = requests.get(BASE_URL.pururin + &#39;args.php&#39;, params=self.specs)
-
-        if len(data.json()) == 0:
-            raise ValueError(&#39;No results found&#39;)
-
-        return Pururin.better_object(data.json())
-
-
-    async def search_by_highest_rated(self, query: str):
-        &#34;&#34;&#34;Search for doujin based on the highest rated
-
-        path: https://pururin.to/search/highest-rated?q=alter
-
-        Parameters
-        ----------
-        query : str
-            The query to search for
-
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
-        Returns
-        -------
-        dict
-            The list object that represents the highest rated doujin response.
-        &#34;&#34;&#34;
-
-        self.specs[&#39;query&#39;] = query
-        self.specs[&#39;sort&#39;] = &#34;highest-rated&#34;
-        query = Pururin.auto_space(query)
-
-        if query == &#39;&#39;:
-            raise ValueError(&#39;Query must be given&#39;)
-        data = requests.get(BASE_URL.pururin + &#39;args.php&#39;, params=self.specs)
-
-        if len(data.json()) == 0:
-            raise ValueError(&#39;No results found&#39;)
-
-        return Pururin.better_object(data.json())
-
-
-    async def search_by_most_viewed(self, query: str):
-        &#34;&#34;&#34;Search for doujin based on the most viewed
-
-        path: https://pururin.to/search/most-viewed?q=alter
-
-        Parameters
-        ----------
-        query : str
-            The query to search for
-
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
-        Returns
-        -------
-        dict
-            The list object that represents the most viewed doujin response.
-        &#34;&#34;&#34;
-
-        self.specs[&#39;query&#39;] = query
-        self.specs[&#39;sort&#39;] = &#34;most-viewed&#34;
-        query = Pururin.auto_space(query)
-
-        if query == &#39;&#39;:
-            raise ValueError(&#39;Query must be given&#39;)
-        data = requests.get(BASE_URL.pururin + &#39;args.php&#39;, params=self.specs)
-
-        if len(data.json()) == 0:
-            raise ValueError(&#39;No results found&#39;)
-
-        return Pururin.better_object(data.json())
-
-
-    async def search_by_title(self, query: str):
-        &#34;&#34;&#34;Search for doujin based on title
-
-        path: https://pururin.to/search/title?q=alter
-
-        Parameters
-        ----------
-        query : str
-            The query to search for
-
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
-        Returns
-        -------
-        dict
-            The list object that represents the doujin response according to the title.
-        &#34;&#34;&#34;
-
-        self.specs[&#39;query&#39;] = query
-        self.specs[&#39;sort&#39;] = &#34;title&#34;
-        query = Pururin.auto_space(query)
-
-        if query == &#39;&#39;:
-            raise ValueError(&#39;Query must be given&#39;)
-        data = requests.get(BASE_URL.pururin + &#39;args.php&#39;, params=self.specs)
-
-        if len(data.json()) == 0:
-            raise ValueError(&#39;No results found&#39;)
-
-        return Pururin.better_object(data.json())
-
-
-    async def search_by_random(self, query: str):
-        &#34;&#34;&#34;Search for doujin based on random
-
-        path: https://pururin.to/search/random?q=alter
-
-        Parameters
-        ----------
-        query : str
-            The query to search for
-
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
-        Returns
-        -------
-        dict
-            The list object that represents the doujin response according query and mixed to random.
-        &#34;&#34;&#34;
-
-        self.specs[&#39;query&#39;] = query
-        self.specs[&#39;sort&#39;] = &#34;random&#34;
-        query = Pururin.auto_space(query)
-
-        if query == &#39;&#39;:
-            raise ValueError(&#39;Query must be given&#39;)
-        data = requests.get(BASE_URL.pururin + &#39;args.php&#39;, params=self.specs)
-
-        if len(data.json()) == 0:
-            raise ValueError(&#39;No results found&#39;)
-
-        return Pururin.better_object(data.json())
-
+        return better_object(data.json())
 
     async def get_random(self):
         &#34;&#34;&#34;Gets random doujin on pururin
@@ -761,39 +364,9 @@ Searches doujin based on random with query</p>
         dict
             The book object that represents the random doujin response.
         &#34;&#34;&#34;
-        data = requests.get(BASE_URL.pururin + &#39;random&#39; + &#39;/&#39;, params=self.specs)
+        data = requests.get(BASE_URL.pururin + &#34;/random&#34;, params=self.specs)
 
-        return Pururin.better_object(data.json())
-
-    async def get_random_with_query(self, query: str):
-        &#34;&#34;&#34;Gets doujin on pururin by query
-
-        path: https://pururin.to/search?q=alter
-
-        Parameters
-        ----------
-        query : str
-            The query to search for
-
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
-        Returns
-        -------
-        dict
-            The book object that represents the doujin response according to the query
-        &#34;&#34;&#34;
-
-        self.specs[&#39;p&#39;] = query
-        query = Pururin.auto_space(query)
-        data = requests.get(BASE_URL.pururin + &#39;search.php&#39;, params=self.specs)
-
-        if data.json()[&#39;type&#39;] is None:
-            raise ValueError(&#39;No results found&#39;)
-
-        return Pururin.better_object(data.json())</code></pre>
+        return better_object(data.json())</code></pre>
 </details>
 <h3>Static methods</h3>
 <dl>
@@ -821,7 +394,7 @@ def auto_space(string: str):
         The string to be formatted.
     &#34;&#34;&#34;
 
-    return string.replace(&#39; &#39;, &#39;+&#39;)</code></pre>
+    return string.replace(&#34; &#34;, &#34;+&#34;)</code></pre>
 </details>
 </dd>
 <dt id="janda.pururin.Pururin.better_object"><code class="name flex">
@@ -899,20 +472,18 @@ def better_object(parser: dict):
         The book object that represents the specific id response.
     &#34;&#34;&#34;
 
-    self.specs[&#39;g&#39;] = book
+    self.specs[&#34;book&#34;] = book
 
     try:
         book = int(book)
     except ValueError:
-        raise ValueError(&#39;Book must be an int&#39;)
+        raise ValueError(&#34;Book must be an int&#34;)
 
-    data = requests.get(BASE_URL.pururin, params=self.specs)
-    if data.json()[&#39;type&#39;] is None:
-        raise ValueError(&#39;No results found&#39;)
+    data = requests.get(BASE_URL.pururin + &#34;/get&#34;, params=self.specs)
+    if data.json()[&#34;data&#34;][&#34;title&#34;] == &#34;&#34;:
+        raise ValueError(&#34;No results found&#34;)
 
-    self.final = json.loads(Pururin.better_object(data.json()))
-
-    return Pururin.better_object(self.final)</code></pre>
+    return better_object(data.json())</code></pre>
 </details>
 </dd>
 <dt id="janda.pururin.Pururin.get_random"><code class="name flex">
@@ -937,21 +508,24 @@ def better_object(parser: dict):
     dict
         The book object that represents the random doujin response.
     &#34;&#34;&#34;
-    data = requests.get(BASE_URL.pururin + &#39;random&#39; + &#39;/&#39;, params=self.specs)
+    data = requests.get(BASE_URL.pururin + &#34;/random&#34;, params=self.specs)
 
-    return Pururin.better_object(data.json())</code></pre>
+    return better_object(data.json())</code></pre>
 </details>
 </dd>
-<dt id="janda.pururin.Pururin.get_random_with_query"><code class="name flex">
-<span>async def <span class="ident">get_random_with_query</span></span>(<span>self, query: str)</span>
+<dt id="janda.pururin.Pururin.search"><code class="name flex">
+<span>async def <span class="ident">search</span></span>(<span>self, query: str, page: int = 1, sort: str = 'newest')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Gets doujin on pururin by query</p>
-<p>path: <a href="https://pururin.to/search?q=alter">https://pururin.to/search?q=alter</a></p>
+<div class="desc"><p>Search doujin by tags / artist / character / parody or group</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>query</code></strong> :&ensp;<code>str</code></dt>
-<dd>The query to search for</dd>
+<dd>query to search for</dd>
+<dt><strong><code>page</code></strong> :&ensp;<code>int</code></dt>
+<dd>Page number. Default is 1</dd>
+<dt><strong><code>sort</code></strong> :&ensp;<code>str</code></dt>
+<dd>newest, most-popular, highest-rated, most-viewed, title, random</dd>
 </dl>
 <h2 id="raises">Raises</h2>
 <dl>
@@ -961,21 +535,25 @@ def better_object(parser: dict):
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>dict</code></dt>
-<dd>The book object that represents the doujin response according to the query</dd>
+<dd>The list object that represents the doujin response</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def get_random_with_query(self, query: str):
-    &#34;&#34;&#34;Gets doujin on pururin by query
-
-    path: https://pururin.to/search?q=alter
+<pre><code class="python">async def search(self, query: str, page: int = 1, sort: str = &#34;newest&#34;):
+    &#34;&#34;&#34;Search doujin by tags / artist / character / parody or group
 
     Parameters
     ----------
     query : str
-        The query to search for
+        query to search for
+
+    page : int
+        Page number. Default is 1
+
+    sort : str
+        newest, most-popular, highest-rated, most-viewed, title, random
 
     Raises
     ------
@@ -985,377 +563,36 @@ def better_object(parser: dict):
     Returns
     -------
     dict
-        The book object that represents the doujin response according to the query
+        The list object that represents the doujin response
     &#34;&#34;&#34;
 
-    self.specs[&#39;p&#39;] = query
-    query = Pururin.auto_space(query)
-    data = requests.get(BASE_URL.pururin + &#39;search.php&#39;, params=self.specs)
+    if sort not in [
+        &#34;newest&#34;,
+        &#34;most-popular&#34;,
+        &#34;highest-rated&#34;,
+        &#34;most-viewed&#34;,
+        &#34;title&#34;,
+        &#34;random&#34;,
+    ]:
+        raise ValueError(
+            &#34;Sort must be one of newest, most-popular, highest-rated, most-viewed, title, random&#34;
+        )
 
-    if data.json()[&#39;type&#39;] is None:
-        raise ValueError(&#39;No results found&#39;)
+    self.specs[&#34;key&#34;] = query
+    self.specs[&#34;page&#34;] = page
+    self.specs[&#34;sort&#34;] = sort
 
-    return Pururin.better_object(data.json())</code></pre>
-</details>
-</dd>
-<dt id="janda.pururin.Pururin.search_by_highest_rated"><code class="name flex">
-<span>async def <span class="ident">search_by_highest_rated</span></span>(<span>self, query: str)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Search for doujin based on the highest rated</p>
-<p>path: <a href="https://pururin.to/search/highest-rated?q=alter">https://pururin.to/search/highest-rated?q=alter</a></p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>query</code></strong> :&ensp;<code>str</code></dt>
-<dd>The query to search for</dd>
-</dl>
-<h2 id="raises">Raises</h2>
-<dl>
-<dt><code>ValueError</code></dt>
-<dd>If the doujin is not found.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>dict</code></dt>
-<dd>The list object that represents the highest rated doujin response.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def search_by_highest_rated(self, query: str):
-    &#34;&#34;&#34;Search for doujin based on the highest rated
+    data = requests.get(BASE_URL.pururin + &#34;/search&#34;, params=self.specs)
 
-    path: https://pururin.to/search/highest-rated?q=alter
+    if len(data.json()[&#34;data&#34;]) == 0:
+        raise ValueError(&#34;No results found&#34;)
 
-    Parameters
-    ----------
-    query : str
-        The query to search for
+    if data.status_code != 200:
+        raise ValueError(
+            &#34;Request failed with status code {}&#34;.format(data.status_code)
+        )
 
-    Raises
-    ------
-    ValueError
-        If the doujin is not found.
-
-    Returns
-    -------
-    dict
-        The list object that represents the highest rated doujin response.
-    &#34;&#34;&#34;
-
-    self.specs[&#39;query&#39;] = query
-    self.specs[&#39;sort&#39;] = &#34;highest-rated&#34;
-    query = Pururin.auto_space(query)
-
-    if query == &#39;&#39;:
-        raise ValueError(&#39;Query must be given&#39;)
-    data = requests.get(BASE_URL.pururin + &#39;args.php&#39;, params=self.specs)
-
-    if len(data.json()) == 0:
-        raise ValueError(&#39;No results found&#39;)
-
-    return Pururin.better_object(data.json())</code></pre>
-</details>
-</dd>
-<dt id="janda.pururin.Pururin.search_by_most_popular"><code class="name flex">
-<span>async def <span class="ident">search_by_most_popular</span></span>(<span>self, query: str)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Search doujins by most popular</p>
-<p>path: <a href="https://pururin.to/search/most-popular?q=alter">https://pururin.to/search/most-popular?q=alter</a></p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>query</code></strong> :&ensp;<code>str</code></dt>
-<dd>The query to search for</dd>
-</dl>
-<h2 id="raises">Raises</h2>
-<dl>
-<dt><code>ValueError</code></dt>
-<dd>If the doujin is not found.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>dict</code></dt>
-<dd>The list object that represents the popular doujin response.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def search_by_most_popular(self, query: str):
-    &#34;&#34;&#34;Search doujins by most popular
-
-    path: https://pururin.to/search/most-popular?q=alter
-
-    Parameters
-    ----------
-    query : str
-        The query to search for
-
-    Raises
-    ------
-    ValueError
-        If the doujin is not found.
-
-    Returns
-    -------
-    dict
-        The list object that represents the popular doujin response.
-    &#34;&#34;&#34;
-
-    self.specs[&#39;query&#39;] = query
-    self.specs[&#39;sort&#39;] = &#34;most-popular&#34;
-    query = Pururin.auto_space(query)
-
-    if query == &#39;&#39;:
-        raise ValueError(&#39;Query must be given&#39;)
-    data = requests.get(BASE_URL.pururin + &#39;args.php&#39;, params=self.specs)
-
-    if len(data.json()) == 0:
-        raise ValueError(&#39;No results found&#39;)
-
-    return Pururin.better_object(data.json())</code></pre>
-</details>
-</dd>
-<dt id="janda.pururin.Pururin.search_by_most_viewed"><code class="name flex">
-<span>async def <span class="ident">search_by_most_viewed</span></span>(<span>self, query: str)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Search for doujin based on the most viewed</p>
-<p>path: <a href="https://pururin.to/search/most-viewed?q=alter">https://pururin.to/search/most-viewed?q=alter</a></p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>query</code></strong> :&ensp;<code>str</code></dt>
-<dd>The query to search for</dd>
-</dl>
-<h2 id="raises">Raises</h2>
-<dl>
-<dt><code>ValueError</code></dt>
-<dd>If the doujin is not found.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>dict</code></dt>
-<dd>The list object that represents the most viewed doujin response.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def search_by_most_viewed(self, query: str):
-    &#34;&#34;&#34;Search for doujin based on the most viewed
-
-    path: https://pururin.to/search/most-viewed?q=alter
-
-    Parameters
-    ----------
-    query : str
-        The query to search for
-
-    Raises
-    ------
-    ValueError
-        If the doujin is not found.
-
-    Returns
-    -------
-    dict
-        The list object that represents the most viewed doujin response.
-    &#34;&#34;&#34;
-
-    self.specs[&#39;query&#39;] = query
-    self.specs[&#39;sort&#39;] = &#34;most-viewed&#34;
-    query = Pururin.auto_space(query)
-
-    if query == &#39;&#39;:
-        raise ValueError(&#39;Query must be given&#39;)
-    data = requests.get(BASE_URL.pururin + &#39;args.php&#39;, params=self.specs)
-
-    if len(data.json()) == 0:
-        raise ValueError(&#39;No results found&#39;)
-
-    return Pururin.better_object(data.json())</code></pre>
-</details>
-</dd>
-<dt id="janda.pururin.Pururin.search_by_newest"><code class="name flex">
-<span>async def <span class="ident">search_by_newest</span></span>(<span>self, query: str)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Search for doujin based on newest </p>
-<p>path: <a href="https://pururin.to/search/most-popular?q=alter">https://pururin.to/search/most-popular?q=alter</a></p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>query</code></strong> :&ensp;<code>str</code></dt>
-<dd>The query to search for</dd>
-</dl>
-<h2 id="raises">Raises</h2>
-<dl>
-<dt><code>ValueError</code></dt>
-<dd>If the doujin is not found.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>dict</code></dt>
-<dd>The list object that represents the newest doujin response.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def search_by_newest(self, query: str):
-    &#34;&#34;&#34;Search for doujin based on newest 
-
-    path: https://pururin.to/search/most-popular?q=alter
-
-    Parameters
-    ----------
-    query : str
-        The query to search for
-
-    Raises
-    ------
-    ValueError
-        If the doujin is not found.
-
-    Returns
-    -------
-    dict
-        The list object that represents the newest doujin response.
-    &#34;&#34;&#34;
-
-    self.specs[&#39;query&#39;] = query
-    self.specs[&#39;sort&#39;] = &#34;newest&#34;
-    query = Pururin.auto_space(query)
-
-    if query == &#39;&#39;:
-        raise ValueError(&#39;Query must be given&#39;)
-    data = requests.get(BASE_URL.pururin + &#39;args.php&#39;, params=self.specs)
-
-    if len(data.json()) == 0:
-        raise ValueError(&#39;No results found&#39;)
-
-    return Pururin.better_object(data.json())</code></pre>
-</details>
-</dd>
-<dt id="janda.pururin.Pururin.search_by_random"><code class="name flex">
-<span>async def <span class="ident">search_by_random</span></span>(<span>self, query: str)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Search for doujin based on random</p>
-<p>path: <a href="https://pururin.to/search/random?q=alter">https://pururin.to/search/random?q=alter</a></p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>query</code></strong> :&ensp;<code>str</code></dt>
-<dd>The query to search for</dd>
-</dl>
-<h2 id="raises">Raises</h2>
-<dl>
-<dt><code>ValueError</code></dt>
-<dd>If the doujin is not found.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>dict</code></dt>
-<dd>The list object that represents the doujin response according query and mixed to random.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def search_by_random(self, query: str):
-    &#34;&#34;&#34;Search for doujin based on random
-
-    path: https://pururin.to/search/random?q=alter
-
-    Parameters
-    ----------
-    query : str
-        The query to search for
-
-    Raises
-    ------
-    ValueError
-        If the doujin is not found.
-
-    Returns
-    -------
-    dict
-        The list object that represents the doujin response according query and mixed to random.
-    &#34;&#34;&#34;
-
-    self.specs[&#39;query&#39;] = query
-    self.specs[&#39;sort&#39;] = &#34;random&#34;
-    query = Pururin.auto_space(query)
-
-    if query == &#39;&#39;:
-        raise ValueError(&#39;Query must be given&#39;)
-    data = requests.get(BASE_URL.pururin + &#39;args.php&#39;, params=self.specs)
-
-    if len(data.json()) == 0:
-        raise ValueError(&#39;No results found&#39;)
-
-    return Pururin.better_object(data.json())</code></pre>
-</details>
-</dd>
-<dt id="janda.pururin.Pururin.search_by_title"><code class="name flex">
-<span>async def <span class="ident">search_by_title</span></span>(<span>self, query: str)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Search for doujin based on title</p>
-<p>path: <a href="https://pururin.to/search/title?q=alter">https://pururin.to/search/title?q=alter</a></p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>query</code></strong> :&ensp;<code>str</code></dt>
-<dd>The query to search for</dd>
-</dl>
-<h2 id="raises">Raises</h2>
-<dl>
-<dt><code>ValueError</code></dt>
-<dd>If the doujin is not found.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>dict</code></dt>
-<dd>The list object that represents the doujin response according to the title.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def search_by_title(self, query: str):
-    &#34;&#34;&#34;Search for doujin based on title
-
-    path: https://pururin.to/search/title?q=alter
-
-    Parameters
-    ----------
-    query : str
-        The query to search for
-
-    Raises
-    ------
-    ValueError
-        If the doujin is not found.
-
-    Returns
-    -------
-    dict
-        The list object that represents the doujin response according to the title.
-    &#34;&#34;&#34;
-
-    self.specs[&#39;query&#39;] = query
-    self.specs[&#39;sort&#39;] = &#34;title&#34;
-    query = Pururin.auto_space(query)
-
-    if query == &#39;&#39;:
-        raise ValueError(&#39;Query must be given&#39;)
-    data = requests.get(BASE_URL.pururin + &#39;args.php&#39;, params=self.specs)
-
-    if len(data.json()) == 0:
-        raise ValueError(&#39;No results found&#39;)
-
-    return Pururin.better_object(data.json())</code></pre>
+    return better_object(data.json())</code></pre>
 </details>
 </dd>
 </dl>
@@ -1383,13 +620,7 @@ def better_object(parser: dict):
 <li><code><a title="janda.pururin.Pururin.better_object" href="#janda.pururin.Pururin.better_object">better_object</a></code></li>
 <li><code><a title="janda.pururin.Pururin.get" href="#janda.pururin.Pururin.get">get</a></code></li>
 <li><code><a title="janda.pururin.Pururin.get_random" href="#janda.pururin.Pururin.get_random">get_random</a></code></li>
-<li><code><a title="janda.pururin.Pururin.get_random_with_query" href="#janda.pururin.Pururin.get_random_with_query">get_random_with_query</a></code></li>
-<li><code><a title="janda.pururin.Pururin.search_by_highest_rated" href="#janda.pururin.Pururin.search_by_highest_rated">search_by_highest_rated</a></code></li>
-<li><code><a title="janda.pururin.Pururin.search_by_most_popular" href="#janda.pururin.Pururin.search_by_most_popular">search_by_most_popular</a></code></li>
-<li><code><a title="janda.pururin.Pururin.search_by_most_viewed" href="#janda.pururin.Pururin.search_by_most_viewed">search_by_most_viewed</a></code></li>
-<li><code><a title="janda.pururin.Pururin.search_by_newest" href="#janda.pururin.Pururin.search_by_newest">search_by_newest</a></code></li>
-<li><code><a title="janda.pururin.Pururin.search_by_random" href="#janda.pururin.Pururin.search_by_random">search_by_random</a></code></li>
-<li><code><a title="janda.pururin.Pururin.search_by_title" href="#janda.pururin.Pururin.search_by_title">search_by_title</a></code></li>
+<li><code><a title="janda.pururin.Pururin.search" href="#janda.pururin.Pururin.search">search</a></code></li>
 </ul>
 </li>
 </ul>

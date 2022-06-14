@@ -32,9 +32,10 @@ from .utils.parser import *
 
 BASE_URL = Api()
 
-class Nhentai(object):    
-    &#34;&#34;&#34; Nhentai API wrapper 
-    
+
+class Nhentai(object):
+    &#34;&#34;&#34;Nhentai API wrapper
+
     Methods
     -------
     get : function
@@ -53,16 +54,13 @@ class Nhentai(object):
     def __init__(self):
         self.specs = {}
 
-    async def get(self, book: int, safe: bool = None):
-        &#34;&#34;&#34;Get doujin API from Id
+    async def get(self, book: int):
+        &#34;&#34;&#34;Get doujin book from Id
 
         Parameters
         ----------
         book : int
-            Number id of the book
-
-        safe : bool
-            If True, janda will throw you error whenever contains minor content, such as loli or shota. Default is False
+            The id number of the doujin.
 
         Raises
         ------
@@ -75,45 +73,32 @@ class Nhentai(object):
             The book object that represents the specific id response.
         &#34;&#34;&#34;
 
+        self.specs[&#34;book&#34;] = book
+
         try:
-
-            if isinstance(book, int):
-                book = str(book)
-
-            self.book = str(just_number(book))
-
+            book = int(book)
         except ValueError:
-            raise ValueError(&#39;Book must be contain int&#39;)
+            raise ValueError(&#34;Book must be an int&#34;)
 
-        data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}&#39;)
-        if data.status_code == 404:
-            raise ValueError(&#39;Book not found&#39;)
+        data = requests.get(BASE_URL.nhentai + &#34;/get&#34;, params=self.specs)
 
-        if data.status_code != 200:
-            raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
+        self.final = json.loads(better_object(data.json()))
 
-        self.tags = preg_match_tags(data.json()[&#39;tags&#39;])
+        return better_object(self.final)
 
-        if safe is True:
-            if &#39;lolicon&#39; in self.tags or &#39;shotacon&#39; in self.tags:
-                raise ValueError(&#39;Book contains minor content&#39;)
-        
-        return parser(data.json())
-
-
-    async def search(self, tags: str, page: int = 1, popular: str = &#39;today&#39;):
+    async def search(self, query: str, page: int = 1, sort: str = &#34;popular-today&#34;):
         &#34;&#34;&#34;Search doujin by tags / artist / character / parody or group
 
         Parameters
         ----------
-        tags : str
-            Tags to search for
+        query : str
+            query to search for
 
         page : int
             Page number. Default is 1
 
-        popular : str
-            today, all, and week. Default is today
+        sort : str
+            popular-today, popular-week, popular
 
         Raises
         ------
@@ -126,40 +111,26 @@ class Nhentai(object):
             The list object that represents the doujin response
         &#34;&#34;&#34;
 
-        if popular not in [&#39;today&#39;, &#39;all&#39;, &#39;week&#39;]:
-            raise ValueError(&#39;popular must be today, all, or week&#39;)
+        if sort not in [&#34;popular-today&#34;, &#34;popular-week&#34;, &#34;popular&#34;]:
+            raise ValueError(
+                &#34;Sort must be one of the following: popular-today, popular-week, popular&#34;
+            )
 
-        self.specs[&#39;query&#39;] = tags
-        self.specs[&#39;page&#39;] = page
-        self.specs[&#39;popular&#39;] = popular
+        self.specs[&#34;key&#34;] = query
+        self.specs[&#34;page&#34;] = page
+        self.specs[&#34;sort&#34;] = sort
 
-        data = requests.get(
-            f&#39;{BASE_URL.api}/api/galleries/search&#39;, params=self.specs)
+        data = requests.get(BASE_URL.nhentai + &#34;/search&#34;, params=self.specs)
 
-        if data.status_code == 404:
-            raise ValueError(&#39;No results&#39;)
+        if len(data.json()[&#34;data&#34;]) == 0:
+            raise ValueError(&#34;No results found&#34;)
 
         if data.status_code != 200:
-            raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
+            raise ValueError(
+                &#34;Request failed with status code {}&#34;.format(data.status_code)
+            )
 
-        self.raw_object = json.loads(better_object(data.json()))
-        self.results = self.raw_object[&#39;result&#39;]
-
-        self.results_object = []
-        for result in self.results:
-            self.results_object.append({
-                &#39;id&#39;: result[&#39;id&#39;],
-                &#39;title&#39;: result[&#39;title&#39;],
-                &#39;link&#39;: f&#39;https://nhentai.net/g/{result[&#34;id&#34;]}&#39;,
-                &#39;upload_date&#39;: readable_timestamp(result[&#39;upload_date&#39;]),
-                &#39;num_pages&#39;: result[&#39;num_pages&#39;],
-                &#39;num_favorites&#39;: result[&#39;num_favorites&#39;],
-                &#39;language&#39;: get_language_in_tags(result[&#39;tags&#39;]),
-                &#39;tags&#39;: preg_match_tags(result[&#39;tags&#39;])
-            })
-
-        return better_object(self.results_object)
-
+        return better_object(data.json())
 
     async def search_related(self, book: int):
         &#34;&#34;&#34;Get related book API from book ID or book link
@@ -180,26 +151,20 @@ class Nhentai(object):
             The list object that represents the doujin response
         &#34;&#34;&#34;
 
-        try:
-            if isinstance(book, int):
-                book = str(book)
+        self.specs[&#34;book&#34;] = book
 
-            self.book = str(just_number(book))
-
-        except ValueError:
-            raise ValueError(&#39;Book must be an int&#39;)
-
-        data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}/related&#39;)
+        data = requests.get(BASE_URL.nhentai + &#34;/related&#34;, params=self.specs)
 
         if data.status_code != 200:
-            raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
+            raise ValueError(
+                &#34;Request failed with status code {}&#34;.format(data.status_code)
+            )
 
-        return neat_result(data.json())
-
+        return better_object(data.json())
 
     async def get_random(self):
         &#34;&#34;&#34;Get random doujin
-        
+
         Raises
         ------
         ValueError
@@ -210,24 +175,15 @@ class Nhentai(object):
         dict
             The book object that represents the random doujin response.
         &#34;&#34;&#34;
-        random = requests.get(F&#39;{BASE_URL.api}/random&#39;)
 
-        try:
-            self.book = str(just_number(random.url))
-
-        except ValueError:
-            raise ValueError(&#39;Uh oh something wrong here&#39;)
-
-        data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}&#39;)
-        
-        if data.status_code == 404:
-            raise ValueError(&#39;Error&#39;)
+        data = requests.get(BASE_URL.nhentai + &#34;/random&#34;, params=self.specs)
 
         if data.status_code != 200:
-            raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
+            raise ValueError(
+                &#34;Request failed with status code {}&#34;.format(data.status_code)
+            )
 
-        return parser(data.json())
-        </code></pre>
+        return better_object(data.json())</code></pre>
 </details>
 </section>
 <section>
@@ -243,7 +199,7 @@ class Nhentai(object):
 <span>class <span class="ident">Nhentai</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Nhentai API wrapper </p>
+<div class="desc"><p>Nhentai API wrapper</p>
 <h2 id="methods">Methods</h2>
 <p>get : function
 Get doujin API from Id</p>
@@ -257,9 +213,9 @@ Get random doujin</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Nhentai(object):    
-    &#34;&#34;&#34; Nhentai API wrapper 
-    
+<pre><code class="python">class Nhentai(object):
+    &#34;&#34;&#34;Nhentai API wrapper
+
     Methods
     -------
     get : function
@@ -278,16 +234,13 @@ Get random doujin</p></div>
     def __init__(self):
         self.specs = {}
 
-    async def get(self, book: int, safe: bool = None):
-        &#34;&#34;&#34;Get doujin API from Id
+    async def get(self, book: int):
+        &#34;&#34;&#34;Get doujin book from Id
 
         Parameters
         ----------
         book : int
-            Number id of the book
-
-        safe : bool
-            If True, janda will throw you error whenever contains minor content, such as loli or shota. Default is False
+            The id number of the doujin.
 
         Raises
         ------
@@ -300,45 +253,32 @@ Get random doujin</p></div>
             The book object that represents the specific id response.
         &#34;&#34;&#34;
 
+        self.specs[&#34;book&#34;] = book
+
         try:
-
-            if isinstance(book, int):
-                book = str(book)
-
-            self.book = str(just_number(book))
-
+            book = int(book)
         except ValueError:
-            raise ValueError(&#39;Book must be contain int&#39;)
+            raise ValueError(&#34;Book must be an int&#34;)
 
-        data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}&#39;)
-        if data.status_code == 404:
-            raise ValueError(&#39;Book not found&#39;)
+        data = requests.get(BASE_URL.nhentai + &#34;/get&#34;, params=self.specs)
 
-        if data.status_code != 200:
-            raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
+        self.final = json.loads(better_object(data.json()))
 
-        self.tags = preg_match_tags(data.json()[&#39;tags&#39;])
+        return better_object(self.final)
 
-        if safe is True:
-            if &#39;lolicon&#39; in self.tags or &#39;shotacon&#39; in self.tags:
-                raise ValueError(&#39;Book contains minor content&#39;)
-        
-        return parser(data.json())
-
-
-    async def search(self, tags: str, page: int = 1, popular: str = &#39;today&#39;):
+    async def search(self, query: str, page: int = 1, sort: str = &#34;popular-today&#34;):
         &#34;&#34;&#34;Search doujin by tags / artist / character / parody or group
 
         Parameters
         ----------
-        tags : str
-            Tags to search for
+        query : str
+            query to search for
 
         page : int
             Page number. Default is 1
 
-        popular : str
-            today, all, and week. Default is today
+        sort : str
+            popular-today, popular-week, popular
 
         Raises
         ------
@@ -351,40 +291,26 @@ Get random doujin</p></div>
             The list object that represents the doujin response
         &#34;&#34;&#34;
 
-        if popular not in [&#39;today&#39;, &#39;all&#39;, &#39;week&#39;]:
-            raise ValueError(&#39;popular must be today, all, or week&#39;)
+        if sort not in [&#34;popular-today&#34;, &#34;popular-week&#34;, &#34;popular&#34;]:
+            raise ValueError(
+                &#34;Sort must be one of the following: popular-today, popular-week, popular&#34;
+            )
 
-        self.specs[&#39;query&#39;] = tags
-        self.specs[&#39;page&#39;] = page
-        self.specs[&#39;popular&#39;] = popular
+        self.specs[&#34;key&#34;] = query
+        self.specs[&#34;page&#34;] = page
+        self.specs[&#34;sort&#34;] = sort
 
-        data = requests.get(
-            f&#39;{BASE_URL.api}/api/galleries/search&#39;, params=self.specs)
+        data = requests.get(BASE_URL.nhentai + &#34;/search&#34;, params=self.specs)
 
-        if data.status_code == 404:
-            raise ValueError(&#39;No results&#39;)
+        if len(data.json()[&#34;data&#34;]) == 0:
+            raise ValueError(&#34;No results found&#34;)
 
         if data.status_code != 200:
-            raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
+            raise ValueError(
+                &#34;Request failed with status code {}&#34;.format(data.status_code)
+            )
 
-        self.raw_object = json.loads(better_object(data.json()))
-        self.results = self.raw_object[&#39;result&#39;]
-
-        self.results_object = []
-        for result in self.results:
-            self.results_object.append({
-                &#39;id&#39;: result[&#39;id&#39;],
-                &#39;title&#39;: result[&#39;title&#39;],
-                &#39;link&#39;: f&#39;https://nhentai.net/g/{result[&#34;id&#34;]}&#39;,
-                &#39;upload_date&#39;: readable_timestamp(result[&#39;upload_date&#39;]),
-                &#39;num_pages&#39;: result[&#39;num_pages&#39;],
-                &#39;num_favorites&#39;: result[&#39;num_favorites&#39;],
-                &#39;language&#39;: get_language_in_tags(result[&#39;tags&#39;]),
-                &#39;tags&#39;: preg_match_tags(result[&#39;tags&#39;])
-            })
-
-        return better_object(self.results_object)
-
+        return better_object(data.json())
 
     async def search_related(self, book: int):
         &#34;&#34;&#34;Get related book API from book ID or book link
@@ -405,26 +331,20 @@ Get random doujin</p></div>
             The list object that represents the doujin response
         &#34;&#34;&#34;
 
-        try:
-            if isinstance(book, int):
-                book = str(book)
+        self.specs[&#34;book&#34;] = book
 
-            self.book = str(just_number(book))
-
-        except ValueError:
-            raise ValueError(&#39;Book must be an int&#39;)
-
-        data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}/related&#39;)
+        data = requests.get(BASE_URL.nhentai + &#34;/related&#34;, params=self.specs)
 
         if data.status_code != 200:
-            raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
+            raise ValueError(
+                &#34;Request failed with status code {}&#34;.format(data.status_code)
+            )
 
-        return neat_result(data.json())
-
+        return better_object(data.json())
 
     async def get_random(self):
         &#34;&#34;&#34;Get random doujin
-        
+
         Raises
         ------
         ValueError
@@ -435,37 +355,27 @@ Get random doujin</p></div>
         dict
             The book object that represents the random doujin response.
         &#34;&#34;&#34;
-        random = requests.get(F&#39;{BASE_URL.api}/random&#39;)
 
-        try:
-            self.book = str(just_number(random.url))
-
-        except ValueError:
-            raise ValueError(&#39;Uh oh something wrong here&#39;)
-
-        data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}&#39;)
-        
-        if data.status_code == 404:
-            raise ValueError(&#39;Error&#39;)
+        data = requests.get(BASE_URL.nhentai + &#34;/random&#34;, params=self.specs)
 
         if data.status_code != 200:
-            raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
+            raise ValueError(
+                &#34;Request failed with status code {}&#34;.format(data.status_code)
+            )
 
-        return parser(data.json())</code></pre>
+        return better_object(data.json())</code></pre>
 </details>
 <h3>Methods</h3>
 <dl>
 <dt id="janda.nhentai.Nhentai.get"><code class="name flex">
-<span>async def <span class="ident">get</span></span>(<span>self, book: int, safe: bool = None)</span>
+<span>async def <span class="ident">get</span></span>(<span>self, book: int)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get doujin API from Id</p>
+<div class="desc"><p>Get doujin book from Id</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>book</code></strong> :&ensp;<code>int</code></dt>
-<dd>Number id of the book</dd>
-<dt><strong><code>safe</code></strong> :&ensp;<code>bool</code></dt>
-<dd>If True, janda will throw you error whenever contains minor content, such as loli or shota. Default is False</dd>
+<dd>The id number of the doujin.</dd>
 </dl>
 <h2 id="raises">Raises</h2>
 <dl>
@@ -481,16 +391,13 @@ Get random doujin</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def get(self, book: int, safe: bool = None):
-    &#34;&#34;&#34;Get doujin API from Id
+<pre><code class="python">async def get(self, book: int):
+    &#34;&#34;&#34;Get doujin book from Id
 
     Parameters
     ----------
     book : int
-        Number id of the book
-
-    safe : bool
-        If True, janda will throw you error whenever contains minor content, such as loli or shota. Default is False
+        The id number of the doujin.
 
     Raises
     ------
@@ -503,30 +410,18 @@ Get random doujin</p></div>
         The book object that represents the specific id response.
     &#34;&#34;&#34;
 
+    self.specs[&#34;book&#34;] = book
+
     try:
-
-        if isinstance(book, int):
-            book = str(book)
-
-        self.book = str(just_number(book))
-
+        book = int(book)
     except ValueError:
-        raise ValueError(&#39;Book must be contain int&#39;)
+        raise ValueError(&#34;Book must be an int&#34;)
 
-    data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}&#39;)
-    if data.status_code == 404:
-        raise ValueError(&#39;Book not found&#39;)
+    data = requests.get(BASE_URL.nhentai + &#34;/get&#34;, params=self.specs)
 
-    if data.status_code != 200:
-        raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
+    self.final = json.loads(better_object(data.json()))
 
-    self.tags = preg_match_tags(data.json()[&#39;tags&#39;])
-
-    if safe is True:
-        if &#39;lolicon&#39; in self.tags or &#39;shotacon&#39; in self.tags:
-            raise ValueError(&#39;Book contains minor content&#39;)
-    
-    return parser(data.json())</code></pre>
+    return better_object(self.final)</code></pre>
 </details>
 </dd>
 <dt id="janda.nhentai.Nhentai.get_random"><code class="name flex">
@@ -550,7 +445,7 @@ Get random doujin</p></div>
 </summary>
 <pre><code class="python">async def get_random(self):
     &#34;&#34;&#34;Get random doujin
-    
+
     Raises
     ------
     ValueError
@@ -561,38 +456,30 @@ Get random doujin</p></div>
     dict
         The book object that represents the random doujin response.
     &#34;&#34;&#34;
-    random = requests.get(F&#39;{BASE_URL.api}/random&#39;)
 
-    try:
-        self.book = str(just_number(random.url))
-
-    except ValueError:
-        raise ValueError(&#39;Uh oh something wrong here&#39;)
-
-    data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}&#39;)
-    
-    if data.status_code == 404:
-        raise ValueError(&#39;Error&#39;)
+    data = requests.get(BASE_URL.nhentai + &#34;/random&#34;, params=self.specs)
 
     if data.status_code != 200:
-        raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
+        raise ValueError(
+            &#34;Request failed with status code {}&#34;.format(data.status_code)
+        )
 
-    return parser(data.json())</code></pre>
+    return better_object(data.json())</code></pre>
 </details>
 </dd>
 <dt id="janda.nhentai.Nhentai.search"><code class="name flex">
-<span>async def <span class="ident">search</span></span>(<span>self, tags: str, page: int = 1, popular: str = 'today')</span>
+<span>async def <span class="ident">search</span></span>(<span>self, query: str, page: int = 1, sort: str = 'popular-today')</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Search doujin by tags / artist / character / parody or group</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
-<dt><strong><code>tags</code></strong> :&ensp;<code>str</code></dt>
-<dd>Tags to search for</dd>
+<dt><strong><code>query</code></strong> :&ensp;<code>str</code></dt>
+<dd>query to search for</dd>
 <dt><strong><code>page</code></strong> :&ensp;<code>int</code></dt>
 <dd>Page number. Default is 1</dd>
-<dt><strong><code>popular</code></strong> :&ensp;<code>str</code></dt>
-<dd>today, all, and week. Default is today</dd>
+<dt><strong><code>sort</code></strong> :&ensp;<code>str</code></dt>
+<dd>popular-today, popular-week, popular</dd>
 </dl>
 <h2 id="raises">Raises</h2>
 <dl>
@@ -608,19 +495,19 @@ Get random doujin</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def search(self, tags: str, page: int = 1, popular: str = &#39;today&#39;):
+<pre><code class="python">async def search(self, query: str, page: int = 1, sort: str = &#34;popular-today&#34;):
     &#34;&#34;&#34;Search doujin by tags / artist / character / parody or group
 
     Parameters
     ----------
-    tags : str
-        Tags to search for
+    query : str
+        query to search for
 
     page : int
         Page number. Default is 1
 
-    popular : str
-        today, all, and week. Default is today
+    sort : str
+        popular-today, popular-week, popular
 
     Raises
     ------
@@ -633,39 +520,26 @@ Get random doujin</p></div>
         The list object that represents the doujin response
     &#34;&#34;&#34;
 
-    if popular not in [&#39;today&#39;, &#39;all&#39;, &#39;week&#39;]:
-        raise ValueError(&#39;popular must be today, all, or week&#39;)
+    if sort not in [&#34;popular-today&#34;, &#34;popular-week&#34;, &#34;popular&#34;]:
+        raise ValueError(
+            &#34;Sort must be one of the following: popular-today, popular-week, popular&#34;
+        )
 
-    self.specs[&#39;query&#39;] = tags
-    self.specs[&#39;page&#39;] = page
-    self.specs[&#39;popular&#39;] = popular
+    self.specs[&#34;key&#34;] = query
+    self.specs[&#34;page&#34;] = page
+    self.specs[&#34;sort&#34;] = sort
 
-    data = requests.get(
-        f&#39;{BASE_URL.api}/api/galleries/search&#39;, params=self.specs)
+    data = requests.get(BASE_URL.nhentai + &#34;/search&#34;, params=self.specs)
 
-    if data.status_code == 404:
-        raise ValueError(&#39;No results&#39;)
+    if len(data.json()[&#34;data&#34;]) == 0:
+        raise ValueError(&#34;No results found&#34;)
 
     if data.status_code != 200:
-        raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
+        raise ValueError(
+            &#34;Request failed with status code {}&#34;.format(data.status_code)
+        )
 
-    self.raw_object = json.loads(better_object(data.json()))
-    self.results = self.raw_object[&#39;result&#39;]
-
-    self.results_object = []
-    for result in self.results:
-        self.results_object.append({
-            &#39;id&#39;: result[&#39;id&#39;],
-            &#39;title&#39;: result[&#39;title&#39;],
-            &#39;link&#39;: f&#39;https://nhentai.net/g/{result[&#34;id&#34;]}&#39;,
-            &#39;upload_date&#39;: readable_timestamp(result[&#39;upload_date&#39;]),
-            &#39;num_pages&#39;: result[&#39;num_pages&#39;],
-            &#39;num_favorites&#39;: result[&#39;num_favorites&#39;],
-            &#39;language&#39;: get_language_in_tags(result[&#39;tags&#39;]),
-            &#39;tags&#39;: preg_match_tags(result[&#39;tags&#39;])
-        })
-
-    return better_object(self.results_object)</code></pre>
+    return better_object(data.json())</code></pre>
 </details>
 </dd>
 <dt id="janda.nhentai.Nhentai.search_related"><code class="name flex">
@@ -711,21 +585,16 @@ Get random doujin</p></div>
         The list object that represents the doujin response
     &#34;&#34;&#34;
 
-    try:
-        if isinstance(book, int):
-            book = str(book)
+    self.specs[&#34;book&#34;] = book
 
-        self.book = str(just_number(book))
-
-    except ValueError:
-        raise ValueError(&#39;Book must be an int&#39;)
-
-    data = requests.get(F&#39;{BASE_URL.api}/api/gallery/{self.book}/related&#39;)
+    data = requests.get(BASE_URL.nhentai + &#34;/related&#34;, params=self.specs)
 
     if data.status_code != 200:
-        raise ValueError(&#39;Request failed with status code {}&#39;.format(data.status_code))
+        raise ValueError(
+            &#34;Request failed with status code {}&#34;.format(data.status_code)
+        )
 
-    return neat_result(data.json())</code></pre>
+    return better_object(data.json())</code></pre>
 </details>
 </dd>
 </dl>

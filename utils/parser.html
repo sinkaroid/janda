@@ -30,15 +30,15 @@
 import re
 from datetime import datetime
 
+JANDA = &#34;https://janda.mod.land&#34;
 
-class Api():
+
+class Api:
     &#34;&#34;&#34;Api class
 
     This class is used to parse the data from the api.
 
     Attributes:
-        api (str): The base url of nhentai api.
-        img (str): The base url of nhentai image.
         pururin (str): The base url of pururin api.
         hentaifox (str): The base url of hentaifox api.
         hentai2read (str): The base url of hentai2read api.
@@ -47,27 +47,20 @@ class Api():
         asmhentai (str): The base url of asmhentai api.
     &#34;&#34;&#34;
 
-    def __init__(self,
-                 BASE_URL: str = &#34;https://nhentai.net&#34;,
-                 BASE_IMG: str = &#34;https://i.nhentai.net/galleries&#34;,
-                 BASE_THUMBNAIL: str = &#34;https://t.nhentai.net/galleries&#34;,
-                 BASE_PURURIN: str = &#34;https://scathach.redsplit.org/v4/pururin/&#34;,
-                 BASE_NHENTAI_UNBLOCK: str = &#34;https://nhentai.sinxdr.workers.dev&#34;,
-                 BASE_HENTAIFOX: str = &#34;https://scathach.redsplit.org/v4/hentaifox/&#34;,
-                 BASE_HENTAI2READ: str = &#34;https://scathach.redsplit.org/v4/hentai2read/&#34;,
-                 BASE_SIMPLY_HENTAI: str = &#34;https://scathach.redsplit.org/v4/simply-hentai/&#34;,
-                 BASE_QHENTAI: str = &#34;https://scathach.redsplit.org/v4/qhentai/&#34;,
-                 BASE_ASMHENTAI: str = &#34;https://scathach.redsplit.org/v4/asmhentai/&#34;):
-
-        self.api = BASE_URL
-        self.img = BASE_IMG
-        self.thumbnail = BASE_THUMBNAIL
+    def __init__(
+        self,
+        BASE_PURURIN: str = f&#34;{JANDA}/pururin&#34;,
+        BASE_NHENTAI: str = f&#34;{JANDA}/nhentai&#34;,
+        BASE_HENTAIFOX: str = f&#34;{JANDA}/hentaifox&#34;,
+        BASE_HENTAI2READ: str = f&#34;{JANDA}/hentai2read&#34;,
+        BASE_SIMPLY_HENTAI: str = f&#34;{JANDA}/simply-hentai&#34;,
+        BASE_ASMHENTAI: str = f&#34;{JANDA}/asmhentai&#34;,
+    ):
+        self.nhentai = BASE_NHENTAI
         self.pururin = BASE_PURURIN
         self.hentaifox = BASE_HENTAIFOX
         self.hentai2read = BASE_HENTAI2READ
-        self.nhentai_unblock = BASE_NHENTAI_UNBLOCK
         self.simply_hentai = BASE_SIMPLY_HENTAI
-        self.qhentai = BASE_QHENTAI
         self.asmhentai = BASE_ASMHENTAI
 
 
@@ -83,13 +76,12 @@ def list_api():
     &#34;&#34;&#34;
     # create list of api
     api_list = [
-        BASE_URL.api,
+        BASE_URL.nhentai,
         BASE_URL.pururin,
         BASE_URL.hentaifox,
         BASE_URL.hentai2read,
         BASE_URL.simply_hentai,
-        BASE_URL.qhentai,
-        BASE_URL.asmhentai
+        BASE_URL.asmhentai,
     ]
     return api_list
 
@@ -107,22 +99,7 @@ def auto_space(string: str):
     str
 
     &#34;&#34;&#34;
-    return string.replace(&#39; &#39;, &#39;+&#39;)
-
-
-def just_number(string: str):
-    &#34;&#34;&#34;Remove the non-numeric characters from a string.
-
-    Parameters
-    ----------
-    string : str
-        The desired string.
-
-    Returns
-    -------
-    str
-    &#34;&#34;&#34;
-    return re.sub(r&#39;\D&#39;, &#39;&#39;, string)
+    return string.replace(&#34; &#34;, &#34;+&#34;)
 
 
 def better_object(parser: dict):
@@ -140,162 +117,6 @@ def better_object(parser: dict):
     &#34;&#34;&#34;
     return json.dumps(parser, sort_keys=True, indent=4, ensure_ascii=False)
 
-
-def readable_timestamp(timestamp: int):
-    &#34;&#34;&#34;Converts a timestamp to a datetime object.
-
-    Parameters
-    ----------
-    timestamp : int
-        The timestamp to be converted.
-
-    Returns
-    -------
-    str
-    &#34;&#34;&#34;
-    return datetime.utcfromtimestamp(int(timestamp)).strftime(&#39;%Y-%m-%d %H:%M:%S&#39;)
-
-
-def preg_match_tags(tags: dict):
-    &#34;&#34;&#34;Parses the tags and returns a list of tags.
-
-    Parameters
-    ----------
-    tags : dict
-        Tags object
-
-    Returns
-    -------
-    list
-    &#34;&#34;&#34;
-
-    tags_name = []
-    for tag in tags:
-        tags_name.append(tag[&#39;name&#39;])
-    return tags_name
-
-
-def get_language_in_tags(tags: dict):
-    &#34;&#34;&#34;Parses language value
-
-    Parameters
-    ----------
-    tags : dict
-        Tags object
-
-    Returns
-    -------
-    str
-    &#34;&#34;&#34;
-
-    for tag in tags:
-        if tag[&#39;type&#39;] == &#39;language&#39;:
-            return tag[&#39;name&#39;]
-
-
-def parser(obj: dict):
-    &#34;&#34;&#34;Make better list
-
-    Parameters
-    ----------
-    obj : dict
-        The object to be parsed.
-
-    Returns
-    -------
-    list
-    &#34;&#34;&#34;
-
-    raw_object = json.loads(better_object(obj))
-    media = raw_object[&#39;media_id&#39;]
-
-    book_object = {
-        &#39;details&#39;: {
-            &#39;id&#39;: raw_object[&#39;id&#39;],
-            &#39;title&#39;: raw_object[&#39;title&#39;],
-            &#39;link&#39;: f&#39;https://nhentai.net/g/{raw_object[&#34;id&#34;]}&#39;,
-            &#39;upload_date&#39;: readable_timestamp(raw_object[&#39;upload_date&#39;])
-        },
-        &#39;scanlator&#39;: raw_object[&#39;scanlator&#39;],
-        &#39;num_pages&#39;: raw_object[&#39;num_pages&#39;],
-        &#39;num_favorites&#39;: raw_object[&#39;num_favorites&#39;]}
-
-    tags = []
-    for tag in raw_object[&#39;tags&#39;]:
-        tags.append(tag[&#39;name&#39;])
-    book_object[&#39;tags&#39;] = tags
-
-    for tag in raw_object[&#39;tags&#39;]:
-        if tag[&#39;type&#39;] == &#39;language&#39;:
-            book_object[&#39;language&#39;] = tag[&#39;name&#39;]
-            break
-
-    image_urls = []
-    for image in raw_object[&#39;images&#39;][&#39;pages&#39;]:
-
-        if image[&#39;t&#39;] == &#39;p&#39;:
-            image_urls.append(
-                f&#39;{BASE_URL.img}/{media}/{len(image_urls) + 1}.png&#39;)
-
-        elif image[&#39;t&#39;] == &#39;j&#39;:
-            image_urls.append(
-                f&#39;{BASE_URL.img}/{media}/{len(image_urls) + 1}.jpg&#39;)
-
-        elif image[&#39;t&#39;] == &#39;g&#39;:
-            image_urls.append(
-                f&#39;{BASE_URL.img}/{media}/{len(image_urls) + 1}.gif&#39;)
-
-    book_object[&#39;image_urls&#39;] = image_urls
-
-    thumbnail_urls = []
-    for image in raw_object[&#39;images&#39;][&#39;pages&#39;]:
-        if image[&#39;t&#39;] == &#39;p&#39;:
-            thumbnail_urls.append(
-                f&#39;{BASE_URL.thumbnail}/{media}/{len(thumbnail_urls) + 1}t.png&#39;)
-
-        elif image[&#39;t&#39;] == &#39;j&#39;:
-            thumbnail_urls.append(
-                f&#39;{BASE_URL.thumbnail}/{media}/{len(thumbnail_urls) + 1}t.jpg&#39;)
-
-        elif image[&#39;t&#39;] == &#39;g&#39;:
-            thumbnail_urls.append(
-                f&#39;{BASE_URL.thumbnail}/{media}/{len(thumbnail_urls) + 1}t.gif&#39;)
-
-    book_object[&#39;thumbnail_urls&#39;] = thumbnail_urls
-    return better_object(book_object)
-
-
-def neat_result(obj: dict):
-    &#34;&#34;&#34;Make better list
-
-    Parameters
-    ----------
-    parser : dict
-        The json object to be parsed.
-
-    Returns
-    -------
-    str
-       deserialized json as string
-
-    &#34;&#34;&#34;
-    raw_object = json.loads(better_object(obj))
-    results = raw_object[&#39;result&#39;]
-
-    results_object = []
-    for result in results:
-        results_object.append({
-            &#39;id&#39;: result[&#39;id&#39;],
-            &#39;title&#39;: result[&#39;title&#39;],
-            &#39;link&#39;: f&#39;https://nhentai.net/g/{result[&#34;id&#34;]}&#39;,
-            &#39;upload_date&#39;: readable_timestamp(result[&#39;upload_date&#39;]),
-            &#39;num_pages&#39;: result[&#39;num_pages&#39;],
-            &#39;num_favorites&#39;: result[&#39;num_favorites&#39;],
-            &#39;language&#39;: get_language_in_tags(result[&#39;tags&#39;]),
-            &#39;tags&#39;: preg_match_tags(result[&#39;tags&#39;])
-        })
-
-    return better_object(results_object)
 
 def resolve(b_object: dict) -&gt; dict:
     &#34;&#34;&#34;Resolves the json object meant data with bad formatting, arbitary indent, arbitary sort keys but it is resolved and ready to extends
@@ -349,7 +170,7 @@ def resolve(b_object: dict) -&gt; dict:
     str
 
     &#34;&#34;&#34;
-    return string.replace(&#39; &#39;, &#39;+&#39;)</code></pre>
+    return string.replace(&#34; &#34;, &#34;+&#34;)</code></pre>
 </details>
 </dd>
 <dt id="janda.utils.parser.better_object"><code class="name flex">
@@ -388,77 +209,6 @@ def resolve(b_object: dict) -&gt; dict:
     return json.dumps(parser, sort_keys=True, indent=4, ensure_ascii=False)</code></pre>
 </details>
 </dd>
-<dt id="janda.utils.parser.get_language_in_tags"><code class="name flex">
-<span>def <span class="ident">get_language_in_tags</span></span>(<span>tags: dict)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Parses language value</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>tags</code></strong> :&ensp;<code>dict</code></dt>
-<dd>Tags object</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>str</code></dt>
-<dd>&nbsp;</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_language_in_tags(tags: dict):
-    &#34;&#34;&#34;Parses language value
-
-    Parameters
-    ----------
-    tags : dict
-        Tags object
-
-    Returns
-    -------
-    str
-    &#34;&#34;&#34;
-
-    for tag in tags:
-        if tag[&#39;type&#39;] == &#39;language&#39;:
-            return tag[&#39;name&#39;]</code></pre>
-</details>
-</dd>
-<dt id="janda.utils.parser.just_number"><code class="name flex">
-<span>def <span class="ident">just_number</span></span>(<span>string: str)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Remove the non-numeric characters from a string.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>string</code></strong> :&ensp;<code>str</code></dt>
-<dd>The desired string.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>str</code></dt>
-<dd>&nbsp;</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def just_number(string: str):
-    &#34;&#34;&#34;Remove the non-numeric characters from a string.
-
-    Parameters
-    ----------
-    string : str
-        The desired string.
-
-    Returns
-    -------
-    str
-    &#34;&#34;&#34;
-    return re.sub(r&#39;\D&#39;, &#39;&#39;, string)</code></pre>
-</details>
-</dd>
 <dt id="janda.utils.parser.list_api"><code class="name flex">
 <span>def <span class="ident">list_api</span></span>(<span>)</span>
 </code></dt>
@@ -482,231 +232,14 @@ def resolve(b_object: dict) -&gt; dict:
     &#34;&#34;&#34;
     # create list of api
     api_list = [
-        BASE_URL.api,
+        BASE_URL.nhentai,
         BASE_URL.pururin,
         BASE_URL.hentaifox,
         BASE_URL.hentai2read,
         BASE_URL.simply_hentai,
-        BASE_URL.qhentai,
-        BASE_URL.asmhentai
+        BASE_URL.asmhentai,
     ]
     return api_list</code></pre>
-</details>
-</dd>
-<dt id="janda.utils.parser.neat_result"><code class="name flex">
-<span>def <span class="ident">neat_result</span></span>(<span>obj: dict)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Make better list</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>parser</code></strong> :&ensp;<code>dict</code></dt>
-<dd>The json object to be parsed.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>str</code></dt>
-<dd>&nbsp;</dd>
-</dl>
-<p>deserialized json as string</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def neat_result(obj: dict):
-    &#34;&#34;&#34;Make better list
-
-    Parameters
-    ----------
-    parser : dict
-        The json object to be parsed.
-
-    Returns
-    -------
-    str
-       deserialized json as string
-
-    &#34;&#34;&#34;
-    raw_object = json.loads(better_object(obj))
-    results = raw_object[&#39;result&#39;]
-
-    results_object = []
-    for result in results:
-        results_object.append({
-            &#39;id&#39;: result[&#39;id&#39;],
-            &#39;title&#39;: result[&#39;title&#39;],
-            &#39;link&#39;: f&#39;https://nhentai.net/g/{result[&#34;id&#34;]}&#39;,
-            &#39;upload_date&#39;: readable_timestamp(result[&#39;upload_date&#39;]),
-            &#39;num_pages&#39;: result[&#39;num_pages&#39;],
-            &#39;num_favorites&#39;: result[&#39;num_favorites&#39;],
-            &#39;language&#39;: get_language_in_tags(result[&#39;tags&#39;]),
-            &#39;tags&#39;: preg_match_tags(result[&#39;tags&#39;])
-        })
-
-    return better_object(results_object)</code></pre>
-</details>
-</dd>
-<dt id="janda.utils.parser.parser"><code class="name flex">
-<span>def <span class="ident">parser</span></span>(<span>obj: dict)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Make better list</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>obj</code></strong> :&ensp;<code>dict</code></dt>
-<dd>The object to be parsed.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>list</code></dt>
-<dd>&nbsp;</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def parser(obj: dict):
-    &#34;&#34;&#34;Make better list
-
-    Parameters
-    ----------
-    obj : dict
-        The object to be parsed.
-
-    Returns
-    -------
-    list
-    &#34;&#34;&#34;
-
-    raw_object = json.loads(better_object(obj))
-    media = raw_object[&#39;media_id&#39;]
-
-    book_object = {
-        &#39;details&#39;: {
-            &#39;id&#39;: raw_object[&#39;id&#39;],
-            &#39;title&#39;: raw_object[&#39;title&#39;],
-            &#39;link&#39;: f&#39;https://nhentai.net/g/{raw_object[&#34;id&#34;]}&#39;,
-            &#39;upload_date&#39;: readable_timestamp(raw_object[&#39;upload_date&#39;])
-        },
-        &#39;scanlator&#39;: raw_object[&#39;scanlator&#39;],
-        &#39;num_pages&#39;: raw_object[&#39;num_pages&#39;],
-        &#39;num_favorites&#39;: raw_object[&#39;num_favorites&#39;]}
-
-    tags = []
-    for tag in raw_object[&#39;tags&#39;]:
-        tags.append(tag[&#39;name&#39;])
-    book_object[&#39;tags&#39;] = tags
-
-    for tag in raw_object[&#39;tags&#39;]:
-        if tag[&#39;type&#39;] == &#39;language&#39;:
-            book_object[&#39;language&#39;] = tag[&#39;name&#39;]
-            break
-
-    image_urls = []
-    for image in raw_object[&#39;images&#39;][&#39;pages&#39;]:
-
-        if image[&#39;t&#39;] == &#39;p&#39;:
-            image_urls.append(
-                f&#39;{BASE_URL.img}/{media}/{len(image_urls) + 1}.png&#39;)
-
-        elif image[&#39;t&#39;] == &#39;j&#39;:
-            image_urls.append(
-                f&#39;{BASE_URL.img}/{media}/{len(image_urls) + 1}.jpg&#39;)
-
-        elif image[&#39;t&#39;] == &#39;g&#39;:
-            image_urls.append(
-                f&#39;{BASE_URL.img}/{media}/{len(image_urls) + 1}.gif&#39;)
-
-    book_object[&#39;image_urls&#39;] = image_urls
-
-    thumbnail_urls = []
-    for image in raw_object[&#39;images&#39;][&#39;pages&#39;]:
-        if image[&#39;t&#39;] == &#39;p&#39;:
-            thumbnail_urls.append(
-                f&#39;{BASE_URL.thumbnail}/{media}/{len(thumbnail_urls) + 1}t.png&#39;)
-
-        elif image[&#39;t&#39;] == &#39;j&#39;:
-            thumbnail_urls.append(
-                f&#39;{BASE_URL.thumbnail}/{media}/{len(thumbnail_urls) + 1}t.jpg&#39;)
-
-        elif image[&#39;t&#39;] == &#39;g&#39;:
-            thumbnail_urls.append(
-                f&#39;{BASE_URL.thumbnail}/{media}/{len(thumbnail_urls) + 1}t.gif&#39;)
-
-    book_object[&#39;thumbnail_urls&#39;] = thumbnail_urls
-    return better_object(book_object)</code></pre>
-</details>
-</dd>
-<dt id="janda.utils.parser.preg_match_tags"><code class="name flex">
-<span>def <span class="ident">preg_match_tags</span></span>(<span>tags: dict)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Parses the tags and returns a list of tags.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>tags</code></strong> :&ensp;<code>dict</code></dt>
-<dd>Tags object</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>list</code></dt>
-<dd>&nbsp;</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def preg_match_tags(tags: dict):
-    &#34;&#34;&#34;Parses the tags and returns a list of tags.
-
-    Parameters
-    ----------
-    tags : dict
-        Tags object
-
-    Returns
-    -------
-    list
-    &#34;&#34;&#34;
-
-    tags_name = []
-    for tag in tags:
-        tags_name.append(tag[&#39;name&#39;])
-    return tags_name</code></pre>
-</details>
-</dd>
-<dt id="janda.utils.parser.readable_timestamp"><code class="name flex">
-<span>def <span class="ident">readable_timestamp</span></span>(<span>timestamp: int)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Converts a timestamp to a datetime object.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>timestamp</code></strong> :&ensp;<code>int</code></dt>
-<dd>The timestamp to be converted.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>str</code></dt>
-<dd>&nbsp;</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def readable_timestamp(timestamp: int):
-    &#34;&#34;&#34;Converts a timestamp to a datetime object.
-
-    Parameters
-    ----------
-    timestamp : int
-        The timestamp to be converted.
-
-    Returns
-    -------
-    str
-    &#34;&#34;&#34;
-    return datetime.utcfromtimestamp(int(timestamp)).strftime(&#39;%Y-%m-%d %H:%M:%S&#39;)</code></pre>
 </details>
 </dd>
 <dt id="janda.utils.parser.resolve"><code class="name flex">
@@ -749,17 +282,13 @@ Parameters</p>
 <dl>
 <dt id="janda.utils.parser.Api"><code class="flex name class">
 <span>class <span class="ident">Api</span></span>
-<span>(</span><span>BASE_URL: str = 'https://nhentai.net', BASE_IMG: str = 'https://i.nhentai.net/galleries', BASE_THUMBNAIL: str = 'https://t.nhentai.net/galleries', BASE_PURURIN: str = 'https://scathach.redsplit.org/v4/pururin/', BASE_NHENTAI_UNBLOCK: str = 'https://nhentai.sinxdr.workers.dev', BASE_HENTAIFOX: str = 'https://scathach.redsplit.org/v4/hentaifox/', BASE_HENTAI2READ: str = 'https://scathach.redsplit.org/v4/hentai2read/', BASE_SIMPLY_HENTAI: str = 'https://scathach.redsplit.org/v4/simply-hentai/', BASE_QHENTAI: str = 'https://scathach.redsplit.org/v4/qhentai/', BASE_ASMHENTAI: str = 'https://scathach.redsplit.org/v4/asmhentai/')</span>
+<span>(</span><span>BASE_PURURIN: str = 'https://janda.mod.land/pururin', BASE_NHENTAI: str = 'https://janda.mod.land/nhentai', BASE_HENTAIFOX: str = 'https://janda.mod.land/hentaifox', BASE_HENTAI2READ: str = 'https://janda.mod.land/hentai2read', BASE_SIMPLY_HENTAI: str = 'https://janda.mod.land/simply-hentai', BASE_ASMHENTAI: str = 'https://janda.mod.land/asmhentai')</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Api class</p>
 <p>This class is used to parse the data from the api.</p>
 <h2 id="attributes">Attributes</h2>
 <dl>
-<dt><strong><code>api</code></strong> :&ensp;<code>str</code></dt>
-<dd>The base url of nhentai api.</dd>
-<dt><strong><code>img</code></strong> :&ensp;<code>str</code></dt>
-<dd>The base url of nhentai image.</dd>
 <dt><strong><code>pururin</code></strong> :&ensp;<code>str</code></dt>
 <dd>The base url of pururin api.</dd>
 <dt><strong><code>hentaifox</code></strong> :&ensp;<code>str</code></dt>
@@ -777,14 +306,12 @@ Parameters</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Api():
+<pre><code class="python">class Api:
     &#34;&#34;&#34;Api class
 
     This class is used to parse the data from the api.
 
     Attributes:
-        api (str): The base url of nhentai api.
-        img (str): The base url of nhentai image.
         pururin (str): The base url of pururin api.
         hentaifox (str): The base url of hentaifox api.
         hentai2read (str): The base url of hentai2read api.
@@ -793,27 +320,20 @@ Parameters</p>
         asmhentai (str): The base url of asmhentai api.
     &#34;&#34;&#34;
 
-    def __init__(self,
-                 BASE_URL: str = &#34;https://nhentai.net&#34;,
-                 BASE_IMG: str = &#34;https://i.nhentai.net/galleries&#34;,
-                 BASE_THUMBNAIL: str = &#34;https://t.nhentai.net/galleries&#34;,
-                 BASE_PURURIN: str = &#34;https://scathach.redsplit.org/v4/pururin/&#34;,
-                 BASE_NHENTAI_UNBLOCK: str = &#34;https://nhentai.sinxdr.workers.dev&#34;,
-                 BASE_HENTAIFOX: str = &#34;https://scathach.redsplit.org/v4/hentaifox/&#34;,
-                 BASE_HENTAI2READ: str = &#34;https://scathach.redsplit.org/v4/hentai2read/&#34;,
-                 BASE_SIMPLY_HENTAI: str = &#34;https://scathach.redsplit.org/v4/simply-hentai/&#34;,
-                 BASE_QHENTAI: str = &#34;https://scathach.redsplit.org/v4/qhentai/&#34;,
-                 BASE_ASMHENTAI: str = &#34;https://scathach.redsplit.org/v4/asmhentai/&#34;):
-
-        self.api = BASE_URL
-        self.img = BASE_IMG
-        self.thumbnail = BASE_THUMBNAIL
+    def __init__(
+        self,
+        BASE_PURURIN: str = f&#34;{JANDA}/pururin&#34;,
+        BASE_NHENTAI: str = f&#34;{JANDA}/nhentai&#34;,
+        BASE_HENTAIFOX: str = f&#34;{JANDA}/hentaifox&#34;,
+        BASE_HENTAI2READ: str = f&#34;{JANDA}/hentai2read&#34;,
+        BASE_SIMPLY_HENTAI: str = f&#34;{JANDA}/simply-hentai&#34;,
+        BASE_ASMHENTAI: str = f&#34;{JANDA}/asmhentai&#34;,
+    ):
+        self.nhentai = BASE_NHENTAI
         self.pururin = BASE_PURURIN
         self.hentaifox = BASE_HENTAIFOX
         self.hentai2read = BASE_HENTAI2READ
-        self.nhentai_unblock = BASE_NHENTAI_UNBLOCK
         self.simply_hentai = BASE_SIMPLY_HENTAI
-        self.qhentai = BASE_QHENTAI
         self.asmhentai = BASE_ASMHENTAI</code></pre>
 </details>
 </dd>
@@ -835,13 +355,7 @@ Parameters</p>
 <ul class="">
 <li><code><a title="janda.utils.parser.auto_space" href="#janda.utils.parser.auto_space">auto_space</a></code></li>
 <li><code><a title="janda.utils.parser.better_object" href="#janda.utils.parser.better_object">better_object</a></code></li>
-<li><code><a title="janda.utils.parser.get_language_in_tags" href="#janda.utils.parser.get_language_in_tags">get_language_in_tags</a></code></li>
-<li><code><a title="janda.utils.parser.just_number" href="#janda.utils.parser.just_number">just_number</a></code></li>
 <li><code><a title="janda.utils.parser.list_api" href="#janda.utils.parser.list_api">list_api</a></code></li>
-<li><code><a title="janda.utils.parser.neat_result" href="#janda.utils.parser.neat_result">neat_result</a></code></li>
-<li><code><a title="janda.utils.parser.parser" href="#janda.utils.parser.parser">parser</a></code></li>
-<li><code><a title="janda.utils.parser.preg_match_tags" href="#janda.utils.parser.preg_match_tags">preg_match_tags</a></code></li>
-<li><code><a title="janda.utils.parser.readable_timestamp" href="#janda.utils.parser.readable_timestamp">readable_timestamp</a></code></li>
 <li><code><a title="janda.utils.parser.resolve" href="#janda.utils.parser.resolve">resolve</a></code></li>
 </ul>
 </li>

@@ -32,9 +32,10 @@ from .utils.parser import *
 
 BASE_URL = Api()
 
+
 class Hentai2read(object):
-    &#34;&#34;&#34; Hentai2read API wrapper 
-    
+    &#34;&#34;&#34;Hentai2read API wrapper
+
     Methods
     -------
     get : function
@@ -43,11 +44,9 @@ class Hentai2read(object):
     search : function
         Search for doujin based on the latest
 
-    get_random : function
-        Gets random doujin on Hentai2read
     &#34;&#34;&#34;
 
-    def __init__(self, api_key: str = &#39;&#39;):
+    def __init__(self, api_key: str = &#34;&#34;):
         &#34;&#34;&#34;Initializes the Hentai2read.
 
         Parameters
@@ -55,11 +54,11 @@ class Hentai2read(object):
         api_key : str
             scathach.dev API key (optional)
         &#34;&#34;&#34;
-        if api_key == &#39;&#39;:
+        if api_key == &#34;&#34;:
             self.api_key = None
         else:
             self.api_key = api_key
-        self.specs = {&#39;api_key&#39;: self.api_key}
+        self.specs = {&#34;api_key&#34;: self.api_key}
 
     async def get(self, path: str, chapter: int = 1):
         &#34;&#34;&#34;Gets doujin from path given
@@ -85,28 +84,22 @@ class Hentai2read(object):
             The book object that represents the specific path response.
         &#34;&#34;&#34;
 
-        if &#39;/&#39; in path:
-            path = path.replace(&#39;/&#39;, &#39;&#39;)
-        
-        self.specs[&#39;u&#39;] = path + &#39;/&#39; + str(chapter)
+        if &#34;/&#34; in path:
+            path = path.replace(&#34;/&#34;, &#34;&#34;)
 
+        self.specs[&#34;book&#34;] = path + &#34;/&#34; + str(chapter)
 
         try:
             path = str(path)
         except ValueError:
-            raise ValueError(&#39;Path must be a str&#39;)
+            raise ValueError(&#34;Path must be a str&#34;)
 
-        data = requests.get(BASE_URL.hentai2read, params=self.specs)
+        data = requests.get(BASE_URL.hentai2read + &#34;/get&#34;, params=self.specs)
 
-        self.final = json.loads(better_object(data.json()))
-   
-        if self.final[&#34;title&#34;] == &#39;&#39;:
-            raise ValueError(&#39;No results. Make sure you spelled everything right.&#39;)
-
-        return better_object(self.final)
+        return better_object(data.json())
 
     async def search(self, query: str):
-        &#34;&#34;&#34;Search for doujin based on the latest 
+        &#34;&#34;&#34;Search for doujin based on the latest
 
         path: https://hentai2read.com/hentai-list/search/alter
 
@@ -126,29 +119,16 @@ class Hentai2read(object):
             The list object that represents the doujin response.
         &#34;&#34;&#34;
 
-        self.specs[&#39;query&#39;] = query
+        self.specs[&#34;key&#34;] = query
 
         query = auto_space(query)
 
-        if query == &#39;&#39;:
-            raise ValueError(&#39;Query must be given&#39;)
-        data = requests.get(BASE_URL.hentai2read + &#39;args.php&#39;, params=self.specs)
+        if query == &#34;&#34;:
+            raise ValueError(&#34;Query must be given&#34;)
+        data = requests.get(BASE_URL.hentai2read + &#34;/search&#34;, params=self.specs)
 
-        if len(data.json()) == 0:
-            raise ValueError(&#39;No results found&#39;)
-
-        return better_object(data.json())
-
-
-    async def get_random(self):
-        &#34;&#34;&#34;Gets random doujin on Hentai2read
-
-        Returns
-        -------
-        dict
-            The book object that represents the random doujin response.
-        &#34;&#34;&#34;
-        data = requests.get(BASE_URL.hentai2read + &#39;random&#39; + &#39;/&#39;, params=self.specs)
+        if len(data.json()[&#34;data&#34;]) == 0:
+            raise ValueError(&#34;No results found&#34;)
 
         return better_object(data.json())</code></pre>
 </details>
@@ -167,14 +147,12 @@ class Hentai2read(object):
 <span>(</span><span>api_key: str = '')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Hentai2read API wrapper </p>
+<div class="desc"><p>Hentai2read API wrapper</p>
 <h2 id="methods">Methods</h2>
 <p>get : function
 Gets doujin from path given</p>
 <p>search : function
 Search for doujin based on the latest</p>
-<p>get_random : function
-Gets random doujin on Hentai2read</p>
 <p>Initializes the Hentai2read.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -186,8 +164,8 @@ Gets random doujin on Hentai2read</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Hentai2read(object):
-    &#34;&#34;&#34; Hentai2read API wrapper 
-    
+    &#34;&#34;&#34;Hentai2read API wrapper
+
     Methods
     -------
     get : function
@@ -196,11 +174,9 @@ Gets random doujin on Hentai2read</p>
     search : function
         Search for doujin based on the latest
 
-    get_random : function
-        Gets random doujin on Hentai2read
     &#34;&#34;&#34;
 
-    def __init__(self, api_key: str = &#39;&#39;):
+    def __init__(self, api_key: str = &#34;&#34;):
         &#34;&#34;&#34;Initializes the Hentai2read.
 
         Parameters
@@ -208,11 +184,11 @@ Gets random doujin on Hentai2read</p>
         api_key : str
             scathach.dev API key (optional)
         &#34;&#34;&#34;
-        if api_key == &#39;&#39;:
+        if api_key == &#34;&#34;:
             self.api_key = None
         else:
             self.api_key = api_key
-        self.specs = {&#39;api_key&#39;: self.api_key}
+        self.specs = {&#34;api_key&#34;: self.api_key}
 
     async def get(self, path: str, chapter: int = 1):
         &#34;&#34;&#34;Gets doujin from path given
@@ -238,28 +214,22 @@ Gets random doujin on Hentai2read</p>
             The book object that represents the specific path response.
         &#34;&#34;&#34;
 
-        if &#39;/&#39; in path:
-            path = path.replace(&#39;/&#39;, &#39;&#39;)
-        
-        self.specs[&#39;u&#39;] = path + &#39;/&#39; + str(chapter)
+        if &#34;/&#34; in path:
+            path = path.replace(&#34;/&#34;, &#34;&#34;)
 
+        self.specs[&#34;book&#34;] = path + &#34;/&#34; + str(chapter)
 
         try:
             path = str(path)
         except ValueError:
-            raise ValueError(&#39;Path must be a str&#39;)
+            raise ValueError(&#34;Path must be a str&#34;)
 
-        data = requests.get(BASE_URL.hentai2read, params=self.specs)
+        data = requests.get(BASE_URL.hentai2read + &#34;/get&#34;, params=self.specs)
 
-        self.final = json.loads(better_object(data.json()))
-   
-        if self.final[&#34;title&#34;] == &#39;&#39;:
-            raise ValueError(&#39;No results. Make sure you spelled everything right.&#39;)
-
-        return better_object(self.final)
+        return better_object(data.json())
 
     async def search(self, query: str):
-        &#34;&#34;&#34;Search for doujin based on the latest 
+        &#34;&#34;&#34;Search for doujin based on the latest
 
         path: https://hentai2read.com/hentai-list/search/alter
 
@@ -279,29 +249,16 @@ Gets random doujin on Hentai2read</p>
             The list object that represents the doujin response.
         &#34;&#34;&#34;
 
-        self.specs[&#39;query&#39;] = query
+        self.specs[&#34;key&#34;] = query
 
         query = auto_space(query)
 
-        if query == &#39;&#39;:
-            raise ValueError(&#39;Query must be given&#39;)
-        data = requests.get(BASE_URL.hentai2read + &#39;args.php&#39;, params=self.specs)
+        if query == &#34;&#34;:
+            raise ValueError(&#34;Query must be given&#34;)
+        data = requests.get(BASE_URL.hentai2read + &#34;/search&#34;, params=self.specs)
 
-        if len(data.json()) == 0:
-            raise ValueError(&#39;No results found&#39;)
-
-        return better_object(data.json())
-
-
-    async def get_random(self):
-        &#34;&#34;&#34;Gets random doujin on Hentai2read
-
-        Returns
-        -------
-        dict
-            The book object that represents the random doujin response.
-        &#34;&#34;&#34;
-        data = requests.get(BASE_URL.hentai2read + &#39;random&#39; + &#39;/&#39;, params=self.specs)
+        if len(data.json()[&#34;data&#34;]) == 0:
+            raise ValueError(&#34;No results found&#34;)
 
         return better_object(data.json())</code></pre>
 </details>
@@ -358,50 +315,17 @@ Gets random doujin on Hentai2read</p>
         The book object that represents the specific path response.
     &#34;&#34;&#34;
 
-    if &#39;/&#39; in path:
-        path = path.replace(&#39;/&#39;, &#39;&#39;)
-    
-    self.specs[&#39;u&#39;] = path + &#39;/&#39; + str(chapter)
+    if &#34;/&#34; in path:
+        path = path.replace(&#34;/&#34;, &#34;&#34;)
 
+    self.specs[&#34;book&#34;] = path + &#34;/&#34; + str(chapter)
 
     try:
         path = str(path)
     except ValueError:
-        raise ValueError(&#39;Path must be a str&#39;)
+        raise ValueError(&#34;Path must be a str&#34;)
 
-    data = requests.get(BASE_URL.hentai2read, params=self.specs)
-
-    self.final = json.loads(better_object(data.json()))
-
-    if self.final[&#34;title&#34;] == &#39;&#39;:
-        raise ValueError(&#39;No results. Make sure you spelled everything right.&#39;)
-
-    return better_object(self.final)</code></pre>
-</details>
-</dd>
-<dt id="janda.hentai2read.Hentai2read.get_random"><code class="name flex">
-<span>async def <span class="ident">get_random</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Gets random doujin on Hentai2read</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>dict</code></dt>
-<dd>The book object that represents the random doujin response.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def get_random(self):
-    &#34;&#34;&#34;Gets random doujin on Hentai2read
-
-    Returns
-    -------
-    dict
-        The book object that represents the random doujin response.
-    &#34;&#34;&#34;
-    data = requests.get(BASE_URL.hentai2read + &#39;random&#39; + &#39;/&#39;, params=self.specs)
+    data = requests.get(BASE_URL.hentai2read + &#34;/get&#34;, params=self.specs)
 
     return better_object(data.json())</code></pre>
 </details>
@@ -410,7 +334,7 @@ Gets random doujin on Hentai2read</p>
 <span>async def <span class="ident">search</span></span>(<span>self, query: str)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Search for doujin based on the latest </p>
+<div class="desc"><p>Search for doujin based on the latest</p>
 <p>path: <a href="https://hentai2read.com/hentai-list/search/alter">https://hentai2read.com/hentai-list/search/alter</a></p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -432,7 +356,7 @@ Gets random doujin on Hentai2read</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">async def search(self, query: str):
-    &#34;&#34;&#34;Search for doujin based on the latest 
+    &#34;&#34;&#34;Search for doujin based on the latest
 
     path: https://hentai2read.com/hentai-list/search/alter
 
@@ -452,16 +376,16 @@ Gets random doujin on Hentai2read</p>
         The list object that represents the doujin response.
     &#34;&#34;&#34;
 
-    self.specs[&#39;query&#39;] = query
+    self.specs[&#34;key&#34;] = query
 
     query = auto_space(query)
 
-    if query == &#39;&#39;:
-        raise ValueError(&#39;Query must be given&#39;)
-    data = requests.get(BASE_URL.hentai2read + &#39;args.php&#39;, params=self.specs)
+    if query == &#34;&#34;:
+        raise ValueError(&#34;Query must be given&#34;)
+    data = requests.get(BASE_URL.hentai2read + &#34;/search&#34;, params=self.specs)
 
-    if len(data.json()) == 0:
-        raise ValueError(&#39;No results found&#39;)
+    if len(data.json()[&#34;data&#34;]) == 0:
+        raise ValueError(&#34;No results found&#34;)
 
     return better_object(data.json())</code></pre>
 </details>
@@ -488,7 +412,6 @@ Gets random doujin on Hentai2read</p>
 <h4><code><a title="janda.hentai2read.Hentai2read" href="#janda.hentai2read.Hentai2read">Hentai2read</a></code></h4>
 <ul class="">
 <li><code><a title="janda.hentai2read.Hentai2read.get" href="#janda.hentai2read.Hentai2read.get">get</a></code></li>
-<li><code><a title="janda.hentai2read.Hentai2read.get_random" href="#janda.hentai2read.Hentai2read.get_random">get_random</a></code></li>
 <li><code><a title="janda.hentai2read.Hentai2read.search" href="#janda.hentai2read.Hentai2read.search">search</a></code></li>
 </ul>
 </li>
