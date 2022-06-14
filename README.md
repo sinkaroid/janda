@@ -24,19 +24,15 @@ It takes a much more dictionaries rather than just raw data, and hope will be ex
 Built on minimalist dependencies, yet it covers most of the popular doujinboards.  
 Every single site has different dictionaries return, keep in mind on this
 
-| Site                                            | 🔍  | Status                                                                                                                              | Process        | Response time | Data returns | Randomizer |
-|-------------------------------------------------|-----|-------------------------------------------------------------------------------------------------------------------------------------|----------------|---------------|--------------|------------|
-| [nhentai](https://nhentai.net/)                 | ✅   | [![status](https://img.shields.io/badge/status-stable-green)](https://github.com/sinkaroid/janda/actions/workflows/nhentai.yml)     | `official api` | ~0.749225 sec | ~127.266 KB  | `Yes`      |
-| [pururin](https://pururin.to/)                  | ✅   | [![status](https://img.shields.io/badge/status-stable-green)](https://github.com/sinkaroid/janda/actions/workflows/pururin.yml)     | `proxified`    | ~2.032029 sec | ~2.412 KB    | `Triage`   |
-| [hentaifox](https://hentaifox.com/)             | ✅   | [![status](https://img.shields.io/badge/status-triage-red)](https://github.com/sinkaroid/janda/actions/workflows/hentaifox.yml)     | `proxified`    | ~1.330169 sec | ~2.122 KB    | `Triage`   |
-| [hentai2read](https://hentai2read.com/)         | ✅   | [![status](https://img.shields.io/badge/status-partial-blue)](https://github.com/sinkaroid/janda/actions/workflows/hentai2read.yml) | `official api` | ~1.319396 sec | ~3.715 KB    | `Yes`      |
-| [simply-hentai](https://www.simply-hentai.com/) | ❌   | [![status](https://img.shields.io/badge/status-partial-blue)](https://github.com/sinkaroid/janda/actions/workflows/simplyh.yml)     | `proxified`    | ~1.993175 sec | ~1.529 KB    | `Yes`      |
-| [qhentai](https://qhentai.net/)                 | ✅   | [![status](https://img.shields.io/badge/status-partial-blue)](https://github.com/sinkaroid/janda/actions/workflows/qhentai.yml)     | `proxified`    | ~2.492498 sec | ~3.721 KB    | `Yes`      |
-| [asmhentai](https://asmhentai.com/)             | ✅   | [![status](https://img.shields.io/badge/status-stable-green)](https://github.com/sinkaroid/janda/actions/workflows/asmhentai.yml)   | `proxified`    | ~4.473287 sec | ~2.619 KB    | `Yes`      |
+| Client        | Status                                                                                                                              | Get   | Search | Randomizer |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ----- | ------ | ---------- |
+| nhentai       | [![status](https://img.shields.io/badge/status-stable-green)](https://github.com/sinkaroid/janda/actions/workflows/nhentai.yml)     | `Yes` | `Yes`  | `Yes`      |
+| pururin       | [![status](https://img.shields.io/badge/status-stable-green)](https://github.com/sinkaroid/janda/actions/workflows/pururin.yml)     | `Yes` | `Yes`  | `Yes`      |
+| hentaifox     | [![status](https://img.shields.io/badge/status-stable-green)](https://github.com/sinkaroid/janda/actions/workflows/hentaifox.yml)   | `Yes` | `Yes`  | `Yes`      |
+| hentai2read   | [![status](https://img.shields.io/badge/status-partial-blue)](https://github.com/sinkaroid/janda/actions/workflows/hentai2read.yml) | `Yes` | `Yes`  | `No`       |
+| simply-hentai | [![status](https://img.shields.io/badge/status-triage-red)](https://github.com/sinkaroid/janda/actions/workflows/simplyh.yml)       | `Yes` | `No`   | `No`       |
+| asmhentai     | [![status](https://img.shields.io/badge/status-stable-green)](https://github.com/sinkaroid/janda/actions/workflows/asmhentai.yml)   | `Yes` | `Yes`  | `Yes`      |
 
-This benchmark search 25 (or defaults) latest doujin on each sites  
-Speed or perfomace may not accurate because internet connection or server response.
-> **Stable**: works well | **Triage**: has some issues | **Partial**: limited endpoints | 🔍: search method
 
 ## Features
 
@@ -71,12 +67,13 @@ Some methods require additional parameters, check your intelisense.
 `(method) get: (book: int, safe: bool | None = None) -> Coroutine`
 ```py
 import asyncio
-from janda import Nhentai
+from janda import Nhentai, resolve
 
 async def book():
     nh = Nhentai()
     data = await nh.get(274003)
-    print(data)
+    print(data) ## unresolved
+    print(resolve(data)) ## resolved
 
 async def main():
     await asyncio.gather(book())
@@ -111,54 +108,28 @@ The documentation can be found [https://sinkaroid.github.io/janda](https://sinka
   - Get specific doujin from pururin
 - [`Pururin.get_random()`](https://sinkaroid.github.io/janda/pururin.html)
   - Get random doujin from pururin
-- [`Pururin.get_random_with_query(options)`](https://sinkaroid.github.io/janda/pururin.html)
-  - Get random doujin from pururin with query
-- [`Pururin.search_by_highest_rated(options)`](https://sinkaroid.github.io/janda/pururin.html)
-  - Search highest rated doujin from pururin
-- [`Pururin.search_by_most_popular(options)`](https://sinkaroid.github.io/janda/pururin.html) 
-  - Search most popular doujin from pururin
-- [`Pururin.search_by_most_viewed(options)`](https://sinkaroid.github.io/janda/pururin.html)
-  - Search most viewed doujin from pururin
-- [`Pururin.search_by_newest(options)`](https://sinkaroid.github.io/janda/pururin.html) 
-  - Search newest doujin from pururin
-- [`Pururin.search_by_random(options)`](https://sinkaroid.github.io/janda/pururin.html)
-  - Search random doujin with query from pururin
-- [`Pururin.search_by_title(options)`](https://sinkaroid.github.io/janda/pururin.html)
-  - Search doujin by title given from pururin
+- [`Pururin.search(options)`](https://sinkaroid.github.io/janda/pururin.html)
+  - Search doujin by tags / artist / character / parody or group
+
 
 ### Hentai2read
 - [`Hentai2read.get(options)`](https://sinkaroid.github.io/janda/hentai2read.html)
   - Get specific doujin from hentai2read
-- [`Hentai2read.get_random()`](https://sinkaroid.github.io/janda/hentai2read.html)
-  - Get random doujin from hentai2read
 - [`Hentai2read.search(options)`](https://sinkaroid.github.io/janda/hentai2read.html)
   - Search a doujin from hentai2read by latest only
 
 ### Simplyhentai
 - [`Simplyhentai.get(options)`](https://sinkaroid.github.io/janda/simply_hentai.html)
   - Get specific doujin from simplyhentai
-- [`Simplyhentai.get_related(options)`](https://sinkaroid.github.io/janda/simply_hentai.html)
-  - Get doujin related from specific path given
-- [`Simplyhentai.get_random()`](https://sinkaroid.github.io/janda/simply_hentai.html)
-  - Get random doujin from simply-hentai
 
 ### Hentaifox
 - [`Hentaifox.get(options)`](https://sinkaroid.github.io/janda/hentaifox.html)
   - Get specific doujin from hentaifox
 - [`Hentaifox.get_random()`](https://sinkaroid.github.io/janda/hentaifox.html) 
   - Get random doujin from hentaifox
-- [`Hentaifox.search_by_latest(options)`](https://sinkaroid.github.io/janda/hentaifox.html)
-  - Search latest doujin from hentaifox
-- [`Hentaifox.search_by_popular(options)`](https://sinkaroid.github.io/janda/hentaifox.html)
-  - Search popular doujin from hentaifox
+- [`Hentaifox.search(options)`](https://sinkaroid.github.io/janda/hentaifox.html)
+  - Search doujin by tags / artist / character / parody or group 
 
-### Qhentai
-- [`Qhentai.get(options)`](https://sinkaroid.github.io/janda/qhentai.html)
-  - Get specific doujin from qhentai
-- [`Qhentai.search(options)`](https://sinkaroid.github.io/janda/qhentai.html)
-  - Search a doujin from qhentai, can providing with page number
-- [`Qhentai.get_random()`](https://sinkaroid.github.io/janda/qhentai.html)
-  - Get random doujin from qhentai
 
 ### Asmhentai
 - [`Asmhentai.get(options)`](https://sinkaroid.github.io/janda/asmhentai.html)
@@ -172,180 +143,366 @@ The documentation can be found [https://sinkaroid.github.io/janda](https://sinka
 `get` method will represent as **Book Object** and packed with actionable image urls
 ```js
 {
-    "details": {
-        "id": 274003,
-        "link": "https://nhentai.net/g/274003",
-        "title": {
-            "english": "(COMIC1☆15) [Koniro Kajitsu (Konka)] Setsudo no Nai Onee-chan de Gomen ne | Onee-chan is sorry she has no restraint (Fate/Grand Order) [English]",
-            "japanese": "(COMIC1☆15) [紺色果実 (紺菓)] 節度のないお姉ちゃんでごめんね♡ (Fate/Grand Order) [英訳]",
-            "pretty": "Setsudo no Nai Oneechan is sorry she has no restraint"
+    "data": {
+        "artist": [
+            "shindol"
+        ],
+        "characters": [],
+        "group": null,
+        "id": 177013,
+        "image": [
+            "https://i.nhentai.net/galleries/987560/1.jpg",
+            "https://i.nhentai.net/galleries/987560/2.jpg",
+            "https://i.nhentai.net/galleries/987560/3.jpg",
+            "https://i.nhentai.net/galleries/987560/4.jpg",
+            "https://i.nhentai.net/galleries/987560/5.jpg",
+            "https://i.nhentai.net/galleries/987560/6.jpg",
+            "https://i.nhentai.net/galleries/987560/7.jpg",
+            "https://i.nhentai.net/galleries/987560/8.jpg",
+            "https://i.nhentai.net/galleries/987560/9.jpg",
+            "https://i.nhentai.net/galleries/987560/10.jpg",
+            "https://i.nhentai.net/galleries/987560/11.jpg",
+            "https://i.nhentai.net/galleries/987560/12.jpg",
+            "https://i.nhentai.net/galleries/987560/13.jpg",
+            "https://i.nhentai.net/galleries/987560/14.jpg",
+            "https://i.nhentai.net/galleries/987560/15.jpg",
+            "https://i.nhentai.net/galleries/987560/16.jpg",
+            "https://i.nhentai.net/galleries/987560/17.jpg",
+            "https://i.nhentai.net/galleries/987560/18.jpg",
+            "https://i.nhentai.net/galleries/987560/19.jpg",
+            "https://i.nhentai.net/galleries/987560/20.jpg",
+            "https://i.nhentai.net/galleries/987560/21.jpg",
+            "https://i.nhentai.net/galleries/987560/22.jpg",
+            "https://i.nhentai.net/galleries/987560/23.jpg",
+            "https://i.nhentai.net/galleries/987560/24.jpg",
+            "https://i.nhentai.net/galleries/987560/25.jpg",
+            "https://i.nhentai.net/galleries/987560/26.jpg",
+            "https://i.nhentai.net/galleries/987560/27.jpg",
+            "https://i.nhentai.net/galleries/987560/28.jpg",
+            "https://i.nhentai.net/galleries/987560/29.jpg",
+            "https://i.nhentai.net/galleries/987560/30.jpg",
+            "https://i.nhentai.net/galleries/987560/31.jpg",
+            "https://i.nhentai.net/galleries/987560/32.jpg",
+            "https://i.nhentai.net/galleries/987560/33.jpg",
+            "https://i.nhentai.net/galleries/987560/34.jpg",
+            "https://i.nhentai.net/galleries/987560/35.jpg",
+            "https://i.nhentai.net/galleries/987560/36.jpg",
+            "https://i.nhentai.net/galleries/987560/37.jpg",
+            "https://i.nhentai.net/galleries/987560/38.jpg",
+            "https://i.nhentai.net/galleries/987560/39.jpg",
+            "https://i.nhentai.net/galleries/987560/40.jpg",
+            "https://i.nhentai.net/galleries/987560/41.jpg",
+            "https://i.nhentai.net/galleries/987560/42.jpg",
+            "https://i.nhentai.net/galleries/987560/43.jpg",
+            "https://i.nhentai.net/galleries/987560/44.jpg",
+            "https://i.nhentai.net/galleries/987560/45.jpg",
+            "https://i.nhentai.net/galleries/987560/46.jpg",
+            "https://i.nhentai.net/galleries/987560/47.jpg",
+            "https://i.nhentai.net/galleries/987560/48.jpg",
+            "https://i.nhentai.net/galleries/987560/49.jpg",
+            "https://i.nhentai.net/galleries/987560/50.jpg",
+            "https://i.nhentai.net/galleries/987560/51.jpg",
+            "https://i.nhentai.net/galleries/987560/52.jpg",
+            "https://i.nhentai.net/galleries/987560/53.jpg",
+            "https://i.nhentai.net/galleries/987560/54.jpg",
+            "https://i.nhentai.net/galleries/987560/55.jpg",
+            "https://i.nhentai.net/galleries/987560/56.jpg",
+            "https://i.nhentai.net/galleries/987560/57.jpg",
+            "https://i.nhentai.net/galleries/987560/58.jpg",
+            "https://i.nhentai.net/galleries/987560/59.jpg",
+            "https://i.nhentai.net/galleries/987560/60.jpg",
+            "https://i.nhentai.net/galleries/987560/61.jpg",
+            "https://i.nhentai.net/galleries/987560/62.jpg",
+            "https://i.nhentai.net/galleries/987560/63.jpg",
+            "https://i.nhentai.net/galleries/987560/64.jpg",
+            "https://i.nhentai.net/galleries/987560/65.jpg",
+            "https://i.nhentai.net/galleries/987560/66.jpg",
+            "https://i.nhentai.net/galleries/987560/67.jpg",
+            "https://i.nhentai.net/galleries/987560/68.jpg",
+            "https://i.nhentai.net/galleries/987560/69.jpg",
+            "https://i.nhentai.net/galleries/987560/70.jpg",
+            "https://i.nhentai.net/galleries/987560/71.jpg",
+            "https://i.nhentai.net/galleries/987560/72.jpg",
+            "https://i.nhentai.net/galleries/987560/73.jpg",
+            "https://i.nhentai.net/galleries/987560/74.jpg",
+            "https://i.nhentai.net/galleries/987560/75.jpg",
+            "https://i.nhentai.net/galleries/987560/76.jpg",
+            "https://i.nhentai.net/galleries/987560/77.jpg",
+            "https://i.nhentai.net/galleries/987560/78.jpg",
+            "https://i.nhentai.net/galleries/987560/79.jpg",
+            "https://i.nhentai.net/galleries/987560/80.jpg",
+            "https://i.nhentai.net/galleries/987560/81.jpg",
+            "https://i.nhentai.net/galleries/987560/82.jpg",
+            "https://i.nhentai.net/galleries/987560/83.jpg",
+            "https://i.nhentai.net/galleries/987560/84.jpg",
+            "https://i.nhentai.net/galleries/987560/85.jpg",
+            "https://i.nhentai.net/galleries/987560/86.jpg",
+            "https://i.nhentai.net/galleries/987560/87.jpg",
+            "https://i.nhentai.net/galleries/987560/88.jpg",
+            "https://i.nhentai.net/galleries/987560/89.jpg",
+            "https://i.nhentai.net/galleries/987560/90.jpg",
+            "https://i.nhentai.net/galleries/987560/91.jpg",
+            "https://i.nhentai.net/galleries/987560/92.jpg",
+            "https://i.nhentai.net/galleries/987560/93.jpg",
+            "https://i.nhentai.net/galleries/987560/94.jpg",
+            "https://i.nhentai.net/galleries/987560/95.jpg",
+            "https://i.nhentai.net/galleries/987560/96.jpg",
+            "https://i.nhentai.net/galleries/987560/97.jpg",
+            "https://i.nhentai.net/galleries/987560/98.jpg",
+            "https://i.nhentai.net/galleries/987560/99.jpg",
+            "https://i.nhentai.net/galleries/987560/100.jpg",
+            "https://i.nhentai.net/galleries/987560/101.jpg",
+            "https://i.nhentai.net/galleries/987560/102.jpg",
+            "https://i.nhentai.net/galleries/987560/103.jpg",
+            "https://i.nhentai.net/galleries/987560/104.jpg",
+            "https://i.nhentai.net/galleries/987560/105.jpg",
+            "https://i.nhentai.net/galleries/987560/106.jpg",
+            "https://i.nhentai.net/galleries/987560/107.jpg",
+            "https://i.nhentai.net/galleries/987560/108.jpg",
+            "https://i.nhentai.net/galleries/987560/109.jpg",
+            "https://i.nhentai.net/galleries/987560/110.jpg",
+            "https://i.nhentai.net/galleries/987560/111.jpg",
+            "https://i.nhentai.net/galleries/987560/112.jpg",
+            "https://i.nhentai.net/galleries/987560/113.jpg",
+            "https://i.nhentai.net/galleries/987560/114.jpg",
+            "https://i.nhentai.net/galleries/987560/115.jpg",
+            "https://i.nhentai.net/galleries/987560/116.jpg",
+            "https://i.nhentai.net/galleries/987560/117.jpg",
+            "https://i.nhentai.net/galleries/987560/118.jpg",
+            "https://i.nhentai.net/galleries/987560/119.jpg",
+            "https://i.nhentai.net/galleries/987560/120.jpg",
+            "https://i.nhentai.net/galleries/987560/121.jpg",
+            "https://i.nhentai.net/galleries/987560/122.jpg",
+            "https://i.nhentai.net/galleries/987560/123.jpg",
+            "https://i.nhentai.net/galleries/987560/124.jpg",
+            "https://i.nhentai.net/galleries/987560/125.jpg",
+            "https://i.nhentai.net/galleries/987560/126.jpg",
+            "https://i.nhentai.net/galleries/987560/127.jpg",
+            "https://i.nhentai.net/galleries/987560/128.jpg",
+            "https://i.nhentai.net/galleries/987560/129.jpg",
+            "https://i.nhentai.net/galleries/987560/130.jpg",
+            "https://i.nhentai.net/galleries/987560/131.jpg",
+            "https://i.nhentai.net/galleries/987560/132.jpg",
+            "https://i.nhentai.net/galleries/987560/133.jpg",
+            "https://i.nhentai.net/galleries/987560/134.jpg",
+            "https://i.nhentai.net/galleries/987560/135.jpg",
+            "https://i.nhentai.net/galleries/987560/136.jpg",
+            "https://i.nhentai.net/galleries/987560/137.jpg",
+            "https://i.nhentai.net/galleries/987560/138.jpg",
+            "https://i.nhentai.net/galleries/987560/139.jpg",
+            "https://i.nhentai.net/galleries/987560/140.jpg",
+            "https://i.nhentai.net/galleries/987560/141.jpg",
+            "https://i.nhentai.net/galleries/987560/142.jpg",
+            "https://i.nhentai.net/galleries/987560/143.jpg",
+            "https://i.nhentai.net/galleries/987560/144.jpg",
+            "https://i.nhentai.net/galleries/987560/145.jpg",
+            "https://i.nhentai.net/galleries/987560/146.jpg",
+            "https://i.nhentai.net/galleries/987560/147.jpg",
+            "https://i.nhentai.net/galleries/987560/148.jpg",
+            "https://i.nhentai.net/galleries/987560/149.jpg",
+            "https://i.nhentai.net/galleries/987560/150.jpg",
+            "https://i.nhentai.net/galleries/987560/151.jpg",
+            "https://i.nhentai.net/galleries/987560/152.jpg",
+            "https://i.nhentai.net/galleries/987560/153.jpg",
+            "https://i.nhentai.net/galleries/987560/154.jpg",
+            "https://i.nhentai.net/galleries/987560/155.jpg",
+            "https://i.nhentai.net/galleries/987560/156.jpg",
+            "https://i.nhentai.net/galleries/987560/157.jpg",
+            "https://i.nhentai.net/galleries/987560/158.jpg",
+            "https://i.nhentai.net/galleries/987560/159.jpg",
+            "https://i.nhentai.net/galleries/987560/160.jpg",
+            "https://i.nhentai.net/galleries/987560/161.jpg",
+            "https://i.nhentai.net/galleries/987560/162.jpg",
+            "https://i.nhentai.net/galleries/987560/163.jpg",
+            "https://i.nhentai.net/galleries/987560/164.jpg",
+            "https://i.nhentai.net/galleries/987560/165.jpg",
+            "https://i.nhentai.net/galleries/987560/166.jpg",
+            "https://i.nhentai.net/galleries/987560/167.jpg",
+            "https://i.nhentai.net/galleries/987560/168.jpg",
+            "https://i.nhentai.net/galleries/987560/169.jpg",
+            "https://i.nhentai.net/galleries/987560/170.jpg",
+            "https://i.nhentai.net/galleries/987560/171.jpg",
+            "https://i.nhentai.net/galleries/987560/172.jpg",
+            "https://i.nhentai.net/galleries/987560/173.jpg",
+            "https://i.nhentai.net/galleries/987560/174.jpg",
+            "https://i.nhentai.net/galleries/987560/175.jpg",
+            "https://i.nhentai.net/galleries/987560/176.jpg",
+            "https://i.nhentai.net/galleries/987560/177.jpg",
+            "https://i.nhentai.net/galleries/987560/178.jpg",
+            "https://i.nhentai.net/galleries/987560/179.jpg",
+            "https://i.nhentai.net/galleries/987560/180.jpg",
+            "https://i.nhentai.net/galleries/987560/181.jpg",
+            "https://i.nhentai.net/galleries/987560/182.jpg",
+            "https://i.nhentai.net/galleries/987560/183.jpg",
+            "https://i.nhentai.net/galleries/987560/184.jpg",
+            "https://i.nhentai.net/galleries/987560/185.jpg",
+            "https://i.nhentai.net/galleries/987560/186.jpg",
+            "https://i.nhentai.net/galleries/987560/187.jpg",
+            "https://i.nhentai.net/galleries/987560/188.jpg",
+            "https://i.nhentai.net/galleries/987560/189.jpg",
+            "https://i.nhentai.net/galleries/987560/190.jpg",
+            "https://i.nhentai.net/galleries/987560/191.jpg",
+            "https://i.nhentai.net/galleries/987560/192.jpg",
+            "https://i.nhentai.net/galleries/987560/193.jpg",
+            "https://i.nhentai.net/galleries/987560/194.jpg",
+            "https://i.nhentai.net/galleries/987560/195.jpg",
+            "https://i.nhentai.net/galleries/987560/196.jpg",
+            "https://i.nhentai.net/galleries/987560/197.jpg",
+            "https://i.nhentai.net/galleries/987560/198.jpg",
+            "https://i.nhentai.net/galleries/987560/199.jpg",
+            "https://i.nhentai.net/galleries/987560/200.jpg",
+            "https://i.nhentai.net/galleries/987560/201.jpg",
+            "https://i.nhentai.net/galleries/987560/202.jpg",
+            "https://i.nhentai.net/galleries/987560/203.jpg",
+            "https://i.nhentai.net/galleries/987560/204.jpg",
+            "https://i.nhentai.net/galleries/987560/205.jpg",
+            "https://i.nhentai.net/galleries/987560/206.jpg",
+            "https://i.nhentai.net/galleries/987560/207.jpg",
+            "https://i.nhentai.net/galleries/987560/208.jpg",
+            "https://i.nhentai.net/galleries/987560/209.jpg",
+            "https://i.nhentai.net/galleries/987560/210.jpg",
+            "https://i.nhentai.net/galleries/987560/211.jpg",
+            "https://i.nhentai.net/galleries/987560/212.jpg",
+            "https://i.nhentai.net/galleries/987560/213.jpg",
+            "https://i.nhentai.net/galleries/987560/214.jpg",
+            "https://i.nhentai.net/galleries/987560/215.jpg",
+            "https://i.nhentai.net/galleries/987560/216.jpg",
+            "https://i.nhentai.net/galleries/987560/217.jpg",
+            "https://i.nhentai.net/galleries/987560/218.jpg",
+            "https://i.nhentai.net/galleries/987560/219.jpg",
+            "https://i.nhentai.net/galleries/987560/220.jpg",
+            "https://i.nhentai.net/galleries/987560/221.jpg",
+            "https://i.nhentai.net/galleries/987560/222.jpg",
+            "https://i.nhentai.net/galleries/987560/223.jpg",
+            "https://i.nhentai.net/galleries/987560/224.jpg",
+            "https://i.nhentai.net/galleries/987560/225.jpg"
+        ],
+        "language": "english",
+        "num_favorites": 97746,
+        "num_pages": 225,
+        "optional_title": {
+            "english": "[ShindoLA] METAMORPHOSIS (Complete) [English]",
+            "japanese": "",
+            "pretty": "METAMORPHOSIS"
         },
-        "upload_date": "2019-06-01 02:09:13"
+        "parodies": null,
+        "tags": [
+            "shindol",
+            "piercing",
+            "pregnant",
+            "mmf threesome",
+            "vomit",
+            "group",
+            "story arc",
+            "schoolgirl uniform",
+            "snuff",
+            "english",
+            "prostitution",
+            "nakadashi",
+            "moral degeneration",
+            "ahegao",
+            "anal",
+            "translated",
+            "dark skin",
+            "x-ray",
+            "full body tattoo",
+            "drugs",
+            "incest",
+            "double penetration",
+            "stockings",
+            "gyaru",
+            "mind break",
+            "blackmail",
+            "impregnation",
+            "blowjob",
+            "deepthroat",
+            "manga",
+            "already uploaded"
+        ],
+        "title": "METAMORPHOSIS",
+        "total": 225,
+        "upload_date": "October 18, 2016 (6 years ago)"
     },
-    "image_urls": [
-        "https://i.nhentai.net/galleries/1423853/1.png",
-        "https://i.nhentai.net/galleries/1423853/2.png",
-        "https://i.nhentai.net/galleries/1423853/3.png",
-        "https://i.nhentai.net/galleries/1423853/4.png",
-        "https://i.nhentai.net/galleries/1423853/5.png",
-        "https://i.nhentai.net/galleries/1423853/6.png",
-        "https://i.nhentai.net/galleries/1423853/7.png",
-        "https://i.nhentai.net/galleries/1423853/8.png",
-        "https://i.nhentai.net/galleries/1423853/9.png",
-        "https://i.nhentai.net/galleries/1423853/10.png",
-        "https://i.nhentai.net/galleries/1423853/11.png",
-        "https://i.nhentai.net/galleries/1423853/12.png",
-        "https://i.nhentai.net/galleries/1423853/13.png",
-        "https://i.nhentai.net/galleries/1423853/14.png",
-        "https://i.nhentai.net/galleries/1423853/15.png",
-        "https://i.nhentai.net/galleries/1423853/16.png",
-        "https://i.nhentai.net/galleries/1423853/17.png",
-        "https://i.nhentai.net/galleries/1423853/18.png",
-        "https://i.nhentai.net/galleries/1423853/19.png",
-        "https://i.nhentai.net/galleries/1423853/20.png",
-        "https://i.nhentai.net/galleries/1423853/21.png",
-        "https://i.nhentai.net/galleries/1423853/22.png",
-        "https://i.nhentai.net/galleries/1423853/23.png",
-        "https://i.nhentai.net/galleries/1423853/24.png",
-        "https://i.nhentai.net/galleries/1423853/25.png",
-        "https://i.nhentai.net/galleries/1423853/26.png"
-    ],
-    "language": "english",
-    "num_favorites": 6164,
-    "num_pages": 26,
-    "scanlator": "",
-    "tags": [
-        "english",
-        "translated",
-        "fate grand order",
-        "tomoe gozen",
-        "koniro kajitsu",
-        "konka",
-        "shotacon",
-        "sole male",
-        "big breasts",
-        "footjob",
-        "horns",
-        "lactation",
-        "lingerie",
-        "oni",
-        "sole female",
-        "stockings",
-        "doujinshi",
-        "gudao",
-        "schoolgirl uniform",
-        "kissing",
-        "leg lock",
-        "breast feeding",
-        "x-ray",
-        "unusual pupils"
-    ],
-    "thumbnail_urls": [
-        "https://t.nhentai.net/galleries/1423853/1t.png",
-        "https://t.nhentai.net/galleries/1423853/2t.png",
-        "https://t.nhentai.net/galleries/1423853/3t.png",
-        "https://t.nhentai.net/galleries/1423853/4t.png",
-        "https://t.nhentai.net/galleries/1423853/5t.png",
-        "https://t.nhentai.net/galleries/1423853/6t.png",
-        "https://t.nhentai.net/galleries/1423853/7t.png",
-        "https://t.nhentai.net/galleries/1423853/8t.png",
-        "https://t.nhentai.net/galleries/1423853/9t.png",
-        "https://t.nhentai.net/galleries/1423853/10t.png",
-        "https://t.nhentai.net/galleries/1423853/11t.png",
-        "https://t.nhentai.net/galleries/1423853/12t.png",
-        "https://t.nhentai.net/galleries/1423853/13t.png",
-        "https://t.nhentai.net/galleries/1423853/14t.png",
-        "https://t.nhentai.net/galleries/1423853/15t.png",
-        "https://t.nhentai.net/galleries/1423853/16t.png",
-        "https://t.nhentai.net/galleries/1423853/17t.png",
-        "https://t.nhentai.net/galleries/1423853/18t.png",
-        "https://t.nhentai.net/galleries/1423853/19t.png",
-        "https://t.nhentai.net/galleries/1423853/20t.png",
-        "https://t.nhentai.net/galleries/1423853/21t.png",
-        "https://t.nhentai.net/galleries/1423853/22t.png",
-        "https://t.nhentai.net/galleries/1423853/23t.png",
-        "https://t.nhentai.net/galleries/1423853/24t.png",
-        "https://t.nhentai.net/galleries/1423853/25t.png",
-        "https://t.nhentai.net/galleries/1423853/26t.png"
-    ]
+    "source": "https://nhentai.net/g/177013"
 }
 ```
 
 Otherwise `search` will return 25 **List Object** of search results.
 ```js
-[
-    {
-        "id": 394795,
-        "language": "speechless",
-        "link": "https://nhentai.net/g/394795",
-        "num_favorites": 962,
-        "num_pages": 5,
-        "tags": [
-            "big breasts",
-            "swimsuit",
-            "mmf threesome",
-            "group",
-            "uncensored",
-            "nakadashi",
-            "dark skin",
-            "bikini",
-            "x-ray",
-            "double penetration",
-            "blowjob",
-            "muscle",
-            "collar",
-            "body writing",
-            "doujinshi",
-            "speechless",
-            "text cleaned",
-            "fate grand order",
-            "sole female",
-            "jeanne alter",
-            "yanje"
-        ],
-        "title": {
-            "english": "[Yanje] Jeanne d'Arc Alter (FGO) [Textless]",
-            "japanese": "",
-            "pretty": "Jeanne d'Arc Alter"
+{
+    "data": [
+        {
+            "cover": "https://i.nhentai.net/galleries/2244825/1.jpg",
+            "id": 406651,
+            "language": "english",
+            "tags": [
+                "oni",
+                "big breasts",
+                "big ass",
+                "cheating",
+                "english",
+                "anal",
+                "shemale",
+                "translated",
+                "yaoi",
+                "muscle",
+                "doujinshi",
+                "dickgirl on male",
+                "male on dickgirl",
+                "focus anal",
+                "huuten",
+                "anal intercourse"
+            ],
+            "title": {
+                "english": "[huuten (Huuten)] ♂×♂ - Demon Shemale Wife (English)",
+                "japanese": "[huuten (瘋)] ♂×♂ - 鬼シーメール人妻",
+                "pretty": "♂×♂ - Demon Shemale Wife"
+            },
+            "total": 23,
+            "upload_date": "June 12, 2022 (1 day ago)"
         },
-        "upload_date": "2022-03-08 01:00:47"
-    },
-    {
-        "id": "394794",
-        "language": "japanese",
-        "link": "https://nhentai.net/g/394794",
-        "num_favorites": 1103,
-        "num_pages": 5,
-        "tags": [
-            "big breasts",
-            "swimsuit",
-            "japanese",
-            "mmf threesome",
-            "group",
-            "uncensored",
-            "nakadashi",
-            "dark skin",
-            "bikini",
-            "x-ray",
-            "double penetration",
-            "blowjob",
-            "muscle",
-            "collar",
-            "body writing",
-            "doujinshi",
-            "fate grand order",
-            "sole female",
-            "jeanne alter",
-            "yanje"
-        ],
-        "title": {
-            "english": "[Yanje] Jeanne d'Arc Alter (FGO) [Japanese]",
-            "japanese": "",
-            "pretty": "Jeanne d'Arc Alter"
-        },
-        "upload_date": "2022-03-07 23:32:20"
-    }
-]
+        {
+            "cover": "https://i.nhentai.net/galleries/1893566/1.jpg",
+            "id": 356040,
+            "language": "english",
+            "tags": [
+                "ttf threesome",
+                "futanari",
+                "unusual teeth",
+                "sweating",
+                "big breasts",
+                "unusual pupils",
+                "cunnilingus",
+                "group",
+                "english",
+                "ahegao",
+                "anal",
+                "hairy",
+                "translated",
+                "thigh high boots",
+                "multi-work series",
+                "double penetration",
+                "tall girl",
+                "blowjob",
+                "stomach deformation",
+                "doujinshi",
+                "dickgirl on dickgirl",
+                "original",
+                "huuten"
+            ],
+            "title": {
+                "english": "[huuten (Huuten)] Defeated by Futanarification Medication (Latter Part)| Drugged to Futanaridom Part 2 [English]",
+                "japanese": "[huuten (瘋)] 薬を打たれふたなり化(後編)[英訳]",
+                "pretty": "Defeated by Futanarification Medication| Drugged to Futanaridom Part 2"
+            },
+            "total": 43,
+            "upload_date": "April 21, 2021 (1 year ago)"
+        }
+    ],
+    "page": 1,
+    "sort": "popular-today",
+    "source": "https://nhentai.net/api/galleries/search?query=futa&sort=popular-today&page=1"
+}
 ```
 
 ## Unresolved JSON
