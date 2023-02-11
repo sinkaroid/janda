@@ -1,6 +1,5 @@
 import json
-import re
-from datetime import datetime
+from janda import __version__
 
 JANDA = "https://janda.mod.land"
 
@@ -17,6 +16,13 @@ class Api:
         simply_hentai (str): The base url of simply-hentai api.
         qhentai (str): The base url of qhentai api.
         asmhentai (str): The base url of asmhentai api.
+        3hentai (str): The base url of 3hentai api.
+        header (dict): The header for request.
+
+        endpoint_book (str): The endpoint for get book.
+        endpoint_search (str): The endpoint for search book.
+        endpoint_random (str): The endpoint for get random book.
+        endpoint_related (str): The endpoint for get related book.
     """
 
     def __init__(
@@ -27,6 +33,16 @@ class Api:
         BASE_HENTAI2READ: str = f"{JANDA}/hentai2read",
         BASE_SIMPLY_HENTAI: str = f"{JANDA}/simply-hentai",
         BASE_ASMHENTAI: str = f"{JANDA}/asmhentai",
+        BASE_3HENTAI: str = f"{JANDA}/3hentai",
+        BASE_HEADER: dict = {
+            "User-Agent": f"janda/v{__version__} (https://pypi.org/project/janda);",
+            "From": "hey@sinkaroid.org",
+        },
+        BASE_ENDPOINT_BOOK: str = "/get?book=",
+        BASE_ENDPOINT_SEARCH: str = "/search?key=",
+        BASE_ENDPOINT_RANDOM: str = "/random",
+        BASE_ENDPOINT_RELATED: str = "/related?book=",
+     
     ):
         self.nhentai = BASE_NHENTAI
         self.pururin = BASE_PURURIN
@@ -34,6 +50,12 @@ class Api:
         self.hentai2read = BASE_HENTAI2READ
         self.simply_hentai = BASE_SIMPLY_HENTAI
         self.asmhentai = BASE_ASMHENTAI
+        self.thentai = BASE_3HENTAI
+        self.header = BASE_HEADER
+        self.endpoint_book = BASE_ENDPOINT_BOOK
+        self.endpoint_search = BASE_ENDPOINT_SEARCH
+        self.endpoint_random = BASE_ENDPOINT_RANDOM
+        self.endpoint_related = BASE_ENDPOINT_RELATED
 
 
 BASE_URL = Api()
@@ -54,24 +76,9 @@ def list_api():
         BASE_URL.hentai2read,
         BASE_URL.simply_hentai,
         BASE_URL.asmhentai,
+        BASE_URL.thentai,
     ]
     return api_list
-
-
-def auto_space(string: str):
-    """Automatically adds spaces for GET requests
-
-    Parameters
-    ----------
-    string : str
-        The string to be formatted.
-
-    Returns
-    -------
-    str
-
-    """
-    return string.replace(" ", "+")
 
 
 def better_object(parser: dict):
@@ -87,7 +94,7 @@ def better_object(parser: dict):
        deserialized json as string
 
     """
-    return json.dumps(parser, sort_keys=True, indent=4, ensure_ascii=False)
+    return json.dumps(parser, indent=4, ensure_ascii=False)
 
 
 def resolve(b_object: dict) -> dict:

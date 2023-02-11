@@ -1,32 +1,43 @@
 <div align="center">
 <a href="https://sinkaroid.github.io/janda"><img width="470" src="https://cdn.discordapp.com/attachments/952117487166705747/952942740545634344/janda.png" alt="janda"></a>
 
-<h4 align="center">A featureful Python library covers most popular doujin API</h4>
+<h4 align="center">Python client for Jandapress</h4>
 
 <p align="center">
 	<a href="https://github.com/sinkaroid/janda/actions/workflows/build.yml"><img src="https://github.com/sinkaroid/janda/actions/workflows/build.yml/badge.svg"></a>
-	<a href="https://github.com/sinkaroid/janda/actions/workflows/api.yml"><img src="https://github.com/sinkaroid/janda/actions/workflows/api.yml/badge.svg"></a>
 	<a href="https://codeclimate.com/github/sinkaroid/janda/maintainability"><img src="https://api.codeclimate.com/v1/badges/7c53330c7a3c0c2a2006/maintainability"></a>
 </p>
 
-Built on minimalist dependencies to resolves and interacts with ease.
-It takes a much more dictionaries rather than just raw data, and hope will be extendable. Janda has plenty api support apart from nhentai.
+Interacts from python, simplified the usage, and intelisense definitions on your IDEs
 
 <a href="https://github.com/sinkaroid/janda/blob/master/CONTRIBUTING.md">Contributing</a> •
 <a href="https://sinkaroid.github.io/janda">Documentation</a> •
 <a href="https://github.com/sinkaroid/janda/issues/new/choose">Report Issues</a>
 </div>
 
+- [Janda](#)
+  - [Jandapress](#jandapress)
+  - [Features](#janda-vs-the-competition)
+  - [Installation](#installation)
+    - [Prerequisites](#prerequisites)
+  - [Documentation](https://sinkaroid.github.io/janda/)
+    - [Example](#example)
+    - [Janda.resolve()](#jandaresolve)
+    - [Known issues](#known-issues)
+  - [Pronunciation](#pronunciation)
+  - [Legal](#legal)
+
 ---
 
-## Subprojects
-- [jandapress](https://github.com/sinkaroid/jandapress) — RESTful API for janda client
+## Jandapress
+If you prefer with raw api and want to dealing with cloudflare stuff use jandapress
+- [jandapress](https://github.com/sinkaroid/jandapress) — RESTful and experimental API for nhentai and other doujinshi
 
 ## Janda vs. the Competition
 
-Built on minimalist dependencies, yet it covers most of the popular doujinboards.  
+Features availability from jandapress 
 
-| Client        | Status                                                                                                                              | Get   | Search | Randomizer |
+| Client        | Status                                                                                                                              | Get   | Search | Random |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ----- | ------ | ---------- |
 | nhentai       | [![status](https://img.shields.io/badge/status-stable-green)](https://github.com/sinkaroid/janda/actions/workflows/nhentai.yml)     | `Yes` | `Yes`  | `Yes`      |
 | pururin       | [![status](https://img.shields.io/badge/status-stable-green)](https://github.com/sinkaroid/janda/actions/workflows/pururin.yml)     | `Yes` | `Yes`  | `Yes`      |
@@ -34,35 +45,25 @@ Built on minimalist dependencies, yet it covers most of the popular doujinboards
 | hentai2read   | [![status](https://img.shields.io/badge/status-partial-blue)](https://github.com/sinkaroid/janda/actions/workflows/hentai2read.yml) | `Yes` | `Yes`  | `No`       |
 | simply-hentai | [![status](https://img.shields.io/badge/status-triage-red)](https://github.com/sinkaroid/janda/actions/workflows/simplyh.yml)       | `Yes` | `No`   | `No`       |
 | asmhentai     | [![status](https://img.shields.io/badge/status-stable-green)](https://github.com/sinkaroid/janda/actions/workflows/asmhentai.yml)   | `Yes` | `Yes`  | `Yes`      |
+| 3hentai     | [![status](https://img.shields.io/badge/status-stable-green)](https://github.com/sinkaroid/janda/actions/workflows/thentai.yml)   | `Yes` | `Yes`  | `Yes`      |
 
 
-## Features
-
-- **Easy to use**: check your intelisense
-- **Neat**: object taken is re-appended to make it actionable
-- **Documented**: fully documented and tested
-- **All-in-one**: plenty of site support
 
 ## Prerequisites
 
 - Python 3.7 or above
-- Can parse JSON
-  
-<table>
-	<td><b>NOTE:</b> Please always use the latest version of the module.<br>
-Since this library covers a lot of sites, hence there is always a staged changes
-</table>
 
-## 🚀Installation
-`pip install janda / pipenv install janda`  
-- or fork this repo
 
-To use specific site apis, You could specify import too, for example:
+## Installation
+`pip install janda`  
+- Or manual build by cloning this repository and run `python setup.py install`
+
+To use specific site api, You could specify import for example:
 - `from janda import Nhentai`
 
-then initializes the client, an [api key](https://scathach.dev/dashboard) is optional
+then initializes the client, an [api key](https://scathach.id/login) is optional
 
-## Quick example
+## Example
 Some methods require additional parameters, check your intelisense.
 
 ### get
@@ -73,93 +74,27 @@ from janda import Nhentai, resolve
 
 async def book():
     nh = Nhentai()
-    data = await nh.get(274003)
-    print(data) ## unresolved
-    print(resolve(data)) ## resolved
+    data = await nh.get(177013)
+    print(data) ## this is <class 'str'>
+    print(resolve(data)) ## this is <class 'dict'>
 
 async def main():
     await asyncio.gather(book())
 
 asyncio.run(main())
 ```
-The final step you must resolve them to works with data. See [#Unresolved JSON](#unresolved-json)  
-Authorization is always optional! but if you fill it you should define through specific import
 
 ### search
 `(tags: str, page: int = 1, popular: str = 'today') -> Coroutine`
 
 ```py
-await nh.search("jeanne alter", 1, "all")
+await nh.search("jeanne alter", 1, "today")
 ```
-
-## Unresolved JSON
-Instead arbitrary object, This library designed to be neat and clean returns, although it must be reparsed to the string first, that's why [`janda.resolve()`](https://sinkaroid.github.io/janda/utils/parser.html#janda.utils.parser.resolve) exist.  
-
-Let's see an example:
-
-```py
-import asyncio
-from janda import Nhentai, resolve
-
-async def main():
-    nh = Nhentai()
-    data = await nh.get(274003)
-    print(data) ## unresolve
-    print(resolve(data)) ## resolved
-
-asyncio.run(main())
-```
-- Unresolve: meant is better and neat dictionaries returns instead arbitrary JSON structure
-- Resolved: bad structure, arbitary indent, unsorting but it is resolved and ready to extends works with JSON
+## janda.resolve()
+You will need this for every object, this library designed to be neat and clean returns, although it must be reparsed to the string first, that's why `janda.resolve()` exist.
 
 ## Documentation
 The documentation can be found [https://sinkaroid.github.io/janda](https://sinkaroid.github.io/janda)
-
-### Nhentai
-- [`Nhentai.get(options)`](https://sinkaroid.github.io/janda/nhentai.html)
-  - Get specific doujin from nhentai
-- [`Nhentai.search(options)`](https://sinkaroid.github.io/janda/nhentai.html)
-  - Search doujin by tags / artist / character / parody or group
-- [`Nhentai.search_related(options)`](https://sinkaroid.github.io/janda/nhentai.html)
-  - Get related book or almost alike from Id given
-- [`Nhentai.get_random()`](https://sinkaroid.github.io/janda/nhentai.html)
-  - Get random doujin from nhentai
-
-### Pururin
-- [`Pururin.get(options)`](https://sinkaroid.github.io/janda/pururin.html)
-  - Get specific doujin from pururin
-- [`Pururin.get_random()`](https://sinkaroid.github.io/janda/pururin.html)
-  - Get random doujin from pururin
-- [`Pururin.search(options)`](https://sinkaroid.github.io/janda/pururin.html)
-  - Search doujin by tags / artist / character / parody or group
-
-
-### Hentai2read
-- [`Hentai2read.get(options)`](https://sinkaroid.github.io/janda/hentai2read.html)
-  - Get specific doujin from hentai2read
-- [`Hentai2read.search(options)`](https://sinkaroid.github.io/janda/hentai2read.html)
-  - Search a doujin from hentai2read by latest only
-
-### Simplyhentai
-- [`Simplyhentai.get(options)`](https://sinkaroid.github.io/janda/simply_hentai.html)
-  - Get specific doujin from simplyhentai
-
-### Hentaifox
-- [`Hentaifox.get(options)`](https://sinkaroid.github.io/janda/hentaifox.html)
-  - Get specific doujin from hentaifox
-- [`Hentaifox.get_random()`](https://sinkaroid.github.io/janda/hentaifox.html) 
-  - Get random doujin from hentaifox
-- [`Hentaifox.search(options)`](https://sinkaroid.github.io/janda/hentaifox.html)
-  - Search doujin by tags / artist / character / parody or group 
-
-
-### Asmhentai
-- [`Asmhentai.get(options)`](https://sinkaroid.github.io/janda/asmhentai.html)
-  - Get specific doujin from asmhentai
-- [`Asmhentai.search(options)`](https://sinkaroid.github.io/janda/asmhentai.html)
-  - Search a doujin from asmhentai, can providing with page number
-- [`Asmhentai.get_random()`](https://sinkaroid.github.io/janda/asmhentai.html)
-  - Get random doujin from asmhentai
 
 ## Returns example
 `get` method will represent as **Book Object** and packed with actionable image urls
@@ -531,12 +466,10 @@ Otherwise `search` will return 25 **List Object** of search results.
 #### `UnicodeEncodeError: 'charmap' codec can't encode characters`  
 - It's raised when the title contains non-ascii characters, then your console can't parse them, use real console don't Git-bash.
 
+## Pronunciation
+[`id_ID`](https://www.localeplanet.com/java/id-ID/index.html) • **/jan·da/** — Dewasa dan mengikat; (?)
+
 ## Legal
 This tool can be freely copied, modified, altered, distributed without any attribution whatsoever. However, if you feel
-like this tool deserves an attribution, mention it. It won't hurt anybody
-
-## Pronunciation
-[`id_ID`](https://www.localeplanet.com/java/id-ID/index.html) • **/jan·da/** — gatel, nakal, dan menggoda; _(?)_ seperti siapa? adalah benar si janda gemer tomoe
-
-## EoF
-All books from those doujinboards are definitely ilegal from original authors.
+like this tool deserves an attribution, mention it. It won't hurt anybody.
+> Licence: WTF.

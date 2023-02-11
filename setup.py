@@ -25,6 +25,7 @@ setup(
     author_email='anakmancasan@gmail.com',
     version=version,
     long_description=readme,
+    long_description_content_type='text/markdown',
     url='https://github.com/sinkaroid/janda',
     project_urls={
         "Documentation": "https://sinkaroid.github.io/janda",

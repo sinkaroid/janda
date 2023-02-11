@@ -1,47 +1,23 @@
-import requests
-import json
-from janda.utils.parser import *
+from janda.utils.client import *
+from janda.utils.request import request
 
-BASE_URL = Api()
+Janda = Api()
 
 
 class Pururin(object):
-    """Pururin API wrapper
+    """Jandapress Pururin API
 
     Methods
     -------
     get: function
-        Gets doujin from id
+        Get doujin from id
 
     get_random: function
-        Gets random doujin
+        Get random doujin
 
     search: function
         Searches doujin by tags / artist / character / parody or group
     """
-
-    @staticmethod
-    def better_object(parser: dict):
-        """Converts the json object to a more readable object.
-
-        Parameters
-        ----------
-        parser : dict
-            The json object.
-        """
-        return json.dumps(parser, sort_keys=True, indent=4)
-
-    @staticmethod
-    def auto_space(string: str):
-        """Automatically adds spaces for GET requests
-
-        Parameters
-        ----------
-        string : str
-            The string to be formatted.
-        """
-
-        return string.replace(" ", "+")
 
     def __init__(self, api_key: str = ""):
         """Initializes the Pururin.
@@ -49,7 +25,7 @@ class Pururin(object):
         Parameters
         ----------
         api_key : str
-            scathach.dev API key (optional)
+            scathach.id API key (optional)
         """
         if api_key == "":
             self.api_key = None
@@ -57,10 +33,10 @@ class Pururin(object):
             self.api_key = api_key
         self.specs = {"api_key": self.api_key}
 
-    async def get(self, book: int):
-        """Get doujin from id
+    async def get(self, book: int) -> str:
+        """Get pururin doujin book from Id
 
-        path: https://pururin.to/gallery/61119
+        example: https://pururin.to/gallery/61119
 
         Parameters
         ----------
@@ -74,25 +50,16 @@ class Pururin(object):
 
         Returns
         -------
-        dict
-            The book object that represents the specific id response.
+        str
+            reparsed json as string
         """
 
-        self.specs["book"] = book
+        self.book = str(book)
+        data = await request(Janda.pururin + Janda.endpoint_book, self.book)
+        return better_object(data)
 
-        try:
-            book = int(book)
-        except ValueError:
-            raise ValueError("Book must be an int")
-
-        data = requests.get(BASE_URL.pururin + "/get", params=self.specs)
-        if data.json()["data"]["title"] == "":
-            raise ValueError("No results found")
-
-        return better_object(data.json())
-
-    async def search(self, query: str, page: int = 1, sort: str = "newest"):
-        """Search doujin by tags / artist / character / parody or group
+    async def search(self, query: str, page: int = 1, sort: str = "newest") -> str:
+        """Search pururin by tags / artist / character / parody or group
 
         Parameters
         ----------
@@ -112,8 +79,8 @@ class Pururin(object):
 
         Returns
         -------
-        dict
-            The list object that represents the doujin response
+        str
+            reparsed json as string
         """
 
         if sort not in [
@@ -128,30 +95,22 @@ class Pururin(object):
                 "Sort must be one of newest, most-popular, highest-rated, most-viewed, title, random"
             )
 
-        self.specs["key"] = query
-        self.specs["page"] = page
-        self.specs["sort"] = sort
+        self.query = query
+        self.page = page
+        self.sort = sort
+        self.req = str(self.query + "&page=" +
+                       str(self.page) + "&sort=" + self.sort)
 
-        data = requests.get(BASE_URL.pururin + "/search", params=self.specs)
+        data = await request(Janda.pururin + Janda.endpoint_search, self.req)
+        return better_object(data)
 
-        if len(data.json()["data"]) == 0:
-            raise ValueError("No results found")
-
-        if data.status_code != 200:
-            raise ValueError(
-                "Request failed with status code {}".format(data.status_code)
-            )
-
-        return better_object(data.json())
-
-    async def get_random(self):
-        """Gets random doujin on pururin
+    async def get_random(self) -> str:
+        """Get pururin random doujin
 
         Returns
         -------
-        dict
-            The book object that represents the random doujin response.
+        str
+            reparsed json as string
         """
-        data = requests.get(BASE_URL.pururin + "/random", params=self.specs)
-
-        return better_object(data.json())
+        data = await request(Janda.pururin + Janda.endpoint_random)
+        return better_object(data)
