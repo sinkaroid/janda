@@ -26,20 +26,19 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import requests
-import json
-from .utils.parser import *
+<pre><code class="python">from janda.utils.client import *
+from janda.utils.request import request
 
-BASE_URL = Api()
+Janda = Api()
 
 
 class Hentai2read(object):
-    &#34;&#34;&#34;Hentai2read API wrapper
+    &#34;&#34;&#34;Jandapress Hentai2read API
 
     Methods
     -------
     get : function
-        Gets doujin from path given
+        Get doujin from path given
 
     search : function
         Search for doujin based on the latest
@@ -52,7 +51,7 @@ class Hentai2read(object):
         Parameters
         ----------
         api_key : str
-            scathach.dev API key (optional)
+            scathach.id API key (optional)
         &#34;&#34;&#34;
         if api_key == &#34;&#34;:
             self.api_key = None
@@ -60,77 +59,47 @@ class Hentai2read(object):
             self.api_key = api_key
         self.specs = {&#34;api_key&#34;: self.api_key}
 
-    async def get(self, path: str, chapter: int = 1):
-        &#34;&#34;&#34;Gets doujin from path given
-
-        path: https://hentai2read.com/a_story_of_tomoe_gozen_being_punished_by_a_shota/1
+    async def get(self, path: str) -&gt; str:
+        &#34;&#34;&#34;Get hentai2read doujin from path given
+        
+        example: https://hentai2read.com/a_story_of_tomoe_gozen_being_punished_by_a_shota/1
 
         Parameters
         ----------
         path : str
             The path url
 
-        chapter : int
-            The chapter number. Default is 1
-
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
         Returns
         -------
-        dict
-            The book object that represents the specific path response.
+        str
+            reparsed json as string
         &#34;&#34;&#34;
 
-        if &#34;/&#34; in path:
-            path = path.replace(&#34;/&#34;, &#34;&#34;)
+        self.book = str(path)
 
-        self.specs[&#34;book&#34;] = path + &#34;/&#34; + str(chapter)
+        data = await request(Janda.hentai2read + Janda.endpoint_book, self.book)
+        return better_object(data)
 
-        try:
-            path = str(path)
-        except ValueError:
-            raise ValueError(&#34;Path must be a str&#34;)
+    async def search(self, query: str) -&gt; str:
+        &#34;&#34;&#34;Search hentai2read doujin based on the latest
 
-        data = requests.get(BASE_URL.hentai2read + &#34;/get&#34;, params=self.specs)
-
-        return better_object(data.json())
-
-    async def search(self, query: str):
-        &#34;&#34;&#34;Search for doujin based on the latest
-
-        path: https://hentai2read.com/hentai-list/search/alter
+        example: https://hentai2read.com/hentai-list/search/alter
 
         Parameters
         ----------
         query : str
             The query to search for.
 
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
         Returns
         -------
-        dict
-            The list object that represents the doujin response.
+        str
+            reparsed json as string
         &#34;&#34;&#34;
 
-        self.specs[&#34;key&#34;] = query
+        self.key = query
 
-        query = auto_space(query)
-
-        if query == &#34;&#34;:
-            raise ValueError(&#34;Query must be given&#34;)
-        data = requests.get(BASE_URL.hentai2read + &#34;/search&#34;, params=self.specs)
-
-        if len(data.json()[&#34;data&#34;]) == 0:
-            raise ValueError(&#34;No results found&#34;)
-
-        return better_object(data.json())</code></pre>
+        data = await request(Janda.hentai2read + Janda.endpoint_search, self.key)
+        return better_object(data)</code></pre>
 </details>
 </section>
 <section>
@@ -147,29 +116,29 @@ class Hentai2read(object):
 <span>(</span><span>api_key: str = '')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Hentai2read API wrapper</p>
+<div class="desc"><p>Jandapress Hentai2read API</p>
 <h2 id="methods">Methods</h2>
 <p>get : function
-Gets doujin from path given</p>
+Get doujin from path given</p>
 <p>search : function
 Search for doujin based on the latest</p>
 <p>Initializes the Hentai2read.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>api_key</code></strong> :&ensp;<code>str</code></dt>
-<dd>scathach.dev API key (optional)</dd>
+<dd>scathach.id API key (optional)</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Hentai2read(object):
-    &#34;&#34;&#34;Hentai2read API wrapper
+    &#34;&#34;&#34;Jandapress Hentai2read API
 
     Methods
     -------
     get : function
-        Gets doujin from path given
+        Get doujin from path given
 
     search : function
         Search for doujin based on the latest
@@ -182,7 +151,7 @@ Search for doujin based on the latest</p>
         Parameters
         ----------
         api_key : str
-            scathach.dev API key (optional)
+            scathach.id API key (optional)
         &#34;&#34;&#34;
         if api_key == &#34;&#34;:
             self.api_key = None
@@ -190,204 +159,132 @@ Search for doujin based on the latest</p>
             self.api_key = api_key
         self.specs = {&#34;api_key&#34;: self.api_key}
 
-    async def get(self, path: str, chapter: int = 1):
-        &#34;&#34;&#34;Gets doujin from path given
-
-        path: https://hentai2read.com/a_story_of_tomoe_gozen_being_punished_by_a_shota/1
+    async def get(self, path: str) -&gt; str:
+        &#34;&#34;&#34;Get hentai2read doujin from path given
+        
+        example: https://hentai2read.com/a_story_of_tomoe_gozen_being_punished_by_a_shota/1
 
         Parameters
         ----------
         path : str
             The path url
 
-        chapter : int
-            The chapter number. Default is 1
-
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
         Returns
         -------
-        dict
-            The book object that represents the specific path response.
+        str
+            reparsed json as string
         &#34;&#34;&#34;
 
-        if &#34;/&#34; in path:
-            path = path.replace(&#34;/&#34;, &#34;&#34;)
+        self.book = str(path)
 
-        self.specs[&#34;book&#34;] = path + &#34;/&#34; + str(chapter)
+        data = await request(Janda.hentai2read + Janda.endpoint_book, self.book)
+        return better_object(data)
 
-        try:
-            path = str(path)
-        except ValueError:
-            raise ValueError(&#34;Path must be a str&#34;)
+    async def search(self, query: str) -&gt; str:
+        &#34;&#34;&#34;Search hentai2read doujin based on the latest
 
-        data = requests.get(BASE_URL.hentai2read + &#34;/get&#34;, params=self.specs)
-
-        return better_object(data.json())
-
-    async def search(self, query: str):
-        &#34;&#34;&#34;Search for doujin based on the latest
-
-        path: https://hentai2read.com/hentai-list/search/alter
+        example: https://hentai2read.com/hentai-list/search/alter
 
         Parameters
         ----------
         query : str
             The query to search for.
 
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
         Returns
         -------
-        dict
-            The list object that represents the doujin response.
+        str
+            reparsed json as string
         &#34;&#34;&#34;
 
-        self.specs[&#34;key&#34;] = query
+        self.key = query
 
-        query = auto_space(query)
-
-        if query == &#34;&#34;:
-            raise ValueError(&#34;Query must be given&#34;)
-        data = requests.get(BASE_URL.hentai2read + &#34;/search&#34;, params=self.specs)
-
-        if len(data.json()[&#34;data&#34;]) == 0:
-            raise ValueError(&#34;No results found&#34;)
-
-        return better_object(data.json())</code></pre>
+        data = await request(Janda.hentai2read + Janda.endpoint_search, self.key)
+        return better_object(data)</code></pre>
 </details>
 <h3>Methods</h3>
 <dl>
 <dt id="janda.hentai2read.Hentai2read.get"><code class="name flex">
-<span>async def <span class="ident">get</span></span>(<span>self, path: str, chapter: int = 1)</span>
+<span>async def <span class="ident">get</span></span>(<span>self, path: str) ‑> str</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Gets doujin from path given</p>
-<p>path: <a href="https://hentai2read.com/a_story_of_tomoe_gozen_being_punished_by_a_shota/1">https://hentai2read.com/a_story_of_tomoe_gozen_being_punished_by_a_shota/1</a></p>
+<div class="desc"><p>Get hentai2read doujin from path given</p>
+<p>example: <a href="https://hentai2read.com/a_story_of_tomoe_gozen_being_punished_by_a_shota/1">https://hentai2read.com/a_story_of_tomoe_gozen_being_punished_by_a_shota/1</a></p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
 <dd>The path url</dd>
-<dt><strong><code>chapter</code></strong> :&ensp;<code>int</code></dt>
-<dd>The chapter number. Default is 1</dd>
-</dl>
-<h2 id="raises">Raises</h2>
-<dl>
-<dt><code>ValueError</code></dt>
-<dd>If the doujin is not found.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>dict</code></dt>
-<dd>The book object that represents the specific path response.</dd>
+<dt><code>str</code></dt>
+<dd>reparsed json as string</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def get(self, path: str, chapter: int = 1):
-    &#34;&#34;&#34;Gets doujin from path given
-
-    path: https://hentai2read.com/a_story_of_tomoe_gozen_being_punished_by_a_shota/1
+<pre><code class="python">async def get(self, path: str) -&gt; str:
+    &#34;&#34;&#34;Get hentai2read doujin from path given
+    
+    example: https://hentai2read.com/a_story_of_tomoe_gozen_being_punished_by_a_shota/1
 
     Parameters
     ----------
     path : str
         The path url
 
-    chapter : int
-        The chapter number. Default is 1
-
-    Raises
-    ------
-    ValueError
-        If the doujin is not found.
-
     Returns
     -------
-    dict
-        The book object that represents the specific path response.
+    str
+        reparsed json as string
     &#34;&#34;&#34;
 
-    if &#34;/&#34; in path:
-        path = path.replace(&#34;/&#34;, &#34;&#34;)
+    self.book = str(path)
 
-    self.specs[&#34;book&#34;] = path + &#34;/&#34; + str(chapter)
-
-    try:
-        path = str(path)
-    except ValueError:
-        raise ValueError(&#34;Path must be a str&#34;)
-
-    data = requests.get(BASE_URL.hentai2read + &#34;/get&#34;, params=self.specs)
-
-    return better_object(data.json())</code></pre>
+    data = await request(Janda.hentai2read + Janda.endpoint_book, self.book)
+    return better_object(data)</code></pre>
 </details>
 </dd>
 <dt id="janda.hentai2read.Hentai2read.search"><code class="name flex">
-<span>async def <span class="ident">search</span></span>(<span>self, query: str)</span>
+<span>async def <span class="ident">search</span></span>(<span>self, query: str) ‑> str</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Search for doujin based on the latest</p>
-<p>path: <a href="https://hentai2read.com/hentai-list/search/alter">https://hentai2read.com/hentai-list/search/alter</a></p>
+<div class="desc"><p>Search hentai2read doujin based on the latest</p>
+<p>example: <a href="https://hentai2read.com/hentai-list/search/alter">https://hentai2read.com/hentai-list/search/alter</a></p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>query</code></strong> :&ensp;<code>str</code></dt>
 <dd>The query to search for.</dd>
 </dl>
-<h2 id="raises">Raises</h2>
-<dl>
-<dt><code>ValueError</code></dt>
-<dd>If the doujin is not found.</dd>
-</dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>dict</code></dt>
-<dd>The list object that represents the doujin response.</dd>
+<dt><code>str</code></dt>
+<dd>reparsed json as string</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def search(self, query: str):
-    &#34;&#34;&#34;Search for doujin based on the latest
+<pre><code class="python">async def search(self, query: str) -&gt; str:
+    &#34;&#34;&#34;Search hentai2read doujin based on the latest
 
-    path: https://hentai2read.com/hentai-list/search/alter
+    example: https://hentai2read.com/hentai-list/search/alter
 
     Parameters
     ----------
     query : str
         The query to search for.
 
-    Raises
-    ------
-    ValueError
-        If the doujin is not found.
-
     Returns
     -------
-    dict
-        The list object that represents the doujin response.
+    str
+        reparsed json as string
     &#34;&#34;&#34;
 
-    self.specs[&#34;key&#34;] = query
+    self.key = query
 
-    query = auto_space(query)
-
-    if query == &#34;&#34;:
-        raise ValueError(&#34;Query must be given&#34;)
-    data = requests.get(BASE_URL.hentai2read + &#34;/search&#34;, params=self.specs)
-
-    if len(data.json()[&#34;data&#34;]) == 0:
-        raise ValueError(&#34;No results found&#34;)
-
-    return better_object(data.json())</code></pre>
+    data = await request(Janda.hentai2read + Janda.endpoint_search, self.key)
+    return better_object(data)</code></pre>
 </details>
 </dd>
 </dl>

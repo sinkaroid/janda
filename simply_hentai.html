@@ -26,20 +26,19 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import requests
-import json
-from .utils.parser import *
+<pre><code class="python">from janda.utils.client import *
+from janda.utils.request import request
 
-BASE_URL = Api()
+Janda = Api()
 
 
 class SimplyHentai(object):
-    &#34;&#34;&#34;Simply-hentai API wrapper
+    &#34;&#34;&#34;Jandapress simply-hentai API
 
     Methods
     -------
     get : function
-        Gets doujin from path given
+        Get doujin from path given
     &#34;&#34;&#34;
 
     def __init__(self, api_key: str = &#34;&#34;):
@@ -48,7 +47,7 @@ class SimplyHentai(object):
         Parameters
         ----------
         api_key : str
-            scathach.dev API key (optional)
+            scathach.id API key (optional)
         &#34;&#34;&#34;
         if api_key == &#34;&#34;:
             self.api_key = None
@@ -56,32 +55,27 @@ class SimplyHentai(object):
             self.api_key = api_key
         self.specs = {&#34;api_key&#34;: self.api_key}
 
-    async def get(self, path: str):
-        &#34;&#34;&#34;Gets doujin from path given
+    async def get(self, path: str) -&gt; str:
+        &#34;&#34;&#34;Get simply-hentai doujin from path given
 
-        path: https://www.simply-hentai.com/fate-grand-order/perros =&gt; &#39;fate-grand-order/perros&#39;
+        example: https://www.simply-hentai.com/fate-grand-order/perros =&gt; &#39;fate-grand-order/perros&#39;
 
         Parameters
         ----------
         path : str
             The path url
 
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
         Returns
         -------
-        dict
-            The book object that represents the specific path response.
+        str
+            reparsed json as string
         &#34;&#34;&#34;
 
         if str(path).isdigit():
             raise ValueError(&#34;Invalid path, must be a str&#34;)
 
         path = path.strip(&#34;/&#34;)
-        self.specs[&#34;book&#34;] = path
+        self.book = path
 
         try:
             path = str(path)
@@ -89,9 +83,8 @@ class SimplyHentai(object):
         except ValueError or path.isdigit():
             raise ValueError(&#34;Path must be a str&#34;)
 
-        data = requests.get(BASE_URL.simply_hentai + &#34;/get&#34;, params=self.specs)
-
-        return better_object(data.json())</code></pre>
+        data = await request(Janda.simply_hentai + Janda.endpoint_book, self.book)
+        return better_object(data)</code></pre>
 </details>
 </section>
 <section>
@@ -108,27 +101,27 @@ class SimplyHentai(object):
 <span>(</span><span>api_key: str = '')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Simply-hentai API wrapper</p>
+<div class="desc"><p>Jandapress simply-hentai API</p>
 <h2 id="methods">Methods</h2>
 <p>get : function
-Gets doujin from path given</p>
+Get doujin from path given</p>
 <p>Initializes SimplyHentai.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>api_key</code></strong> :&ensp;<code>str</code></dt>
-<dd>scathach.dev API key (optional)</dd>
+<dd>scathach.id API key (optional)</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SimplyHentai(object):
-    &#34;&#34;&#34;Simply-hentai API wrapper
+    &#34;&#34;&#34;Jandapress simply-hentai API
 
     Methods
     -------
     get : function
-        Gets doujin from path given
+        Get doujin from path given
     &#34;&#34;&#34;
 
     def __init__(self, api_key: str = &#34;&#34;):
@@ -137,7 +130,7 @@ Gets doujin from path given</p>
         Parameters
         ----------
         api_key : str
-            scathach.dev API key (optional)
+            scathach.id API key (optional)
         &#34;&#34;&#34;
         if api_key == &#34;&#34;:
             self.api_key = None
@@ -145,32 +138,27 @@ Gets doujin from path given</p>
             self.api_key = api_key
         self.specs = {&#34;api_key&#34;: self.api_key}
 
-    async def get(self, path: str):
-        &#34;&#34;&#34;Gets doujin from path given
+    async def get(self, path: str) -&gt; str:
+        &#34;&#34;&#34;Get simply-hentai doujin from path given
 
-        path: https://www.simply-hentai.com/fate-grand-order/perros =&gt; &#39;fate-grand-order/perros&#39;
+        example: https://www.simply-hentai.com/fate-grand-order/perros =&gt; &#39;fate-grand-order/perros&#39;
 
         Parameters
         ----------
         path : str
             The path url
 
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
         Returns
         -------
-        dict
-            The book object that represents the specific path response.
+        str
+            reparsed json as string
         &#34;&#34;&#34;
 
         if str(path).isdigit():
             raise ValueError(&#34;Invalid path, must be a str&#34;)
 
         path = path.strip(&#34;/&#34;)
-        self.specs[&#34;book&#34;] = path
+        self.book = path
 
         try:
             path = str(path)
@@ -178,63 +166,52 @@ Gets doujin from path given</p>
         except ValueError or path.isdigit():
             raise ValueError(&#34;Path must be a str&#34;)
 
-        data = requests.get(BASE_URL.simply_hentai + &#34;/get&#34;, params=self.specs)
-
-        return better_object(data.json())</code></pre>
+        data = await request(Janda.simply_hentai + Janda.endpoint_book, self.book)
+        return better_object(data)</code></pre>
 </details>
 <h3>Methods</h3>
 <dl>
 <dt id="janda.simply_hentai.SimplyHentai.get"><code class="name flex">
-<span>async def <span class="ident">get</span></span>(<span>self, path: str)</span>
+<span>async def <span class="ident">get</span></span>(<span>self, path: str) ‑> str</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Gets doujin from path given</p>
-<p>path: <a href="https://www.simply-hentai.com/fate-grand-order/perros">https://www.simply-hentai.com/fate-grand-order/perros</a> =&gt; 'fate-grand-order/perros'</p>
+<div class="desc"><p>Get simply-hentai doujin from path given</p>
+<p>example: <a href="https://www.simply-hentai.com/fate-grand-order/perros">https://www.simply-hentai.com/fate-grand-order/perros</a> =&gt; 'fate-grand-order/perros'</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
 <dd>The path url</dd>
 </dl>
-<h2 id="raises">Raises</h2>
-<dl>
-<dt><code>ValueError</code></dt>
-<dd>If the doujin is not found.</dd>
-</dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>dict</code></dt>
-<dd>The book object that represents the specific path response.</dd>
+<dt><code>str</code></dt>
+<dd>reparsed json as string</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def get(self, path: str):
-    &#34;&#34;&#34;Gets doujin from path given
+<pre><code class="python">async def get(self, path: str) -&gt; str:
+    &#34;&#34;&#34;Get simply-hentai doujin from path given
 
-    path: https://www.simply-hentai.com/fate-grand-order/perros =&gt; &#39;fate-grand-order/perros&#39;
+    example: https://www.simply-hentai.com/fate-grand-order/perros =&gt; &#39;fate-grand-order/perros&#39;
 
     Parameters
     ----------
     path : str
         The path url
 
-    Raises
-    ------
-    ValueError
-        If the doujin is not found.
-
     Returns
     -------
-    dict
-        The book object that represents the specific path response.
+    str
+        reparsed json as string
     &#34;&#34;&#34;
 
     if str(path).isdigit():
         raise ValueError(&#34;Invalid path, must be a str&#34;)
 
     path = path.strip(&#34;/&#34;)
-    self.specs[&#34;book&#34;] = path
+    self.book = path
 
     try:
         path = str(path)
@@ -242,9 +219,8 @@ Gets doujin from path given</p>
     except ValueError or path.isdigit():
         raise ValueError(&#34;Path must be a str&#34;)
 
-    data = requests.get(BASE_URL.simply_hentai + &#34;/get&#34;, params=self.specs)
-
-    return better_object(data.json())</code></pre>
+    data = await request(Janda.simply_hentai + Janda.endpoint_book, self.book)
+    return better_object(data)</code></pre>
 </details>
 </dd>
 </dl>

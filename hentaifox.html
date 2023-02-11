@@ -26,15 +26,14 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import requests
-import json
-from .utils.parser import *
+<pre><code class="python">from janda.utils.client import *
+from janda.utils.request import request
 
-BASE_URL = Api()
+Janda = Api()
 
 
 class Hentaifox(object):
-    &#34;&#34;&#34;HentaiFox API wrapper
+    &#34;&#34;&#34;Jandapress Hentaifox API
 
     Methods
     -------
@@ -54,7 +53,7 @@ class Hentaifox(object):
         Parameters
         ----------
         api_key : str
-            scathach.dev API key (optional)
+            scathach.id API key (optional)
         &#34;&#34;&#34;
         if api_key == &#34;&#34;:
             self.api_key = None
@@ -62,45 +61,30 @@ class Hentaifox(object):
             self.api_key = api_key
         self.specs = {&#34;api_key&#34;: self.api_key}
 
-    async def get(self, book: int):
-        &#34;&#34;&#34;Get doujin API from Id
+    async def get(self, book: int) -&gt; str:
+        &#34;&#34;&#34;Get hentaifox doujin book from Id
 
-        path: https://hentaifox.com/gallery/88027/
+        example: https://hentaifox.com/gallery/88027/
 
         Parameters
         ----------
         book : int
             The id number of the doujin.
 
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
         Returns
         -------
-        dict
-            The book object that represents the specific id response.
+        str
+            reparsed json as string
         &#34;&#34;&#34;
 
-        self.specs[&#34;book&#34;] = book
+        self.book = str(book)
+        data = await request(Janda.hentaifox + Janda.endpoint_book, self.book)
+        return better_object(data)
 
-        try:
-            book = int(book)
-        except ValueError:
-            raise ValueError(&#34;Book must be an int&#34;)
+    async def search(self, query: str, page: int = 1, sort: str = &#34;latest&#34;) -&gt; str:
+        &#34;&#34;&#34;Search hentaifox doujin with query and page number given
 
-        data = requests.get(BASE_URL.hentaifox + &#34;/get&#34;, params=self.specs)
-
-        if data.status_code != 200:
-            raise ValueError(&#34;No results found&#34;)
-
-        return better_object(data.json())
-
-    async def search(self, query: str, page: int = 1, sort: str = &#34;latest&#34;):
-        &#34;&#34;&#34;Search for doujin based on the latest
-
-        path: https://hentaifox.com/search/?q=alter&amp;sort=latest
+        example: https://hentaifox.com/search/?q=alter&amp;sort=latest
 
         Parameters
         ----------
@@ -113,54 +97,32 @@ class Hentaifox(object):
         sort : str
             The sort order to search: latest, popular
 
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
+        Returns
+        -------
+        str
+            reparsed json as string
+        &#34;&#34;&#34;
+
+        self.query = query
+        self.page = page
+        self.sort = sort
+        self.req = str(self.query + &#34;&amp;page=&#34; +
+                       str(self.page) + &#34;&amp;sort=&#34; + self.sort)
+        
+        data = await request(Janda.hentaifox + Janda.endpoint_search, self.req)
+        return better_object(data)
+
+    async def get_random(self) -&gt; str:
+        &#34;&#34;&#34;Get hentaifox random doujin
 
         Returns
         -------
-        dict
-            The list object that represents the doujin response.
+        str
+            reparsed json as string
         &#34;&#34;&#34;
 
-        self.specs[&#34;key&#34;] = query
-        self.specs[&#34;sort&#34;] = sort
-        self.specs[&#34;page&#34;] = page
-
-        query = auto_space(query)
-
-        if query == &#34;&#34;:
-            raise ValueError(&#34;Query must be given&#34;)
-        data = requests.get(BASE_URL.hentaifox + &#34;/search&#34;, params=self.specs)
-
-        if len(data.json()[&#34;data&#34;]) == 0:
-            raise ValueError(&#34;No results found&#34;)
-
-        return better_object(data.json())
-
-    async def get_random(self):
-        &#34;&#34;&#34;Get random doujin
-
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
-        Returns
-        -------
-        dict
-            The book object that represents the random doujin response.
-        &#34;&#34;&#34;
-
-        data = requests.get(BASE_URL.hentaifox + &#34;/random&#34;, params=self.specs)
-
-        if data.status_code != 200:
-            raise ValueError(
-                &#34;Request failed with status code {}&#34;.format(data.status_code)
-            )
-
-        return better_object(data.json())</code></pre>
+        data = await request(Janda.hentaifox + Janda.endpoint_random)
+        return better_object(data)</code></pre>
 </details>
 </section>
 <section>
@@ -177,7 +139,7 @@ class Hentaifox(object):
 <span>(</span><span>api_key: str = '')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>HentaiFox API wrapper</p>
+<div class="desc"><p>Jandapress Hentaifox API</p>
 <h2 id="methods">Methods</h2>
 <p>get : function
 Get doujin API from Id</p>
@@ -189,14 +151,14 @@ Get random doujin</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>api_key</code></strong> :&ensp;<code>str</code></dt>
-<dd>scathach.dev API key (optional)</dd>
+<dd>scathach.id API key (optional)</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Hentaifox(object):
-    &#34;&#34;&#34;HentaiFox API wrapper
+    &#34;&#34;&#34;Jandapress Hentaifox API
 
     Methods
     -------
@@ -216,7 +178,7 @@ Get random doujin</p>
         Parameters
         ----------
         api_key : str
-            scathach.dev API key (optional)
+            scathach.id API key (optional)
         &#34;&#34;&#34;
         if api_key == &#34;&#34;:
             self.api_key = None
@@ -224,45 +186,30 @@ Get random doujin</p>
             self.api_key = api_key
         self.specs = {&#34;api_key&#34;: self.api_key}
 
-    async def get(self, book: int):
-        &#34;&#34;&#34;Get doujin API from Id
+    async def get(self, book: int) -&gt; str:
+        &#34;&#34;&#34;Get hentaifox doujin book from Id
 
-        path: https://hentaifox.com/gallery/88027/
+        example: https://hentaifox.com/gallery/88027/
 
         Parameters
         ----------
         book : int
             The id number of the doujin.
 
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
         Returns
         -------
-        dict
-            The book object that represents the specific id response.
+        str
+            reparsed json as string
         &#34;&#34;&#34;
 
-        self.specs[&#34;book&#34;] = book
+        self.book = str(book)
+        data = await request(Janda.hentaifox + Janda.endpoint_book, self.book)
+        return better_object(data)
 
-        try:
-            book = int(book)
-        except ValueError:
-            raise ValueError(&#34;Book must be an int&#34;)
+    async def search(self, query: str, page: int = 1, sort: str = &#34;latest&#34;) -&gt; str:
+        &#34;&#34;&#34;Search hentaifox doujin with query and page number given
 
-        data = requests.get(BASE_URL.hentaifox + &#34;/get&#34;, params=self.specs)
-
-        if data.status_code != 200:
-            raise ValueError(&#34;No results found&#34;)
-
-        return better_object(data.json())
-
-    async def search(self, query: str, page: int = 1, sort: str = &#34;latest&#34;):
-        &#34;&#34;&#34;Search for doujin based on the latest
-
-        path: https://hentaifox.com/search/?q=alter&amp;sort=latest
+        example: https://hentaifox.com/search/?q=alter&amp;sort=latest
 
         Parameters
         ----------
@@ -275,167 +222,109 @@ Get random doujin</p>
         sort : str
             The sort order to search: latest, popular
 
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
+        Returns
+        -------
+        str
+            reparsed json as string
+        &#34;&#34;&#34;
+
+        self.query = query
+        self.page = page
+        self.sort = sort
+        self.req = str(self.query + &#34;&amp;page=&#34; +
+                       str(self.page) + &#34;&amp;sort=&#34; + self.sort)
+        
+        data = await request(Janda.hentaifox + Janda.endpoint_search, self.req)
+        return better_object(data)
+
+    async def get_random(self) -&gt; str:
+        &#34;&#34;&#34;Get hentaifox random doujin
 
         Returns
         -------
-        dict
-            The list object that represents the doujin response.
+        str
+            reparsed json as string
         &#34;&#34;&#34;
 
-        self.specs[&#34;key&#34;] = query
-        self.specs[&#34;sort&#34;] = sort
-        self.specs[&#34;page&#34;] = page
-
-        query = auto_space(query)
-
-        if query == &#34;&#34;:
-            raise ValueError(&#34;Query must be given&#34;)
-        data = requests.get(BASE_URL.hentaifox + &#34;/search&#34;, params=self.specs)
-
-        if len(data.json()[&#34;data&#34;]) == 0:
-            raise ValueError(&#34;No results found&#34;)
-
-        return better_object(data.json())
-
-    async def get_random(self):
-        &#34;&#34;&#34;Get random doujin
-
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
-        Returns
-        -------
-        dict
-            The book object that represents the random doujin response.
-        &#34;&#34;&#34;
-
-        data = requests.get(BASE_URL.hentaifox + &#34;/random&#34;, params=self.specs)
-
-        if data.status_code != 200:
-            raise ValueError(
-                &#34;Request failed with status code {}&#34;.format(data.status_code)
-            )
-
-        return better_object(data.json())</code></pre>
+        data = await request(Janda.hentaifox + Janda.endpoint_random)
+        return better_object(data)</code></pre>
 </details>
 <h3>Methods</h3>
 <dl>
 <dt id="janda.hentaifox.Hentaifox.get"><code class="name flex">
-<span>async def <span class="ident">get</span></span>(<span>self, book: int)</span>
+<span>async def <span class="ident">get</span></span>(<span>self, book: int) ‑> str</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get doujin API from Id</p>
-<p>path: <a href="https://hentaifox.com/gallery/88027/">https://hentaifox.com/gallery/88027/</a></p>
+<div class="desc"><p>Get hentaifox doujin book from Id</p>
+<p>example: <a href="https://hentaifox.com/gallery/88027/">https://hentaifox.com/gallery/88027/</a></p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>book</code></strong> :&ensp;<code>int</code></dt>
 <dd>The id number of the doujin.</dd>
 </dl>
-<h2 id="raises">Raises</h2>
-<dl>
-<dt><code>ValueError</code></dt>
-<dd>If the doujin is not found.</dd>
-</dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>dict</code></dt>
-<dd>The book object that represents the specific id response.</dd>
+<dt><code>str</code></dt>
+<dd>reparsed json as string</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def get(self, book: int):
-    &#34;&#34;&#34;Get doujin API from Id
+<pre><code class="python">async def get(self, book: int) -&gt; str:
+    &#34;&#34;&#34;Get hentaifox doujin book from Id
 
-    path: https://hentaifox.com/gallery/88027/
+    example: https://hentaifox.com/gallery/88027/
 
     Parameters
     ----------
     book : int
         The id number of the doujin.
 
-    Raises
-    ------
-    ValueError
-        If the doujin is not found.
-
     Returns
     -------
-    dict
-        The book object that represents the specific id response.
+    str
+        reparsed json as string
     &#34;&#34;&#34;
 
-    self.specs[&#34;book&#34;] = book
-
-    try:
-        book = int(book)
-    except ValueError:
-        raise ValueError(&#34;Book must be an int&#34;)
-
-    data = requests.get(BASE_URL.hentaifox + &#34;/get&#34;, params=self.specs)
-
-    if data.status_code != 200:
-        raise ValueError(&#34;No results found&#34;)
-
-    return better_object(data.json())</code></pre>
+    self.book = str(book)
+    data = await request(Janda.hentaifox + Janda.endpoint_book, self.book)
+    return better_object(data)</code></pre>
 </details>
 </dd>
 <dt id="janda.hentaifox.Hentaifox.get_random"><code class="name flex">
-<span>async def <span class="ident">get_random</span></span>(<span>self)</span>
+<span>async def <span class="ident">get_random</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get random doujin</p>
-<h2 id="raises">Raises</h2>
-<dl>
-<dt><code>ValueError</code></dt>
-<dd>If the doujin is not found.</dd>
-</dl>
+<div class="desc"><p>Get hentaifox random doujin</p>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>dict</code></dt>
-<dd>The book object that represents the random doujin response.</dd>
+<dt><code>str</code></dt>
+<dd>reparsed json as string</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def get_random(self):
-    &#34;&#34;&#34;Get random doujin
-
-    Raises
-    ------
-    ValueError
-        If the doujin is not found.
+<pre><code class="python">async def get_random(self) -&gt; str:
+    &#34;&#34;&#34;Get hentaifox random doujin
 
     Returns
     -------
-    dict
-        The book object that represents the random doujin response.
+    str
+        reparsed json as string
     &#34;&#34;&#34;
 
-    data = requests.get(BASE_URL.hentaifox + &#34;/random&#34;, params=self.specs)
-
-    if data.status_code != 200:
-        raise ValueError(
-            &#34;Request failed with status code {}&#34;.format(data.status_code)
-        )
-
-    return better_object(data.json())</code></pre>
+    data = await request(Janda.hentaifox + Janda.endpoint_random)
+    return better_object(data)</code></pre>
 </details>
 </dd>
 <dt id="janda.hentaifox.Hentaifox.search"><code class="name flex">
-<span>async def <span class="ident">search</span></span>(<span>self, query: str, page: int = 1, sort: str = 'latest')</span>
+<span>async def <span class="ident">search</span></span>(<span>self, query: str, page: int = 1, sort: str = 'latest') ‑> str</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Search for doujin based on the latest</p>
-<p>path: <a href="https://hentaifox.com/search/?q=alter&amp;sort=latest">https://hentaifox.com/search/?q=alter&amp;sort=latest</a></p>
+<div class="desc"><p>Search hentaifox doujin with query and page number given</p>
+<p>example: <a href="https://hentaifox.com/search/?q=alter&amp;sort=latest">https://hentaifox.com/search/?q=alter&amp;sort=latest</a></p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>query</code></strong> :&ensp;<code>str</code></dt>
@@ -445,24 +334,19 @@ Get random doujin</p>
 <dt><strong><code>sort</code></strong> :&ensp;<code>str</code></dt>
 <dd>The sort order to search: latest, popular</dd>
 </dl>
-<h2 id="raises">Raises</h2>
-<dl>
-<dt><code>ValueError</code></dt>
-<dd>If the doujin is not found.</dd>
-</dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>dict</code></dt>
-<dd>The list object that represents the doujin response.</dd>
+<dt><code>str</code></dt>
+<dd>reparsed json as string</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def search(self, query: str, page: int = 1, sort: str = &#34;latest&#34;):
-    &#34;&#34;&#34;Search for doujin based on the latest
+<pre><code class="python">async def search(self, query: str, page: int = 1, sort: str = &#34;latest&#34;) -&gt; str:
+    &#34;&#34;&#34;Search hentaifox doujin with query and page number given
 
-    path: https://hentaifox.com/search/?q=alter&amp;sort=latest
+    example: https://hentaifox.com/search/?q=alter&amp;sort=latest
 
     Parameters
     ----------
@@ -475,31 +359,20 @@ Get random doujin</p>
     sort : str
         The sort order to search: latest, popular
 
-    Raises
-    ------
-    ValueError
-        If the doujin is not found.
-
     Returns
     -------
-    dict
-        The list object that represents the doujin response.
+    str
+        reparsed json as string
     &#34;&#34;&#34;
 
-    self.specs[&#34;key&#34;] = query
-    self.specs[&#34;sort&#34;] = sort
-    self.specs[&#34;page&#34;] = page
-
-    query = auto_space(query)
-
-    if query == &#34;&#34;:
-        raise ValueError(&#34;Query must be given&#34;)
-    data = requests.get(BASE_URL.hentaifox + &#34;/search&#34;, params=self.specs)
-
-    if len(data.json()[&#34;data&#34;]) == 0:
-        raise ValueError(&#34;No results found&#34;)
-
-    return better_object(data.json())</code></pre>
+    self.query = query
+    self.page = page
+    self.sort = sort
+    self.req = str(self.query + &#34;&amp;page=&#34; +
+                   str(self.page) + &#34;&amp;sort=&#34; + self.sort)
+    
+    data = await request(Janda.hentaifox + Janda.endpoint_search, self.req)
+    return better_object(data)</code></pre>
 </details>
 </dd>
 </dl>
