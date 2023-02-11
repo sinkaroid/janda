@@ -1,7 +1,7 @@
 <div align="center">
 <a href="https://sinkaroid.github.io/janda"><img width="470" src="https://cdn.discordapp.com/attachments/952117487166705747/952942740545634344/janda.png" alt="janda"></a>
 
-<h4 align="center">Python client for Jandapress</h4>
+<h4 align="center">Python library for Jandapress</h4>
 
 <p align="center">
 	<a href="https://github.com/sinkaroid/janda/actions/workflows/build.yml"><img src="https://github.com/sinkaroid/janda/actions/workflows/build.yml/badge.svg"></a>
