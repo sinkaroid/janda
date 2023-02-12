@@ -1,4 +1,4 @@
-name: Pururin testing
+name: 3hentai testing
 on:
   push:
     branches:
@@ -21,4 +21,4 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Get book
-        run: python -m unittest test.test_pururin
+        run: python -m unittest test.test_thentai

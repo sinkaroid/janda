@@ -1,17 +1,16 @@
-import requests
-import json
-from .utils.parser import *
+from janda.utils.client import *
+from janda.utils.request import request
 
-BASE_URL = Api()
+Janda = Api()
 
 
 class SimplyHentai(object):
-    """Simply-hentai API wrapper
+    """Jandapress simply-hentai API
 
     Methods
     -------
     get : function
-        Gets doujin from path given
+        Get doujin from path given
     """
 
     def __init__(self, api_key: str = ""):
@@ -20,7 +19,7 @@ class SimplyHentai(object):
         Parameters
         ----------
         api_key : str
-            scathach.dev API key (optional)
+            scathach.id API key (optional)
         """
         if api_key == "":
             self.api_key = None
@@ -28,32 +27,27 @@ class SimplyHentai(object):
             self.api_key = api_key
         self.specs = {"api_key": self.api_key}
 
-    async def get(self, path: str):
-        """Gets doujin from path given
+    async def get(self, path: str) -> str:
+        """Get simply-hentai doujin from path given
 
-        path: https://www.simply-hentai.com/fate-grand-order/perros => 'fate-grand-order/perros'
+        example: https://www.simply-hentai.com/fate-grand-order/perros => 'fate-grand-order/perros'
 
         Parameters
         ----------
         path : str
             The path url
 
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
         Returns
         -------
-        dict
-            The book object that represents the specific path response.
+        str
+            reparsed json as string
         """
 
         if str(path).isdigit():
             raise ValueError("Invalid path, must be a str")
 
         path = path.strip("/")
-        self.specs["book"] = path
+        self.book = path
 
         try:
             path = str(path)
@@ -61,6 +55,5 @@ class SimplyHentai(object):
         except ValueError or path.isdigit():
             raise ValueError("Path must be a str")
 
-        data = requests.get(BASE_URL.simply_hentai + "/get", params=self.specs)
-
-        return better_object(data.json())
+        data = await request(Janda.simply_hentai + Janda.endpoint_book, self.book)
+        return better_object(data)

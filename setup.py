@@ -29,7 +29,7 @@ setup(
     project_urls={
         "Documentation": "https://sinkaroid.github.io/janda",
         "Issue tracker": "https://github.com/sinkaroid/janda/issues/new/choose",
-        "Funding": "https://paypal.me/sinkaroid",
+        "Funding": "https://github.com/sponsors/sinkaroid",
         "Discord": "https://discord.gg/8wj4vM5hHM",
     },
     packages=['janda', 'janda.utils'],
@@ -52,9 +52,9 @@ setup(
         "Topic :: Software Development :: Build Tools",
 
     ],
-    description='A featureful Python library covers most popular doujin API',
+    description='Python library for Jandapress, doujinshi api',
     include_package_data=True,
     keywords=['doujinshi', 'library', 'hentai', 'api', 'nhentai',
-              'pururin', 'hentaifox', 'hentai2read', 'simply-hentai', 'qhentai', 'asmhentai'],
+              'pururin', 'hentaifox', 'hentai2read', 'simply-hentai', '3hentai', 'asmhentai'],
     install_requires=requirements
 )

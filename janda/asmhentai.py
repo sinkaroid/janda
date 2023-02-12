@@ -1,23 +1,22 @@
-import requests
-import json
-from .utils.parser import *
+from janda.utils.client import *
+from janda.utils.request import request
 
-BASE_URL = Api()
+Janda = Api()
 
 
 class Asmhentai(object):
-    """Asmhentai API wrapper
+    """Jandapress Asmhentai API
 
     Methods
     -------
     get : function
-        Gets doujin from id given
+        Get doujin from id given
 
     search : function
         Search for doujin wirh query and page number given
 
     get_random : function
-        Gets random doujin
+        Get random doujin
     """
 
     def __init__(self, api_key: str = ""):
@@ -26,7 +25,7 @@ class Asmhentai(object):
         Parameters
         ----------
         api_key : str
-            scathach.dev API key (optional)
+            scathach.id API key (optional)
         """
         if api_key == "":
             self.api_key = None
@@ -34,50 +33,30 @@ class Asmhentai(object):
             self.api_key = api_key
         self.specs = {"api_key": self.api_key}
 
-    async def get(self, id: int):
-        """Gets doujin from id given
+    async def get(self, id: int) -> str:
+        """Get asmhentai doujin from id given
 
-        path: https://asmhentai.com/g/311851
+        example: https://asmhentai.com/g/311851
 
         Parameters
         ----------
         id : int
             The id of the doujin
 
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
-
         Returns
         -------
-        dict
-            The book object that represents the specific id response.
+        str
+            reparsed json as string
         """
 
-        if isinstance(id, int):
-            id = str(id)
+        self.book = str(id)
+        data = await request(Janda.asmhentai + Janda.endpoint_book, self.book)
+        return better_object(data)
 
-        path = id.strip("/")
-        self.specs["book"] = path
+    async def search(self, query: str, page: int = 1) -> str:
+        """Search asmhentai doujin with query and page number given
 
-        try:
-            path = str(path)
-
-        except ValueError or path.isdigit():
-            raise ValueError("Path must be a str")
-
-        data = requests.get(BASE_URL.asmhentai + "/get", params=self.specs)
-
-        if data.status_code != 200:
-            raise ValueError("No results found for " + id)
-
-        return better_object(data.json())
-
-    async def search(self, query: str, page: int = 1):
-        """Search for doujin with query and page number given
-
-        path: https://asmhentai.com/search/?q=
+        example: https://asmhentai.com/search/?q=
 
         Parameters
         ----------
@@ -87,40 +66,27 @@ class Asmhentai(object):
         page : int
             The page number to search for, Default is 1
 
-        Raises
-        ------
-        ValueError
-            If the doujin is not found.
+        Returns
+        -------
+        str
+            reparsed json as string
+        """
+
+        self.query = query
+        self.page = page
+        self.req = str(self.query) + "&page=" + str(self.page)
+
+        data = await request(Janda.asmhentai + Janda.endpoint_search, self.req)
+        return better_object(data)
+
+    async def get_random(self) -> str:
+        """Get asmhentai random doujin
 
         Returns
         -------
-        dict
-            The list object that represents the doujin response.
+        str
+            reparsed json as string
         """
 
-        self.specs["key"] = query
-        self.specs["page"] = page
-
-        query = auto_space(query)
-
-        if query == "":
-            raise ValueError("Query must be given")
-        data = requests.get(BASE_URL.asmhentai + "/search", params=self.specs)
-
-        if len(data.json()["data"]) == 0:
-            raise ValueError("No results found")
-
-        return better_object(data.json())
-
-    async def get_random(self):
-        """Gets random doujin on asmhentai
-
-        Returns
-        -------
-        dict
-            The book object that represents the random doujin response.
-        """
-
-        data = requests.get(BASE_URL.asmhentai + "/random", params=self.specs)
-
-        return better_object(data.json())
+        data = await request(Janda.asmhentai + Janda.endpoint_random)
+        return better_object(data)

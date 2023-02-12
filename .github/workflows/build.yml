@@ -12,14 +12,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pdoc3
-          make build-docs
+          pdoc --html janda
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.2.5
@@ -27,4 +27,4 @@ jobs:
           branch: gh-pages
           folder: html/janda
       - name: Check build
-        run: make janda
+        run: python -m unittest test.test_build
