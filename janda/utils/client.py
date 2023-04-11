@@ -1,7 +1,7 @@
 import json
 from janda import __version__
 
-JANDA = "https://janda.mod.land"
+JANDA = "https://janda.sinkaroid.org"
 
 
 class Api:
