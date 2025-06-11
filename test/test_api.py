@@ -6,7 +6,7 @@ async def test_api():
     async with aiohttp.ClientSession() as session:
         for api in list_api():
             if "nhen" in api:
-                get_random = api + "/get?book=177013"
+                get_random = api + "/get?book=577774"
             elif "hentai2read" in api:
                 get_random = api + "/search?key=futanari"
             elif "simply-hentai" in api:
