@@ -1,13 +1,16 @@
-import asyncio
-from janda import SimplyHentai
+import unittest
+from janda import SimplyHentai, resolve
 
-sh = SimplyHentai()
+class TestMock(unittest.IsolatedAsyncioTestCase):
 
-async def get():
-    data = await sh.get("fate-grand-order/perros")
-    print(data)
+    async def test_simplyh_get(self):
+        simplyh = SimplyHentai()
+        data = await simplyh.get("fate-grand-order/perros/all-pages")
+        resolved = resolve(data)
+        print(resolved)
 
-async def main():
-    await asyncio.gather(get())
+        self.assertIsInstance(resolved, dict)
+        self.assertTrue(resolved.get("success"))
 
-asyncio.run(main())
+if __name__ == "__main__":
+    unittest.main()

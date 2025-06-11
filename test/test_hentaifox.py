@@ -1,13 +1,16 @@
-import asyncio
-from janda import Hentaifox
+import unittest
+from janda import Hentaifox, resolve
 
-hentaifox = Hentaifox()
+class TestMock(unittest.IsolatedAsyncioTestCase):
 
-async def get():
-    data = await hentaifox.get(59026)
-    print(data)
+    async def test_hentaifox_get(self):
+        hentaifox = Hentaifox()
+        data = await hentaifox.get(59026)
+        resolved = resolve(data)
+        print(resolved)
 
-async def main():
-    await asyncio.gather(get())
+        self.assertIsInstance(resolved, dict)
+        self.assertTrue(resolved.get("success"))
 
-asyncio.run(main())
+if __name__ == "__main__":
+    unittest.main()
