@@ -1,13 +1,16 @@
-import asyncio
+import unittest
 from janda import Nhentai
 
-nhentai = Nhentai()
+class TestNhentai(unittest.IsolatedAsyncioTestCase):
 
-async def get():
-    data = await nhentai.get(255369)
-    print(data)
+    async def test_nhentai_get(self):
+        nhentai = Nhentai()
+        data = await nhentai.get(255369)
+        print(data)  # Optional for debugging output
 
-async def main():
-    await asyncio.gather(get())
+        self.assertIsInstance(data, dict)
+        self.assertIn("id", data)
+        self.assertEqual(data.get("id"), 255369)
 
-asyncio.run(main())
+if __name__ == "__main__":
+    unittest.main()
