@@ -1,5 +1,5 @@
 <div align="center">
-<a href="https://sinkaroid.github.io/janda"><img width="470" src="https://cdn.discordapp.com/attachments/952117487166705747/952942740545634344/janda.png" alt="janda"></a>
+<a href="https://sinkaroid.github.io/janda"><img width="470" src="https://raw.githubusercontent.com/sinkaroid/janda/refs/heads/master/resources/project/images/janda.png" alt="janda"></a>
 
 <h4 align="center">Python library for Jandapress</h4>
 
@@ -74,7 +74,7 @@ from janda import Nhentai, resolve
 
 async def book():
     nh = Nhentai()
-    data = await nh.get(177013)
+    data = await nh.get(577774)
     print(data) ## this is <class 'str'>
     print(resolve(data)) ## this is <class 'dict'>
 
@@ -106,7 +106,7 @@ The documentation can be found [https://sinkaroid.github.io/janda](https://sinka
         ],
         "characters": [],
         "group": null,
-        "id": 177013,
+        "id": 577774,
         "image": [
             "https://i.nhentai.net/galleries/987560/1.jpg",
             "https://i.nhentai.net/galleries/987560/2.jpg",
@@ -380,7 +380,7 @@ The documentation can be found [https://sinkaroid.github.io/janda](https://sinka
         "total": 225,
         "upload_date": "October 18, 2016 (6 years ago)"
     },
-    "source": "https://nhentai.net/g/177013"
+    "source": "https://nhentai.net/g/577774"
 }
 ```
 
