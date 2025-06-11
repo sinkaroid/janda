@@ -1,13 +1,17 @@
-import asyncio
-from janda import Hentai2read
+import unittest
+from janda import Hentai2read, resolve
 
-h2r = Hentai2read()
+class TestHentai2read(unittest.IsolatedAsyncioTestCase):
 
-async def get():
-    data = await h2r.get("jeanne_alter_wants_to_mana_transfer")
-    print(data)
+    async def test_hentai2read_get(self):
+        hentairr = Hentai2read()
+        data = await hentairr.get("jeanne_alter_wants_to_mana_transfer/1")
+        resolved = resolve(data)
+        print(resolved)
 
-async def main():
-    await asyncio.gather(get())
+        self.assertIsInstance(resolved, dict)
+        self.assertIn("data", resolved)
+        self.assertIn("title", resolved["data"])
 
-asyncio.run(main())
+if __name__ == "__main__":
+    unittest.main()

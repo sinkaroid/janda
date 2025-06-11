@@ -1,13 +1,16 @@
-import asyncio
-from janda import Pururin
+import unittest
+from janda import Pururin, resolve
 
-pururin = Pururin()
+class TestMock(unittest.IsolatedAsyncioTestCase):
 
-async def get():
-    data = await pururin.get(47226)
-    print(data)
+    async def test_pururin_get(self):
+        pururin = Pururin()
+        data = await pururin.get(47226)
+        resolved = resolve(data)
+        print(resolved)
 
-async def main():
-    await asyncio.gather(get())
+        self.assertIsInstance(resolved, dict)
+        self.assertTrue(resolved.get("success"))
 
-asyncio.run(main())
+if __name__ == "__main__":
+    unittest.main()

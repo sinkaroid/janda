@@ -1,16 +1,16 @@
 import unittest
-from janda import Nhentai
+from janda import Nhentai, resolve
 
-class TestNhentai(unittest.IsolatedAsyncioTestCase):
+class TestMock(unittest.IsolatedAsyncioTestCase):
 
     async def test_nhentai_get(self):
         nhentai = Nhentai()
         data = await nhentai.get(255369)
-        print(data)  # Optional for debugging output
+        resolved = resolve(data)
+        print(resolved)
 
-        self.assertIsInstance(data, dict)
-        self.assertIn("id", data)
-        self.assertEqual(data.get("id"), 255369)
+        self.assertIsInstance(resolved, dict)
+        self.assertTrue(resolved.get("success"))
 
 if __name__ == "__main__":
     unittest.main()

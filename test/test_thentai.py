@@ -1,13 +1,16 @@
-import asyncio
-from janda import Thentai
+import unittest
+from janda import Thentai, resolve
 
-thentai = Thentai()
+class TestMock(unittest.IsolatedAsyncioTestCase):
 
-async def get():
-    data = await thentai.get(608979)
-    print(data)
+    async def test_thentai_get(self):
+        thentai = Thentai()
+        data = await thentai.get(608979)
+        resolved = resolve(data)
+        print(resolved)
 
-async def main():
-    await asyncio.gather(get())
+        self.assertIsInstance(resolved, dict)
+        self.assertTrue(resolved.get("success"))
 
-asyncio.run(main())
+if __name__ == "__main__":
+    unittest.main()

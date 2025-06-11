@@ -1,13 +1,16 @@
-import asyncio
-from janda import Asmhentai
+import unittest
+from janda import Asmhentai, resolve
 
-asm = Asmhentai()
+class TestMock(unittest.IsolatedAsyncioTestCase):
 
-async def get():
-    data = await asm.get(311851)
-    print(data)
+    async def test_asmhen_get(self):
+        asmhen = Asmhentai()
+        data = await asmhen.get(311851)
+        resolved = resolve(data)
+        print(resolved)
 
-async def main():
-    await asyncio.gather(get())
+        self.assertIsInstance(resolved, dict)
+        self.assertTrue(resolved.get("success"))
 
-asyncio.run(main())
+if __name__ == "__main__":
+    unittest.main()
